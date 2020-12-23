@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import edc from '@/components/EDC'
 import { mapGetters, mapMutations } from 'vuex'
 
 import { } from '@/api/caseSearch'
@@ -37,7 +38,7 @@ export default {
     ...mapGetters(['theme', 'userInfo'])
   },
   watch: {},
-  components: {},
+  components: { edc },
   created () { },
   mounted () { },
   destroyed () { },
@@ -52,15 +53,20 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
-.followup-visit{
+.followup-visit {
   .right-button {
     top: 9px;
   }
+<<<<<<< HEAD
   .dec{
     height: calc(100vh - 200px)!important;
+=======
+  .con-main {
+    background: #ffffff;
+    padding: 15px;
+>>>>>>> 7179aec119746c2d3342bbdc45afb28df1a1c7b6
   }
 }
 </style>
 <style lang="scss">
-
 </style>
