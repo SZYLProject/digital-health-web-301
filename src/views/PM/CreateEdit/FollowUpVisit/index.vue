@@ -14,8 +14,8 @@
         </span>
       </div>
     </div>
-    <div class="con-main" style="background-color:#fff;height:100%;width:100%;">
-      访视设计
+    <div class="con-main">
+      <edc/>
       <!-- <el-tabs tab-position="left"
                >
         <el-tab-pane label="访视设计">
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import edc from '@/components/EDC'
 import { mapGetters, mapMutations } from 'vuex'
 
 import { } from '@/api/caseSearch'
@@ -47,7 +48,7 @@ export default {
     ...mapGetters(['theme', 'userInfo'])
   },
   watch: {},
-  components: {},
+  components: { edc },
   created () { },
   mounted () { },
   destroyed () { },
@@ -62,12 +63,15 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
-.followup-visit{
+.followup-visit {
   .right-button {
     top: 9px;
+  }
+  .con-main {
+    background: #ffffff;
+    padding: 15px;
   }
 }
 </style>
 <style lang="scss">
-
 </style>
