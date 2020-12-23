@@ -57,14 +57,8 @@ export default {
   .right-button {
     top: 9px;
   }
-<<<<<<< HEAD
   .dec{
     height: calc(100vh - 200px)!important;
-=======
-  .con-main {
-    background: #ffffff;
-    padding: 15px;
->>>>>>> 7179aec119746c2d3342bbdc45afb28df1a1c7b6
   }
 }
 </style>
