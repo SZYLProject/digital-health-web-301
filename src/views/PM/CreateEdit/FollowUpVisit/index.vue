@@ -14,20 +14,8 @@
         </span>
       </div>
     </div>
-    <div class="con-main" style="background-color:#fff;height:100%;width:100%;">
-      访视设计
-      <!-- <el-tabs tab-position="left"
-               >
-        <el-tab-pane label="访视设计">
-          访视设计
-        </el-tab-pane>
-        <el-tab-pane label="CRF设计">
-          CRF设计
-        </el-tab-pane>
-        <el-tab-pane label="CRF录入">
-          CRF录入
-        </el-tab-pane>
-      </el-tabs> -->
+    <div class="con-main dec" style="background-color:#fff;height:100%;width:100%;">
+      <iframe width="100%" height="100%" :src="url" ></iframe>
     </div>
   </div>
 
@@ -40,7 +28,9 @@ import { } from '@/api/caseSearch'
 export default {
   name: 'FollowUpVisit',
   data () {
-    return {}
+    return {
+      url: 'http://172.16.115.190:8087/#/visit?title=的方法范德萨发大发'
+    }
   },
   props: {},
   computed: {
@@ -65,6 +55,9 @@ export default {
 .followup-visit{
   .right-button {
     top: 9px;
+  }
+  .dec{
+    height: calc(100vh - 200px)!important;
   }
 }
 </style>
