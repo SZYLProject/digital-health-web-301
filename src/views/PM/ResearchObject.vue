@@ -1,0 +1,113 @@
+<!-- 研究对象 -->
+<template>
+  <div class="research-object">
+
+    <!-- 面包削 -->
+    <div class="breadcrumb-bar">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item>项目管理</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/PM/ProjectLists' }">项目列表</el-breadcrumb-item>
+        <el-breadcrumb-item class="active-breadcrumb">研究对象</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
+    <!-- 进度条 -->
+    <div class="progress-bar">
+      <el-steps :active="step"
+                align-center>
+        <el-step :title="item.title"
+                 v-for="(item,index) in stepList.filter(item=>item.show)"
+                 :key="index"></el-step>
+      </el-steps>
+    </div>
+    <!-- 组件切换 -->
+    <component :is="whichCom"
+               @next="nextStep"></component>
+  </div>
+</template>
+
+<script>
+import { mapGetters, mapMutations } from 'vuex'
+// import { } from '@/api/caseSearch'
+import {
+  ProjectCreate,
+  ResearchComPageOne,
+  ResearchComPageTwo,
+  FollowUpVisit
+} from './CreateEdit'
+
+export default {
+  name: 'ResearchObject',
+  data () {
+    return {
+      step: 0,
+      whichCom: this.$route.params.stepName,
+      // whichCom: 'ResearchComPageOne', //    ResearchComPageOne ProjectCreate
+      stepList: [
+        {
+          title: '项目信息',
+          component: 'ProjectCreate',
+          show: true
+        },
+        {
+          title: '队列入排',
+          component: 'ResearchComPageOne',
+          show: true
+        },
+        {
+          title: '变量选择',
+          component: 'ResearchComPageTwo',
+          show: true
+        },
+        {
+          title: '访视设计',
+          component: 'FollowUpVisit',
+          show: false
+        }
+      ]
+    }
+  },
+  props: {},
+  computed: {
+    ...mapGetters(['theme', 'userInfo', 'projectType'])
+  },
+  watch: {
+    step (val) {
+      window.history.replaceState({}, '', `#/ResearchObject/${this.stepList[val].component}`)
+      this.whichCom = this.stepList[val].component
+    },
+    projectType: {
+      immediate: true,
+      handler: function (newValue, oldValue) {
+        this.stepList[3].show = (newValue === 2)
+      }
+    }
+  },
+  components: { ProjectCreate, ResearchComPageOne, ResearchComPageTwo, FollowUpVisit },
+  created () {
+    this.step = this.stepList.findIndex(
+      (item) => item.component === this.$route.params.stepName
+    )
+  },
+  mounted () { },
+  destroyed () { },
+  methods: {
+    ...mapMutations(['']),
+    nextStep (val) {
+      this.step = val
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import "~@/styles/mixin.scss";
+.research-object {
+  .progress-bar {
+    padding: 20px 10px;
+  }
+}
+</style>
+<style lang="scss">
+.research-object {
+}
+</style>

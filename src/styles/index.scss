@@ -1,0 +1,351 @@
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './element-variables.scss';
+@import './sidebar.scss';
+
+/* 清除内外边距 */
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements 结构元素 */
+dl, dt, dd, ul, ol, li, /* list elements 列表元素 */
+pre, /* text formatting elements 文本格式元素 */
+fieldset, lengend, button, input, textarea, /* form elements 表单元素 */
+th, td { /* table elements 表格元素 */
+    margin: 0;
+    padding: 0;
+}
+/* 列表元素 */
+ul, ol { list-style: none; }
+i{font-style:normal;}
+
+body {
+  font-size: 14px;
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+}
+
+label {
+  font-weight: 700;
+}
+
+html {
+  // height: 100%;
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+
+.inlineBlock{
+  display: inline-block;
+}
+.pointer{
+  cursor: pointer;
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space:nowrap ;
+  // max-width: 50px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+// main-container全局样式
+.app-wrapper{
+  background: #f2f4f5 url(../assets/backgroud.png) bottom no-repeat;
+  background-size: contain;
+}
+.app-container {
+  padding: 20px;
+}
+
+.app-header {
+  position: fixed;
+  top: 0;
+  transition: all .3s;
+  // left: 210px;
+  // width: 100%;
+  // width: calc(100% - #{$sideBarWidth} - 10px);
+  z-index: 89;
+  height: 56px;
+  // -webkit-box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  // box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  // background: $--color-primary;
+}
+.main-container {
+  // padding:$headerHeight 10px 0 10px;
+  // padding:10px 10px 0 10px;
+  padding:10px 10px 10px 5px;
+  min-height: 100%;
+  transition: margin-left .28s;
+  margin-left: $sideBarWidth + 10px;
+  position: relative;
+}
+
+// 表格
+.el-table{
+  border: 1px solid #f1f1f1;
+  border-bottom:none;
+  margin: 15px 0;
+}
+.tableTH {
+  background: rgba(0,112,244,0.1)!important;
+  color: $--color-primary;
+}
+.el-table--striped .el-table__body tr.el-table__row--striped.el-table__row--striped.el-table__row--striped td {
+  background: rgba(0,112,244,0.03);
+}
+.el-table__body{
+  tr>td{
+    .el-button--mini{
+      padding: 4px 0px;
+    }
+  } 
+}
+
+.el-pagination {
+  text-align: right;
+}
+// 表单
+// .el-form-item__content {
+//   line-height: 30px;
+// }
+.el-form-item {
+  margin-bottom: 25px;
+}
+// 公用白底框、title等
+.module-container {
+  background: #ffffff;
+  padding:15px;
+  position: relative;
+  .title {
+    // color: $menuText;
+    h1 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    h2 {
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .right{
+      position: absolute;
+      right: 15px;
+      top:15px;
+      font-size: 14px;
+    }
+    .back{
+      font-size: 20px;
+      vertical-align: top;
+      margin-right: 5px;
+    }
+  }
+  .con {
+    margin-top:15px
+  }
+}
+// 专病公用白底框、title下带下划线模版
+.module-container-two {
+  background: #ffffff;
+  position: relative;
+  margin-bottom: 15px;
+  .title {
+    padding: 12px 25px;
+    border-bottom: 1px solid #e9e9e9;
+    color: #333333;
+    h1 {
+      font-size: 16px;
+      font-weight: 700;
+      border-left: solid 5px #0070f4;
+      padding-left: 10px;
+    }
+    h2{
+      font-size: 15px;
+      font-weight: 700;
+      .iconfont{
+        color: #0070f4;
+        margin-right:5px;
+      }
+    }
+    .sub{
+      font-size: 12px;
+      font-weight: 500;
+      color: #999999;
+    }
+    .right{
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      color: #0070f4;
+    }
+  }
+  .el-icon-more {
+    -moz-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+    color: #0070F4;
+  }
+  .con {
+    padding: 0 30px 15px;
+    margin-top: 15px;
+  }
+}
+
+// nav 标签栏
+.el-tabs{
+  margin-top: -15px;
+}
+
+// tree
+.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
+  color: #247BCC;
+}
+
+// dialog
+.el-dialog__body{
+  padding: 20px 20px 0!important;
+}
+.el-dialog__header {
+  font-weight: 700;
+}
+// dropdown 下拉框里加checkbox input
+.dropdown-checkbox {
+  padding: 0 15px;
+  line-height: 25px;
+  .title{
+    font-size: 16px;
+    margin-top:5px;
+    margin-bottom:10px;
+  }
+  .block {
+    .el-checkbox {
+    display: block;
+   }
+  }
+  .el-input {
+    width:145px;
+    margin-bottom:5px
+  }
+  .el-scrollbar__wrap {
+    overflow-x: hidden !important;
+  }
+}
+.dropdown-button {
+  border-top: 1px solid #f2f2f2;
+  text-align: center;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+// popover 下拉框里加checkbox input
+.popover-checkbox {
+  line-height: 25px;
+  .title{
+    font-size: 16px;
+    margin-top:5px;
+    margin-bottom:10px;
+  }
+  .block {
+    .el-checkbox {
+    display: block;
+   }
+  }
+  .el-input {
+    width:145px;
+    margin-bottom:5px
+  }
+  .el-scrollbar__wrap {
+    overflow-x: hidden !important;
+  }
+}
+.popover-button {
+  border-top: 1px solid #f2f2f2;
+  text-align: center;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+// element-ui隐藏组件scrollbar的使用
+.scrollbar-wraps {
+  .el-scrollbar__wrap {
+    overflow-x: hidden !important;
+  }
+}
+
+// 面包削
+.breadcrumb-bar{
+  position: relative;
+  height: 32px;
+  padding: 10px 0px;
+  color: #999999;
+  font-size: 14px;
+  .right{
+    position: absolute;
+    right: 0;
+    top: 2px;
+  }
+}
+.active-breadcrumb{
+  .el-breadcrumb__inner{
+    color: #0071f5!important;
+    font-size: 15px!important;
+  }
+}
+
+// 无数据显示模块
+.no-data-module{
+  font-size: 20px;
+  background-color: #ffffff;
+  text-align: center;
+  padding: 200px 0px;
+  margin-bottom:20px;
+  .p1{
+    font-size: 80px;
+    color: #f2f2f2;
+  }
+  .p2{
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    padding-top: 10px;
+    color: #999999;
+  }
+}

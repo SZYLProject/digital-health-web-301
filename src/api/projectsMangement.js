@@ -1,0 +1,91 @@
+// 项目管理接口
+import request from '@/utils/request'
+// import Qs from 'qs'
+
+// 获取表格数据
+export function projectLists (data) {
+  return request({
+    url: '/crp-project/project/v1/listProject',
+    method: 'get',
+    params: data
+  })
+}
+
+// 创建项目
+export function createProjects (data) {
+  return request({
+    url: '/crp-project/project/v1/newProject',
+    method: 'put',
+    data: data
+  })
+}
+
+// 文件上传接口
+export function fileUploading (data) {
+  return request({
+    url: '/crp-project/file/v1/uploadMultipleFiles',
+    method: 'post',
+    headers: { 'Content-Type': 'multipart/form-data' },
+    data: data,
+    timeout: 600 * 1000
+  })
+}
+
+// 删除上传的文件
+export function deleteUploadFiles (data) {
+  const { fileName } = data
+  return request({
+    url: `/crp-project/file/v1/deleteFile/${fileName}`,
+    method: 'get',
+    params: {}
+  })
+}
+
+// 回显上传的文件
+export function comeUploadFiles (data) {
+  const { projectId } = data
+  return request({
+    url: `/crp-project/file/v1/listFiles/${projectId}`,
+    method: 'get',
+    params: {}
+  })
+}
+
+// 修改列表接口
+export function correctProject (data) {
+  return request({
+    url: '/crp-project/project/v1/updateProject',
+    method: 'post',
+    data: data
+  })
+}
+
+// 一级字典接口
+export function oneDictionaryDatas (data) {
+  // const { userId, dataItemName, isCommon, except } = data
+  return request({
+    url: '/acl/api/dataItem/getDataItemsAll',
+    method: 'get',
+    params: data,
+    timeout: 10 * 1000
+  })
+}
+
+// 获取队列的接口
+export function getQueueDatas (data) { // //{version}//{}
+  const { projectId } = data
+  return request({
+    url: `/crp-project/projectGroup/v1/list/${projectId}`,
+    method: 'get',
+    params: data
+    // timeout: 10 * 1000
+  })
+}
+// 新增队列
+export function addNewQueue (data) {
+  return request({
+    url: '/crp-project/projectGroup/v1/addGroup',
+    method: 'put',
+    data: data
+  })
+}
