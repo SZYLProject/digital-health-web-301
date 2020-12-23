@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import edc from '@/components/EDC'
+// import edc from '@/components/EDC'
 import { mapGetters, mapMutations } from 'vuex'
 
 import { } from '@/api/caseSearch'
@@ -38,7 +38,7 @@ export default {
     ...mapGetters(['theme', 'userInfo'])
   },
   watch: {},
-  components: { edc },
+  components: {},
   created () { },
   mounted () { },
   destroyed () { },
