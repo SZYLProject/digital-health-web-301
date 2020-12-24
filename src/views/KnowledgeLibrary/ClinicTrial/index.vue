@@ -1,7 +1,7 @@
 <!-- 临床试验  -->
 <template>
   <div class="clinic-trial">
-    临床试验
+
   </div>
 </template>
 

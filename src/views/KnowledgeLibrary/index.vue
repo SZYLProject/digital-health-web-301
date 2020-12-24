@@ -1,6 +1,6 @@
 <!-- 临床试验 -->
 <template>
-  <div class="knowladge-library">
+  <div class="knowledge-library">
     <div class="module-container-two" style="margin-bottom: 0px">
       <div class="title">
         <h1>知识库</h1>
@@ -46,7 +46,7 @@ import {
 } from './index'
 
 export default {
-  name: 'knowladgeLibrary',
+  name: 'knowledgeLibrary',
   components: {
     FirstPage,
     Literature,
@@ -126,7 +126,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.knowladge-library {
+.knowledge-library {
   .tab-header {
     background: #fff;
     padding: 15px 15px;
@@ -135,7 +135,7 @@ export default {
 }
 </style>
 <style lang="scss">
-.knowladge-library {
+.knowledge-library {
   .el-tabs--border-card > .el-tabs__content {
     padding: 0px;
   }

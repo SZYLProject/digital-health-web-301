@@ -1,7 +1,7 @@
 <!-- 临床路径 -->
 <template>
   <div class="clinical-pathway">
-    临床路径
+
   </div>
 </template>
 

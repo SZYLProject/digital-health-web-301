@@ -210,8 +210,8 @@ export const constantRoutes = [
     children: [
       {
         path: 'index', //
-        component: () => import('@/views/KnowledgeLibrary'),
-        name: 'knowladgeLibrary'
+        component: () => import('@/views/KnowledgeLibrary/index.vue'),
+        name: 'knowledgeLibrary'
       }
     ]
   },

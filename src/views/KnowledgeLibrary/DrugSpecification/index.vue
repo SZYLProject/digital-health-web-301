@@ -79,7 +79,7 @@ export default {
       line-height: 10px;
       border: none;
       color:#0070F4;
-      margin: 10px 10px 10px 0px;
+      margin: 10px 10px 0px 0px;
       background: rgba(0,112,244,0.1);
       border-radius: 0;
     }
