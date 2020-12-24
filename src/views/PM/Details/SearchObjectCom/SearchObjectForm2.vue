@@ -111,7 +111,7 @@
           <el-table-column label="123" align="center">
             <template slot-scope="scope">
               <router-link
-                to="/"
+                to=""
                 target="_blank"
               >
                 <el-button

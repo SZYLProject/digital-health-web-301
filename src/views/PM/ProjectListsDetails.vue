@@ -84,7 +84,11 @@ export default {
     ...mapGetters(['theme', 'userInfo'])
   },
   watch: {
-
+    tabRadio (val) {
+      console.log(val)
+      window.history.replaceState({}, '', `#/ProjectListsDetails/${val}/${this.$route.params.projectType}`)
+      this.whichCom = val
+    }
   },
   components: {
     SearchObjectCom,
