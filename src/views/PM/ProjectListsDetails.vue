@@ -5,19 +5,29 @@
     <div class="breadcrumb-bar">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>项目管理</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/PM/ProjectLists' }">项目列表</el-breadcrumb-item>
-        <el-breadcrumb-item class="active-breadcrumb">项目详情</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/PM/ProjectLists' }"
+          >项目列表</el-breadcrumb-item
+        >
+        <el-breadcrumb-item class="active-breadcrumb"
+          >项目详情</el-breadcrumb-item
+        >
       </el-breadcrumb>
     </div>
     <!-- tab 切换 -->
     <div class="tab-header">
       <el-radio-group v-model="tabRadio">
-        <el-radio :label="item.component"
-                  v-for="(item,index) in comList"
-                  :key="index" v-show="item.show">{{item.title}}
-          <i v-if="index!==comList.length-1"
-             style="color: #e6e6e6; padding-left: 10px">
-            |</i>
+        <el-radio
+          :label="item.component"
+          v-for="(item, index) in comList"
+          :key="index"
+          v-show="item.show"
+          >{{ item.title }}
+          <i
+            v-if="index !== comList.length - 1"
+            style="color: #e6e6e6; padding-left: 10px"
+          >
+            |</i
+          >
         </el-radio>
       </el-radio-group>
     </div>
@@ -32,11 +42,13 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import SearchObjectCom from './Details/SearchObjectCom'
-import FollowUpVisitCom from './Details/FollowUpVisitCom'
-import ProjectScheduleCom from './Details/ProjectScheduleCom'
-import StatisticAnalysisCom from './Details/StatisticAnalysisCom'
-import { } from '@/api/caseSearch'
+import {
+  SearchObjectCom,
+  FollowUpVisitCom,
+  ProjectScheduleCom,
+  StatisticAnalysisCom
+} from './Details'
+import {} from '@/api/caseSearch'
 export default {
   name: 'ProjectListsDetails',
   data () {
@@ -72,31 +84,19 @@ export default {
     ...mapGetters(['theme', 'userInfo'])
   },
   watch: {
-    tabRadio (val) {
-      window.history.replaceState({}, '', `#/ProjectListsDetails/${val}/${this.$route.params.projectType}`)
-      this.whichCom = val
-      // switch (Number(val)) {
-      //   case 1:
-      //     this.whichCom = 'SearchObjectCom'
-      //     break
-      //   case 2:
-      //     this.whichCom = 'FollowUpVisitCom'
-      //     break
-      //   case 3:
-      //     this.whichCom = 'ProjectScheduleCom'
-      //     break
-      //   case 4:
-      //     this.whichCom = 'StatisticAnalysisCom'
-      //     break
-      // }
-    }
+
   },
-  components: { SearchObjectCom, FollowUpVisitCom, ProjectScheduleCom, StatisticAnalysisCom },
-  created () { },
+  components: {
+    SearchObjectCom,
+    FollowUpVisitCom,
+    ProjectScheduleCom,
+    StatisticAnalysisCom
+  },
+  created () {},
   mounted () {
     // console.log(this.$route.params.id)
   },
-  destroyed () { },
+  destroyed () {},
   methods: {
     ...mapMutations(['']),
     // 返回项目列表

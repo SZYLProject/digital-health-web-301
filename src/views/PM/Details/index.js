@@ -1,4 +1,4 @@
-export { default as SearchObjectCom } from './SearchObjectCom/index' //
-export { default as FollowUpVisitCom } from './FollowUpVisitCom/index' //
-export { default as ProjectScheduleCom } from './ProjectScheduleCom/index' //
-export { default as StatisticAnalysisCom } from './StatisticAnalysisCom/index' //
+export { default as SearchObjectCom } from './SearchObjectCom' //
+export { default as FollowUpVisitCom } from './FollowUpVisitCom' //
+export { default as ProjectScheduleCom } from './ProjectScheduleCom' //
+export { default as StatisticAnalysisCom } from './StatisticAnalysisCom' //

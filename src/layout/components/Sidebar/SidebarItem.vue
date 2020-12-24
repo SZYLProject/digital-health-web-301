@@ -64,14 +64,14 @@ export default {
       }
       return path.resolve(this.basePath, routePath)
     },
-    toIcon (routePath) {
+    toIcon (routePath) { // knowledgeLibrary
       const two = routePath.indexOf('/', routePath.indexOf('/') + 1)
       const twoStr = two !== -1 ? two : routePath.length
       const str = routePath.substring(routePath.indexOf('/') + 1, twoStr)
+      // console.log(str)
       // if (str === 'specialDisease' || str === 'PM') {
       //   str = 'home'
       // }
-
       return str
     }
   }
