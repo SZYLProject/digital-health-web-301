@@ -197,7 +197,8 @@ export default {
     }
   }
   .details-main {
-    padding: 0 10px;
+    // padding: 0 10px;
+    padding-right:10px;
     min-height: 100%;
     transition: margin-left 0.28s;
     margin-left: 193px;

@@ -40,12 +40,13 @@
                          :label="item.val"
                          sortable
                          align="center"
-                         :show-overflow-tooltip="true" >
+                         :show-overflow-tooltip="true">
           <template slot-scope="scope">{{ scope.row[item.key] }}</template>
         </el-table-column>
       </template>
       <el-table-column label="操作"
-                       align="left" v-if="operate">
+                       align="left"
+                       v-if="operate">
         <template slot-scope="scope">
           <router-link :to="{path:`/view360/${scope.row['person_id']}/0/?parentName=患者概览`}"
                        target="_blank">
@@ -122,8 +123,16 @@ export default {
     .el-dropdown-link {
       cursor: pointer;
       font-size: 18px;
-      color: #247BCC;
+      color: #247bcc;
     }
+  }
+}
+</style>
+<style lang="scss">
+.dynamic-table {
+  .el-table th,
+  .el-table td {
+    padding: 8px 0!important;
   }
 }
 </style>

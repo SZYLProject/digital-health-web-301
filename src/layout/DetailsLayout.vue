@@ -39,7 +39,7 @@ export default {
 }
 .details-container {
   // padding-top: $headerHeight;
-  min-height: calc(100vh - 66px);
+  min-height: 100vh;
   position: relative;
 }
 </style>
