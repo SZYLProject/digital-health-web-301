@@ -259,7 +259,7 @@
       </div>
     </div>
     <!-- 表格 -->
-    <div class="table" style="padding:0 20px;">
+    <div class="table" style="padding:0 20px 15px;">
       <!-- 组件切换 -->
       <el-collapse-transition>
         <component

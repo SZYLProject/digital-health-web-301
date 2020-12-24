@@ -34,7 +34,6 @@
     <el-table
       ref="multipleTable"
       :data="tableData"
-      height="700"
       stripe
       size="mini"
       header-cell-class-name="tableTH"
