@@ -3,7 +3,7 @@
 <!-- 弹窗 -->
   <div class="tree-container">
     <el-dialog fullscreen
-               title="编辑"
+               title="条件树"
                :before-close="handleClose"
                :visible.sync="treeDialogVisible">
       <p class="message-bar">

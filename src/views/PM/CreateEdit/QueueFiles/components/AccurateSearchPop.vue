@@ -3,7 +3,7 @@
 <!-- 弹窗 -->
   <div class="tree-container">
     <el-dialog fullscreen
-               title="编辑"
+               title="精确搜索"
                :before-close="handleClose"
                :visible.sync="accurDialogVisible">
       <p class="message-bar">
