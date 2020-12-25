@@ -77,7 +77,7 @@
                        width="100%"
                        :id="item.id"
                        :title="item.title"
-                       :nameY='"人数"'
+                       :nameY='"人次"'
                        dataZoom
                        :dataX="item.dataX"
                        :dataY="item.dataY" />
@@ -155,25 +155,25 @@ export default {
       barList: [
         {
           id: '1',
-          title: '每月手术人数',
+          title: '每月手术人次',
           dataX: [],
           dataY: []
         },
         {
           id: '2',
-          title: '每月就诊人数',
+          title: '每月就诊人次',
           dataX: [],
           dataY: []
         },
         {
           id: '3',
-          title: '每月门诊人数',
+          title: '每月门诊人次',
           dataX: [],
           dataY: []
         },
         {
           id: '4',
-          title: '每月住院人数',
+          title: '每月住院人次',
           dataX: [],
           dataY: []
         }
@@ -201,7 +201,7 @@ export default {
           this.baseLoading = false
         })
     },
-    // 每月手术人数
+    // 每月手术人次
     getOperationCount () {
       getProduceCount()
         .then(res => {

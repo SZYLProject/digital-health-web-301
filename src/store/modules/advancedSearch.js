@@ -17,8 +17,8 @@ const state = {
         key: '',
         type: '',
         value: '',
-        data1: '',
-        data2: '',
+        date1: '',
+        date2: '',
         dataOptionType: 0,
         dataItemCode: '',
         dataOption: []

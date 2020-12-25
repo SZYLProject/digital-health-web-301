@@ -135,7 +135,7 @@
                     style="margin-bottom:0">
               <el-col :span="11">
                 <el-date-picker :disabled="!item.parentVariable.name"
-                                v-model="item.parentVariable.data1"
+                                v-model="item.parentVariable.date1"
                                 type="datetime"
                                 value-format="yyyy-MM-dd HH:mm:ss"
                                 placeholder="选择日期时间"
@@ -147,7 +147,7 @@
                       :span="2">-</el-col>
               <el-col :span="11">
                 <el-date-picker :disabled="!item.parentVariable.name"
-                                v-model="item.parentVariable.data2"
+                                v-model="item.parentVariable.date2"
                                 type="datetime"
                                 value-format="yyyy-MM-dd HH:mm:ss"
                                 placeholder="选择日期时间"
@@ -157,6 +157,28 @@
               </el-col>
             </el-row>
             <!--input-->
+            <!-- 区间内 -->
+            <el-row v-else-if="item.parentVariable.dataOptionType===1 &&
+                            (item.parentVariable.type==='区间外' || item.parentVariable.type === '区间内')"
+                    style="margin-bottom:0">
+              <el-col :span="11">
+                <el-input size="small"
+                          :disabled="!item.parentVariable.name"
+                          placeholder="最小值"
+                          v-model="item.parentVariable.date1">
+                </el-input>
+              </el-col>
+              <el-col class="line"
+                      :span="2">-</el-col>
+              <el-col :span="11">
+                <el-input size="small"
+                          :disabled="!item.parentVariable.name"
+                          placeholder="最大值"
+                          v-model="item.parentVariable.date2">
+                </el-input>
+              </el-col>
+            </el-row>
+            <!-- 非区间 -->
             <el-input size="small"
                       :disabled="!item.parentVariable.name"
                       placeholder="对比值"
@@ -268,7 +290,7 @@
                       style="margin-bottom:0">
                 <el-col :span="11">
                   <el-date-picker :disabled="!child.name"
-                                  v-model="child.data1"
+                                  v-model="child.date1"
                                   type="datetime"
                                   value-format="yyyy-MM-dd HH:mm:ss"
                                   placeholder="选择日期时间"
@@ -280,7 +302,7 @@
                         :span="2">-</el-col>
                 <el-col :span="11">
                   <el-date-picker :disabled="!child.name"
-                                  v-model="child.data2"
+                                  v-model="child.date2"
                                   type="datetime"
                                   value-format="yyyy-MM-dd HH:mm:ss"
                                   placeholder="选择日期时间"
@@ -290,6 +312,28 @@
                 </el-col>
               </el-row>
               <!--input-->
+              <!-- 区间内 -->
+              <el-row v-else-if="child.dataOptionType==1 &&
+                            (child.type==='区间外' || child.type === '区间内')"
+                      style="margin-bottom:0">
+                <el-col :span="11">
+                  <el-input size="small"
+                            :disabled="!child.name"
+                            placeholder="最小值"
+                            v-model="child.date1">
+                  </el-input>
+                </el-col>
+                <el-col class="line"
+                        :span="2">-</el-col>
+                <el-col :span="11">
+                  <el-input size="small"
+                            :disabled="!child.name"
+                            placeholder="最大值"
+                            v-model="child.date2">
+                  </el-input>
+                </el-col>
+              </el-row>
+              <!-- 非区间 -->
               <el-input size="small"
                         :disabled="!child.name"
                         placeholder="对比值"
@@ -377,8 +421,8 @@ export default {
             key: '',
             type: '',
             value: '',
-            data1: '',
-            data2: '',
+            date1: '',
+            date2: '',
             dataOptionType: 0,
             dataItemCode: '',
             dataOption: []
@@ -444,7 +488,7 @@ export default {
           item.serialNumber = index
           if (getFormType(item.parentVariable.dataOptionType) === 'date' &&
             (item.parentVariable.type === '区间外' || item.parentVariable.type === '区间内')) {
-            item.parentVariable.value = [item.parentVariable.data1, item.parentVariable.data2]
+            item.parentVariable.value = [item.parentVariable.date1, item.parentVariable.date2]
           } else {
             item.parentVariable.value = stringToArr(item.parentVariable.value, 'toString')
           }
@@ -452,7 +496,7 @@ export default {
             item.advanceSearchVariableDTOList.map(child => {
               if (getFormType(child.dataOptionType) === 'date' &&
                 (child.type === '区间外' || child.type === '区间内')) {
-                child.value = [child.data1, child.data2]
+                child.value = [child.date1, child.date2]
               } else {
                 child.value = stringToArr(child.value, 'toString')
               }
@@ -478,8 +522,8 @@ export default {
           key: '',
           type: '',
           value: '',
-          data1: '',
-          data2: '',
+          date1: '',
+          date2: '',
           dataOptionType: 0,
           dataItemCode: '',
           dataOption: []
@@ -505,17 +549,25 @@ export default {
         item.serialNumber = index
         if (getFormType(item.parentVariable.dataOptionType) === 'date' &&
           (item.parentVariable.type === '区间外' || item.parentVariable.type === '区间内')) {
-          item.parentVariable.value = [item.parentVariable.data1, item.parentVariable.data2]
+          item.parentVariable.value = [item.parentVariable.date1, item.parentVariable.date2]
         } else {
           item.parentVariable.value = stringToArr(item.parentVariable.value, 'toArray')
+        }
+        if (item.parentVariable.dataOptionType === 1 &&
+          (item.parentVariable.type === '区间外' || item.parentVariable.type === '区间内')) {
+          item.parentVariable.value = [item.parentVariable.date1, item.parentVariable.date2]
         }
         if (item.advanceSearchVariableDTOList.length > 0) {
           item.advanceSearchVariableDTOList.map(child => {
             if (getFormType(child.dataOptionType) === 'date' &&
               (child.type === '区间外' || child.type === '区间内')) {
-              child.value = [child.data1, child.data2]
+              child.value = [child.date1, child.date2]
             } else {
               child.value = stringToArr(child.value, 'toArray')
+            }
+            if (child.dataOptionType === 1 &&
+              (child.type === '区间外' || child.type === '区间内')) {
+              child.value = [child.date1, child.date2]
             }
           })
         }
@@ -724,8 +776,8 @@ export default {
             key: '',
             type: '',
             value: '',
-            data1: '',
-            data2: '',
+            date1: '',
+            date2: '',
             dataOptionType: 0,
             dataItemCode: '',
             dataOption: []
@@ -744,8 +796,8 @@ export default {
           key: '',
           type: '',
           value: '',
-          data1: '',
-          data2: '',
+          date1: '',
+          date2: '',
           dataOptionType: 0,
           dataItemCode: '',
           dataOption: []
@@ -778,8 +830,8 @@ export default {
             key: '',
             type: '',
             value: '',
-            data1: '',
-            data2: '',
+            date1: '',
+            date2: '',
             dataOptionType: 0,
             dataItemCode: '',
             dataOption: []
