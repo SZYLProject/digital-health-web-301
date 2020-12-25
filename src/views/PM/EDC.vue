@@ -21,7 +21,7 @@ export default {
   name: 'EDC',
   data () {
     return {
-      url: 'http://172.16.115.190:8080/#/formInput'
+      url: 'http://10.131.101.5:8099/#/FormInput'
     }
   },
   props: {},

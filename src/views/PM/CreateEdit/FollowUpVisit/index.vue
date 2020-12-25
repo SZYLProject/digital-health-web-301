@@ -29,8 +29,8 @@ import { } from '@/api/caseSearch'
 export default {
   name: 'FollowUpVisit',
   data () {
-    return {
-      url: 'http://172.16.115.190:8080/#/visit?title=的方法范德萨发大发'
+    return { //
+      url: 'http://10.131.101.5:8099/#/visit?title=的方法范德萨发大发'
     }
   },
   props: {},
