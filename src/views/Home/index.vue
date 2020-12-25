@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <el-row :gutter="10">
+    <el-row :gutter="15">
       <el-col :span="17">
         <div class="module-container">
           <div class="title">

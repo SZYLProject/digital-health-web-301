@@ -1,25 +1,28 @@
 <template>
-  <div class="table-info module-container">
+  <div class="table-info">
     <!-- tab切换 -->
     <el-tabs v-model="activeName"
-             @tab-click="handleClick">
+             @tab-click="handleClick"
+             class="tab">
       <el-tab-pane v-for="(item,index) in menu"
                    :key="index"
                    :label="item.dataName"
                    :name="String(item.id)">
-        <DynamicTable :tableData="tableData"
-                      :headerData="headerData" />
-        <el-pagination @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="pageNo"
-                       :page-sizes="[10, 20, 30, 40, 50]"
-                       :page-size="pageSize"
-                       :pager-count="5"
-                       layout="total, sizes, prev, pager, next, jumper"
-                       :total="total"
-                       background></el-pagination>
-
+        <div class="table">
+          <DynamicTable :tableData="tableData"
+                        :headerData="headerData" />
+          <el-pagination @size-change="handleSizeChange"
+                         @current-change="handleCurrentChange"
+                         :current-page="pageNo"
+                         :page-sizes="[10, 20, 30, 40, 50]"
+                         :page-size="pageSize"
+                         :pager-count="5"
+                         layout="total, sizes, prev, pager, next, jumper"
+                         :total="total"
+                         background></el-pagination>
+        </div>
       </el-tab-pane>
+
     </el-tabs>
 
   </div>
@@ -111,4 +114,27 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.table-info {
+  margin-top: 15px;
+  .tab {
+    background: #ffffff;
+  }
+  .table {
+    padding: 0 20px 20px;
+  }
+}
+</style>
+<style lang="scss">
+.table-info {
+  .el-tabs {
+    margin-top: 0;
+  }
+  .el-tabs__nav-wrap {
+    padding: 0 20px;
+    line-height: 48px;
+  }
+  .el-tabs__nav-wrap::after {
+    height: 1px;
+  }
+}
 </style>

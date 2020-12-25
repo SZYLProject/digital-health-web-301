@@ -118,7 +118,7 @@ export default {
     top: 0;
     z-index: 2;
     border-left: 1px solid rgba(43, 134, 178, 0.2);
-    padding: 5px 13px;
+    padding: 5px 8px;
     margin: 8px 0;
     .el-dropdown-link {
       cursor: pointer;
@@ -132,7 +132,7 @@ export default {
 .dynamic-table {
   .el-table th,
   .el-table td {
-    padding: 8px 0!important;
+    padding: 6px 0!important;
   }
 }
 </style>

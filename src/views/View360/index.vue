@@ -1,12 +1,12 @@
 <template>
   <div class="demographic-info">
-    <DetailsSidebar class="sidebar-container"
+    <DetailsSidebar class="sidebar-360-container"
                     @title='titleVal' />
     <div class="details-main">
       <!-- 头部个人信息 -->
       <div class="details-header">
         <div class="details-top">
-          <span>患者360视图 > </span>
+          <span>患者360视图 / </span>
           <span class="title"
                 :style="{'color': theme}">{{nowTitle}}</span>
           <div class="right">
@@ -36,7 +36,7 @@
         </div>
         <div class="patient-info">
           <span>患者信息</span>
-          <span>{{personInfo.name}}</span>
+          <span :style="{'color': theme}">{{personInfo.name}}</span>
           <span>{{personInfo.gender}} </span>
           <span>出生日期：{{personInfo.date_of_birth | timeFormat}}</span>
           <span>住院号：{{personInfo.tpat_no}}</span>
@@ -173,6 +173,7 @@ export default {
     .details-top {
       padding: 10px 0;
       position: relative;
+      color: #999999;
       .title {
         font-weight: bold;
         font-size: 16px;
@@ -184,9 +185,9 @@ export default {
       }
     }
     .patient-info {
-      margin: 8px 0 13px;
+      margin: 8px 0 15px;
       padding: 15px;
-      background: rgba(43, 134, 178, 0.1);
+      background: #ffffff;
       span {
         margin: 0 5px;
       }
@@ -201,7 +202,7 @@ export default {
     padding-right:10px;
     min-height: 100%;
     transition: margin-left 0.28s;
-    margin-left: 193px;
+    margin-left: 215px;
     position: relative;
   }
 }

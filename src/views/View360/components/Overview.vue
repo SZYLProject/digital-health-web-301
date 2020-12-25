@@ -33,18 +33,19 @@
         <h2><i class="iconfont icon-shijian1"
              :style="{'color': theme}"></i>患者时间轴</h2>
         <div class="right">
+          <span v-for="(v,index) in types"
+                :key="index">
+            <i class="iconfont icon-yuandianxiao"
+               :style="{'color': v.color}" />{{v.name}}</span>
           <el-date-picker v-model="timeValue"
                           size="small"
                           type="daterange"
                           range-separator="-"
                           start-placeholder="开始日期"
                           end-placeholder="结束日期"
-                          style="width:300px">
+                          style="width:250px;margin-left:15px;">
           </el-date-picker>
-          <span v-for="(v,index) in types"
-                :key="index">
-            <i class="iconfont icon-yuandianxiao"
-               :style="{'color': v.color}" />{{v.name}}</span>
+
         </div>
       </div>
       <div class="con">
@@ -180,14 +181,16 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
 .patient-overview {
+  color: #333333;
   .overview {
     @include space(bottom);
     background: #ffffff;
   }
   .title {
-    padding: 10px 15px;
+    padding: 12px 20px;
     border-bottom: 1px solid #dadada;
     position: relative;
+
     h2 {
       font-size: 16px;
       font-weight: 700;
@@ -195,7 +198,7 @@ export default {
     .right {
       position: absolute;
       right: 15px;
-      top: 6px;
+      top: 8px;
       font-size: 14px;
       i {
         margin-left: 5px;

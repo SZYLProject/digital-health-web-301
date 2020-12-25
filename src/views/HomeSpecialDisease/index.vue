@@ -3,10 +3,11 @@
     <el-row :gutter="15" class="panel-group">
       <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
         <div class="card-panel card-1">
-          <div style="font-size: 24px; font-weight: bold">胃癌</div>
-          <div style="margin-top: 18px; color: #a0a0a0">Stomach cancer</div>
+          <div style="font-size: 24px; font-weight: bold">肺癌</div>
+          <div style="margin-top: 18px; color: #a0a0a0">Lungs cancer</div>
           <div class="stomach-2">
-            <i class="iconfont icon-weijingke-S"></i>
+            <img src="@/assets/lungs-icon.png">
+            <!-- <i class="iconfont icon-weijingke-S"></i> -->
           </div>
         </div>
       </el-col>
@@ -434,7 +435,7 @@ export default {
       }
     }
     .card-1 {
-      background: #ffffff url(../../assets/stomach.png) no-repeat 25px;
+      background: #ffffff url(../../assets/lungs.png) no-repeat 25px;
     }
   }
   .chartTitle {

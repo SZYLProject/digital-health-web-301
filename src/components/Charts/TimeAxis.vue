@@ -113,13 +113,15 @@ export default {
         dataZoom: {
           type: 'slider',
           top: 70,
-          height: 20,
+          height: 5,
+          fillerColor: 'rgba(230,230,230,0.5)',
+          borderColor: 'rgba(230,230,230,0.5)',
           handleIcon: 'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-          handleSize: '120%'
+          handleSize: '250%'
         },
         grid: {
           show: true,
-          backgroundColor: 'rgba(43,134,178,0.05)',
+          backgroundColor: 'rgba(0,112,244,0.05)',
           borderWidth: 0,
           left: 60,
           right: 40,
