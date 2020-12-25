@@ -221,7 +221,7 @@ export default {
           yAxisIndex: 1,
           type: 'scatter',
           itemStyle: {
-            color: '#247BCC'
+            color: '#0070f4'
           },
           data: this.dataTwoX
         }

@@ -407,7 +407,7 @@ export default {
       height: 100%;
       border-style: solid none none none;
       border-width: 2px;
-      border-color: #247BCC;
+      border-color: #0070f4;
     }
     .plus-button {
       position: absolute;
@@ -449,7 +449,7 @@ export default {
         height: 100%;
         border-style: none none none solid;
         border-width: 2px;
-        border-color: #247BCC;
+        border-color: #0070f4;
       }
     }
     .child-block {
@@ -469,7 +469,7 @@ export default {
         height: 100%;
         border-style: solid none none solid;
         border-width: 2px;
-        border-color: #247BCC;
+        border-color: #0070f4;
       }
       .line-chlid-2::before {
         -webkit-animation: 500ms change;
@@ -483,7 +483,7 @@ export default {
         border-style: none none solid solid;
         border-radius: 0 0 0 5px;
         border-width: 2px;
-        border-color: #247BCC;
+        border-color: #0070f4;
       }
     }
     .third-block {
@@ -501,7 +501,7 @@ export default {
         border-style: none solid none none;
         border-radius: 0 0 0 5px;
         border-width: 2px;
-        border-color: #247BCC;
+        border-color: #0070f4;
       }
     }
     .tree-form-block {
@@ -527,7 +527,7 @@ export default {
       height: 100%;
       border-style: solid none none none;
       border-width: 2px;
-      border-color: #247BCC;
+      border-color: #0070f4;
     }
     .line-1::before {
       -webkit-animation: 500ms change;
@@ -541,7 +541,7 @@ export default {
       border-style: solid none none solid;
       border-radius: 5px 0 0 0;
       border-width: 2px;
-      border-color: #247BCC;
+      border-color: #0070f4;
     }
     .line-2::before {
       -webkit-animation: 500ms change;
@@ -555,7 +555,7 @@ export default {
       border-style: none none solid solid;
       border-radius: 0 0 0 5px;
       border-width: 2px;
-      border-color: #247BCC;
+      border-color: #0070f4;
     }
     .line-3::before {
       -webkit-animation: 500ms change;
@@ -568,7 +568,7 @@ export default {
       height: 100%;
       border-style: none none none solid;
       border-width: 2px;
-      border-color: #247BCC;
+      border-color: #0070f4;
     }
   }
 }

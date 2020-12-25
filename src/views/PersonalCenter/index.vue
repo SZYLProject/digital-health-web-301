@@ -55,11 +55,11 @@ export default {
         {
           name: '修改密码',
           components: 'UpdatePassword'
-        },
-        {
-          name: '皮肤设置',
-          components: 'SkinSettings'
         }
+        // {
+        //   name: '皮肤设置',
+        //   components: 'SkinSettings'
+        // }
       ],
       nowComponent: 'MyInfo',
       nowTitle: '个人信息',

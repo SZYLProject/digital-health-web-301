@@ -213,7 +213,7 @@ export default {
       width: 6px;
       height: 6px;
       border-radius: 100%; /**控制形状**/
-      background-color: #247bcc; /**控制图标颜色**/
+      background-color: #0070f4; /**控制图标颜色**/
       margin-right: 10px; /**图标与文字距离**/
       position: absolute;
       left: 0px;

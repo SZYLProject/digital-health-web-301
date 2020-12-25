@@ -162,7 +162,7 @@ export default {
     span:nth-child(2){
       margin-left: 10px;
       &:hover{
-        color: #247BCC;
+        color: #0070f4;
       }
     }
   }
@@ -172,8 +172,8 @@ export default {
     padding: 15px 0px;
   }
   .blue{
-    color: #247BCC;
-    border: solid 1px #247BCC;
+    color: #0070f4;
+    border: solid 1px #0070f4;
   }
   .green{
     color: #25a289;

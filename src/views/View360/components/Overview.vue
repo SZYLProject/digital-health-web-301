@@ -89,7 +89,7 @@ export default {
     return {
       types: [
         { name: '门诊', color: '#25a289' },
-        { name: '住院', color: '#247BCC' },
+        { name: '住院', color: '#0070f4' },
         { name: '急诊', color: '#5507d7' }
       ],
       personId: this.$route.params.personId,

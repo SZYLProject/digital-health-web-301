@@ -407,7 +407,7 @@ export default {
     padding-bottom: 20px;
   }
   .dashed-line{
-    border-bottom: dashed 1px #247BCC;
+    border-bottom: dashed 1px #0070f4;
     margin: 5px -20px;
     width: 100%;
   }
