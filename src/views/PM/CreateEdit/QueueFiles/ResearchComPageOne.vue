@@ -68,7 +68,7 @@
             <el-col :span="18" class="table-left">
               <!-- 条件树 -->
               <el-row class="left-col">
-                <el-col :span="6"><span>条件树</span></el-col>
+                <el-col :span="6"><span>树形检索</span></el-col>
                 <el-col :span="12"><span>10,000 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text" @click="openDialog('tree')"
@@ -78,7 +78,7 @@
               </el-row>
               <!-- 事件 -->
               <el-row class="left-col">
-                <el-col :span="6"><span>事件</span></el-col>
+                <el-col :span="6"><span>事件检索</span></el-col>
                 <el-col :span="12"><span>10,000 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text">编辑</el-button>
@@ -86,7 +86,7 @@
               </el-row>
               <!-- 精确搜索 -->
               <el-row class="left-col">
-                <el-col :span="6"><span>精确搜索</span></el-col>
+                <el-col :span="6"><span>精确检索</span></el-col>
                 <el-col :span="12"><span>10,000 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text" @click="openDialog('accurate')"
@@ -116,15 +116,15 @@
             <el-col :span="18" class="table-left">
               <!-- 条件树 -->
               <el-row class="left-col">
-                <el-col :span="6"><span>条件树</span></el-col>
+                <el-col :span="6"><span>树形检索</span></el-col>
                 <el-col :span="12"><span>10,000 人</span></el-col>
                 <el-col :span="6">
-                  <el-button type="text">编辑</el-button>
+                  <el-button type="text" @click="openDialog('tree')">编辑</el-button>
                 </el-col>
               </el-row>
               <!-- 事件 -->
               <el-row class="left-col">
-                <el-col :span="6"><span>事件</span></el-col>
+                <el-col :span="6"><span>事件检索</span></el-col>
                 <el-col :span="12"><span>10,000 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text">编辑</el-button>
@@ -132,10 +132,10 @@
               </el-row>
               <!-- 精确搜索 -->
               <el-row class="left-col">
-                <el-col :span="6"><span>精确搜索</span></el-col>
+                <el-col :span="6"><span>精确检索</span></el-col>
                 <el-col :span="12"><span>10,000 人</span></el-col>
                 <el-col :span="6">
-                  <el-button type="text">编辑</el-button>
+                  <el-button type="text" @click="openDialog('accurate')">编辑</el-button>
                 </el-col>
               </el-row>
             </el-col>

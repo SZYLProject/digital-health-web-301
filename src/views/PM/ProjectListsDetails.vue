@@ -98,7 +98,7 @@ export default {
   },
   created () {},
   mounted () {
-    // console.log(this.$route.params.id)
+    window.sessionStorage.setItem('projectType', this.projectType)
   },
   destroyed () {},
   methods: {

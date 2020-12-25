@@ -198,6 +198,12 @@ export const constantRoutes = [
         path: 'ExportRecord', //
         component: () => import('@/views/PM/CreateEdit/components/ExportRecord'),
         name: 'ExportRecord'
+      },
+      // 待录入EDC
+      {
+        path: 'EDC', //
+        component: () => import('@/views/PM/EDC'),
+        name: 'EDC'
       }
 
     ]
