@@ -1,27 +1,30 @@
 <!-- 研究对象 -->
 <template>
   <div class="research-object">
-
     <!-- 面包削 -->
     <div class="breadcrumb-bar">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>项目管理</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/PM/ProjectLists' }">项目列表</el-breadcrumb-item>
-        <el-breadcrumb-item class="active-breadcrumb">研究对象</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/PM/ProjectLists' }"
+          >项目列表</el-breadcrumb-item
+        >
+        <el-breadcrumb-item class="active-breadcrumb"
+          >研究对象</el-breadcrumb-item
+        >
       </el-breadcrumb>
     </div>
     <!-- 进度条 -->
     <div class="progress-bar">
-      <el-steps :active="step"
-                align-center>
-        <el-step :title="item.title"
-                 v-for="(item,index) in stepList.filter(item=>item.show)"
-                 :key="index"></el-step>
+      <el-steps :active="step" align-center>
+        <el-step
+          :title="item.title"
+          v-for="(item, index) in stepList.filter((item) => item.show)"
+          :key="index"
+        ></el-step>
       </el-steps>
     </div>
     <!-- 组件切换 -->
-    <component :is="whichCom"
-               @next="nextStep"></component>
+    <component :is="whichCom" @next="nextStep"></component>
   </div>
 </template>
 
@@ -72,24 +75,33 @@ export default {
   },
   watch: {
     step (val) {
-      window.history.replaceState({}, '', `#/ResearchObject/${this.stepList[val].component}`)
+      window.history.replaceState(
+        {},
+        '',
+        `#/ResearchObject/${this.stepList[val].component}`
+      )
       this.whichCom = this.stepList[val].component
     },
     projectType: {
       immediate: true,
       handler: function (newValue, oldValue) {
-        this.stepList[3].show = (newValue === 2)
+        this.stepList[3].show = newValue === 2
       }
     }
   },
-  components: { ProjectCreate, ResearchComPageOne, ResearchComPageTwo, FollowUpVisit },
+  components: {
+    ProjectCreate,
+    ResearchComPageOne,
+    ResearchComPageTwo,
+    FollowUpVisit
+  },
   created () {
     this.step = this.stepList.findIndex(
       (item) => item.component === this.$route.params.stepName
     )
   },
-  mounted () { },
-  destroyed () { },
+  mounted () {},
+  destroyed () {},
   methods: {
     ...mapMutations(['']),
     nextStep (val) {
@@ -109,5 +121,19 @@ export default {
 </style>
 <style lang="scss">
 .research-object {
+  .progress-bar {
+    .el-step__icon {
+      width: 18px !important;
+      height: 18px !important;
+    }
+    .el-step.is-horizontal .el-step__line {
+      top: 8px;
+    }
+
+    .el-step__head.is-success {
+      // color: #0070f4;
+      // border-color: #0070f4;
+    }
+  }
 }
 </style>
