@@ -158,6 +158,7 @@ export function searchAdvanceDatas (data) {
   return request({
     url: '/acl/api/advanceSearch/v1/findByAdvanceSearch',
     method: 'POST',
+    timeout: 20000 * 1000,
     data
   })
 }

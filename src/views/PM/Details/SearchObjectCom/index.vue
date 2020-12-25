@@ -790,7 +790,12 @@ export default {
     this.tableData = this.tableDatas
     this.headerData = this.headerDatas
   },
-  mounted () {},
+  mounted () {
+    // console.log(this.$route.params)
+    if (this.$route.params?.flag) {
+      this.switchTo = false
+    }
+  },
   destroyed () {},
   methods: {
     ...mapMutations(['']),

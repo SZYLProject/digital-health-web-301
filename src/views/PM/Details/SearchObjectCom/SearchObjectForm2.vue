@@ -110,17 +110,16 @@
         >
           <el-table-column label="123" align="center">
             <template slot-scope="scope">
-              <router-link
-                to=""
-                target="_blank"
-              >
-                <el-button
-                    type="text"
-                    size="mini">
-                    <i class="iconfont icon-editor" style="font-size:12px;"></i>
-                    {{ scope.row.baseDatas }}
+              <el-button type="text" size="mini" @click.native="goEDC">
+                <i class="iconfont icon-editor" style="font-size: 12px"></i>
+                {{ scope.row.baseDatas }}
+              </el-button>
+              <!-- <router-link to="/PM/EDC" target="_blank">
+                <el-button type="text" size="mini">
+                  <i class="iconfont icon-editor" style="font-size: 12px"></i>
+                  {{ scope.row.baseDatas }}
                 </el-button>
-              </router-link>
+              </router-link> -->
             </template>
           </el-table-column>
         </el-table-column>
@@ -133,8 +132,12 @@
         >
           <el-table-column label="随访点一" align="center">
             <template slot-scope="scope">
-              <router-link
-                to="/"
+              <el-button type="text" size="mini" @click.native="goEDC">
+                <i class="iconfont icon-editor" style="font-size: 12px"></i>
+                {{ scope.row.visit1 }}
+              </el-button>
+              <!-- <router-link
+                to="/PM/EDC"
                 target="_blank"
               >
                 <el-button
@@ -143,7 +146,7 @@
                     <i class="iconfont icon-editor" style="font-size:12px;"></i>
                     {{ scope.row.visit1 }}
                 </el-button>
-              </router-link>
+              </router-link> -->
             </template>
           </el-table-column>
         </el-table-column>
@@ -236,7 +239,7 @@ export default {
   },
   watch: {
     headerData (val) {
-      console.log(val)
+      // console.log(val)
       this.defaultHeader = val.slice(0, 8)
       this.defaultHeader.map((item) => {
         this.checkList.push(item.key)
@@ -264,6 +267,9 @@ export default {
     // 取消操作
     cancel () {
       this.$refs.tableDrop.hide()
+    },
+    goEDC () {
+      this.$router.push('/PM/EDC')
     }
   }
 }
@@ -291,7 +297,7 @@ export default {
 <style lang="scss">
 .dynamic-tables {
   .el-table th > .cell {
-     padding: 5px 0;
+    padding: 5px 0;
     // height: 23px;
   }
   .el-table--border th,
