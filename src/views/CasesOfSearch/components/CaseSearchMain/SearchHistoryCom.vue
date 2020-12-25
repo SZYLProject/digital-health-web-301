@@ -33,7 +33,7 @@
                         item.categoryIds.length &&
                         item.categoryIds.length > 0 ?
                         'shoucang1' : 'shoucang'"
-                        style="color:#247BCC;width:14px;height:14px;"
+                        style="color:#0070f4;width:14px;height:14px;"
                     />
                   </span>
                   <!-- 叉叉 -->

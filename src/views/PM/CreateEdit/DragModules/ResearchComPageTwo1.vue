@@ -64,7 +64,7 @@
                                     </p>
                                     <p class="msg">{{oneDataObj.oneDataReName}}</p>
                                     <p @click="oneDataEdite">
-                                      <i class="el-icon-edit pointer" style="color: #247bcc;"></i>
+                                      <i class="el-icon-edit pointer" style="color: #0070f4;"></i>
                                     </p>
                                 </div>
                             </div>
@@ -85,7 +85,7 @@
                                 </p>
                                 <p v-else style="padding: 2px 10px;">
                                   {{oneDataObj.oneDataMap}}
-                                  <i class="el-icon-edit" style="color: #247bcc;"></i>
+                                  <i class="el-icon-edit" style="color: #0070f4;"></i>
                                 </p>
                               </el-divider>
                           </div>
@@ -165,7 +165,7 @@
                               <h3 style="">
                                 {{manyDataTitle}}
                                 <p @click="manyDataEdite">
-                                      <i class="el-icon-edit pointer" style="color: #247bcc;"></i>
+                                      <i class="el-icon-edit pointer" style="color: #0070f4;"></i>
                                 </p>
                               </h3>
                               <el-scrollbar style="height:100%" ref="scroll">
@@ -197,7 +197,7 @@
                                 </p>
                                 <p v-else style="padding: 2px 10px;">
                                   {{manyDataObj.manyDataMap}}
-                                  <i class="el-icon-edit" style="color: #247bcc;"></i>
+                                  <i class="el-icon-edit" style="color: #0070f4;"></i>
                                 </p>
                               </el-divider>
                           </div>
@@ -229,7 +229,7 @@
                   <div class="drage-k pointer"
                        @mouseenter="enterEvent(100)"
                        @mousemove="enterEvent(100)">
-                    <p style="text-align:center;font-size:50px;color:#247bcc;margin-top:40px;">
+                    <p style="text-align:center;font-size:50px;color:#0070f4;margin-top:40px;">
                       <i class="el-icon-copy-document"></i>
                     </p>
                     <p style="text-align:center;font-size:20px;">请从右侧将指标拖入此处</p>
@@ -620,7 +620,7 @@ export default {
 
   .dialog-user-defined{
     &:hover{
-      color: #247bcc;
+      color: #0070f4;
     }
   }
   .dialog-add-identifier{

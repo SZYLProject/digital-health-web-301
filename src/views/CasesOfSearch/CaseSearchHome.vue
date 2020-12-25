@@ -167,7 +167,7 @@ export default {
       }
     }
     .right {
-      color: #247bcc;
+      color: #0070f4;
       position: absolute;
       right: 20px;
       top: 16px;

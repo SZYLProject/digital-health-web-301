@@ -886,7 +886,7 @@ export default {
       .el-dropdown-link {
         cursor: pointer;
         font-size: 18px;
-        color: #247bcc;
+        color: #0070f4;
       }
     }
   }

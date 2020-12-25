@@ -51,7 +51,7 @@ export default {
 <style lang="scss">
 .el-tree-com{
   .el-tree-node__content:hover{
-    color: #247BCC;
+    color: #0070f4;
   }
   .el-tree-node{
     padding: 5px 0;

@@ -289,7 +289,7 @@ export default {
     padding: 10px;
     color: #787878;
     &:hover {
-      color: #247BCC;
+      color: #0070f4;
     }
   }
   .con-1 {

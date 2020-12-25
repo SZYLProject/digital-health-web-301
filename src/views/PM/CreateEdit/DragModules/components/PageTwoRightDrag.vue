@@ -332,7 +332,7 @@ export default {
     padding-left: 10px;
     color: #2b2b2b;
     .el-collapse-item__arrow {
-      color: #247bcc;
+      color: #0070f4;
     }
   }
 

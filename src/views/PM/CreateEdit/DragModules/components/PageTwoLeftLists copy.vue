@@ -351,7 +351,7 @@ export default {
   background: #ffffff;
 }
 .is-active{
-  color: #247bcc;
+  color: #0070f4;
 }
 
 .right-container{

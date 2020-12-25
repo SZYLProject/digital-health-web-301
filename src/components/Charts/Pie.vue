@@ -80,7 +80,7 @@ export default {
       this.chart = echarts.init(this.$el, 'light')
 
       this.chart.setOption({
-        // color: ['#247BCC', '#ff834f', '#a7d7e6'],
+        // color: ['#0070f4', '#ff834f', '#a7d7e6'],
         title: {
           text: this.title,
           textStyle: {

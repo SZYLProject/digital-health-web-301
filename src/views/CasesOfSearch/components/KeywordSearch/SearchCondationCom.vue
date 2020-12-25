@@ -42,15 +42,15 @@
               <p>
                 <el-button type="text"
                            size="mini"
-                           :style="{color:typeColor !== 1 ? '#2b2b2b' : '#247BCC'}"
+                           :style="{color:typeColor !== 1 ? '#2b2b2b' : '#0070f4'}"
                            @click.native="goSearch('住院',1,2)">住院</el-button>
                 <el-button type="text"
                            size="mini"
-                           :style="{color:typeColor !== 2 ? '#2b2b2b' : '#247BCC'}"
+                           :style="{color:typeColor !== 2 ? '#2b2b2b' : '#0070f4'}"
                            @click.native="goSearch('门诊',2,2)">门诊</el-button>
                 <el-button type="text"
                            size="mini"
-                           :style="{color:typeColor !== 3 ? '#2b2b2b' : '#247BCC'}"
+                           :style="{color:typeColor !== 3 ? '#2b2b2b' : '#0070f4'}"
                            @click.native="goSearch('急诊',3,2)">急诊</el-button>
               </p>
             </div>
@@ -69,7 +69,7 @@
                             placement="top-start">
                   <el-button type="text"
                              size="mini"
-                             :style="{color:ageColor !== index ? '#2b2b2b' : '#247BCC'}"
+                             :style="{color:ageColor !== index ? '#2b2b2b' : '#0070f4'}"
                              @click.native="goSearch(item, index, 6)">{{item.indexName}}</el-button>
                 </el-tooltip>
               </p>
@@ -140,7 +140,7 @@
                   <el-button type="text"
                              size="mini"
                              slot="reference"
-                             :style="{color: ageColor === 999 ? '#247BCC' : '#2b2b2b'}"
+                             :style="{color: ageColor === 999 ? '#0070f4' : '#2b2b2b'}"
                              @click.native="goShow">
                     {{rangeChoose}}
                     <i class="el-icon-arrow-down"></i>
@@ -158,7 +158,7 @@
                   @click="resetSigle(7)">重置</h4>
               <p>
                 <el-button v-for="(item,index) in genderDatas"
-                           :style="{color: genderColor !== index ? '#2b2b2b' : '#247BCC'}"
+                           :style="{color: genderColor !== index ? '#2b2b2b' : '#0070f4'}"
                            :key="index"
                            type="text"
                            size="mini"
@@ -515,7 +515,7 @@ export default {
     .h2 {
       color: #828c92;
       &:hover {
-        color: #247BCC;
+        color: #0070f4;
       }
     }
   }
@@ -533,7 +533,7 @@ export default {
       top: 20px;
       color: rgb(130, 140, 146);
       &:hover {
-        color: #247BCC;
+        color: #0070f4;
       }
     }
   }

@@ -242,7 +242,7 @@ export default {
       font-size: 28px;
     }
     .blue {
-      color: #247BCC;
+      color: #0070f4;
     }
     .red {
       color: #ec6941;

@@ -30,7 +30,7 @@
                       @click.stop="starClick(item)">
                   <svg-icon
                       icon-class="shoucang1"
-                      style="color:#247BCC;width:14px;height:14px;"
+                      style="color:#0070f4;width:14px;height:14px;"
                   />
                 </span>
                 <el-dropdown-menu slot="dropdown">

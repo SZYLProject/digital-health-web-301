@@ -38,7 +38,7 @@ export default {
       skinList: [
         {
           name: '默认皮肤',
-          code: '247BCC'
+          code: '0070f4'
         },
         {
           name: '碧波万顷',
@@ -80,7 +80,7 @@ export default {
         }
         return require('@/assets/skin/' + theme + '.jpg')
       } else {
-        return require('@/assets/skin/247BCC.jpg')
+        return require('@/assets/skin/0070f4.jpg')
       }
     },
     changeName (list, val) {

@@ -56,7 +56,7 @@ export default {
 .header-wrapper {
   padding: 0 10px;
   color: #ffffff;
-  background: #247BCC;
+  background: #0070f4;
   box-shadow: 0px 2px 3px 0px rgba(4,37,53,0.4);
 }
 .logo-container {

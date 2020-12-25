@@ -423,7 +423,7 @@ export default {
     margin-right: -15px;
     color: #787878;
     &:hover {
-      color: #247BCC;
+      color: #0070f4;
     }
   }
 
@@ -471,7 +471,7 @@ export default {
     padding-left: 10px;
     color: #2b2b2b;
     .el-collapse-item__arrow {
-      color: #247BCC;
+      color: #0070f4;
     }
   }
 }
