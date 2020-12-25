@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="con-main dec" style="background-color:#fff;height:100%;width:100%;">
-      <!-- <iframe width="100%" height="100%" :src="url" frameborder="no" border="0"></iframe> -->
+      <iframe width="100%" height="100%" :src="url" frameborder="no" border="0"></iframe>
     </div>
   </div>
 </template>
