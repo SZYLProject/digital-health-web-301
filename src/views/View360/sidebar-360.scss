@@ -1,7 +1,7 @@
 #app {
   .sidebar-360-container {
     transition: width 0.28s;
-    width: $sideBarWidth !important;
+    // width: $sideBarWidth !important;
     background-color: #ffffff !important;
     height: 100%;
     // height: calc(100% - #{$headerHeight} - 10px);
@@ -101,7 +101,7 @@
 
     & .nest-menu .el-submenu>.el-submenu__title,
     & .el-submenu .el-menu-item {
-      min-width: $sideBarWidth !important;
+      // min-width: $sideBarWidth !important;
       // background-color: #ffffff !important;
       color: #333333;
       &:hover {
@@ -181,7 +181,7 @@
   }
 
   .el-menu--collapse .el-menu .el-submenu {
-    min-width: $sideBarWidth !important;
+    // min-width: $sideBarWidth !important;
   }
 
   // mobile responsive
@@ -192,14 +192,14 @@
 
     .sidebar-container {
       transition: transform .28s;
-      width: $sideBarWidth !important;
+      // width: $sideBarWidth !important;
     }
 
     &.hideSidebar {
       .sidebar-container {
         pointer-events: none;
         transition-duration: 0.3s;
-        transform: translate3d(-$sideBarWidth, 0, 0);
+        // transform: translate3d(-$sideBarWidth, 0, 0);
       }
     }
   }

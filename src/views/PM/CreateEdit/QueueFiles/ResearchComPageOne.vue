@@ -161,7 +161,7 @@
       @treeDialogEmit="treeDialogEmit"
     />
      <!-- 事件搜索 -->
-    <EventSearch
+    <EventSearchPop
       :eventDialogVisible="eventDialogVisible"
       @eventDialogEmit="eventDialogEmit"
     />
@@ -176,7 +176,7 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex'
 import { getQueueDatas } from '@/api/projectsMangement'
-import { ConditionTreePop, EventSearch, AccurateSearchPop } from './components'
+import { ConditionTreePop, EventSearchPop, AccurateSearchPop } from './components'
 
 export default {
   name: 'ResearchComPageOne',
@@ -207,7 +207,7 @@ export default {
   watch: {},
   components: {
     ConditionTreePop,
-    EventSearch,
+    EventSearchPop,
     AccurateSearchPop
   },
   created () {},
