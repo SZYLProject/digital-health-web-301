@@ -12,7 +12,7 @@
         <span>队列名称：<i>队列</i> </span>
       </p>
       <div class="event-com">
-        事件检索
+        <event-search/>
       </div>
     </el-dialog>
   </div>
@@ -22,10 +22,11 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex'
 import { } from '@/api/projectsMangement'
+import EventSearch from './EventSearch'
 // import { ConditionTrees, EventSearch } from './comChildren'
 
 export default {
-  name: 'EventSearch',
+  name: 'EventSearchPop',
   data () {
     return {}
   },
@@ -39,7 +40,9 @@ export default {
     ...mapGetters(['theme', 'userInfo'])
   },
   watch: {},
-  components: {},
+  components: {
+    EventSearch
+  },
   created () { },
   mounted () {},
   destroyed () { },

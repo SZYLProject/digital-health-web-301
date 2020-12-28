@@ -23,7 +23,7 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex'
 import { } from '@/api/projectsMangement'
-import ConditionTree from '../../components/ConditionTree'
+import ConditionTree from './ConditionTree'
 // import { ConditionTrees, EventSearch } from './comChildren'
 
 export default {

@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import './sidebar-360.scss'
 import DetailsSidebar from './components/DetailsSidebar'
 import OtherInfoTwo from './components/OtherInfoTwo'
 import BaseInfo from './components/BaseInfo' // 人口学信息
