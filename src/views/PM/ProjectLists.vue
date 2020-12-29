@@ -202,7 +202,7 @@ export default {
       projectLists(data)
         .then((res) => {
           if (res?.obj) {
-            this.listObj = res.obj?.data
+            this.listObj = res.obj?.data ?? []
             this.total = res.obj.total
           }
           this.loading = false
