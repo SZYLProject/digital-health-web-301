@@ -52,7 +52,8 @@ export default {
   methods: {
     initChart () {
       var data = [{ name: '澳门', value: 10 },
-        { name: '香港', value: 1140 },
+        // { name: '香港', value: 1140 },
+        { name: '成都', value: 1140 },
         { name: '台湾', value: 450 },
         { name: '新疆', value: 760 },
         { name: '宁夏', value: 0 },
@@ -63,7 +64,7 @@ export default {
         { name: '云南', value: 30 },
         { name: '贵州', value: 0 },
         { name: '四川', value: 10 },
-        { name: '重庆', value: 500 },
+        { name: '重庆', value: 1500 },
         { name: '海南', value: 0 },
         { name: '广西', value: 0 },
         { name: '广东', value: 13 },
