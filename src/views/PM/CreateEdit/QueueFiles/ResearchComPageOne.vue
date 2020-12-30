@@ -15,7 +15,10 @@
         <el-scrollbar style="height: 100%" ref="scroll">
           <!-- <div class=""> -->
           <ul class="ul-l">
-            <li v-for="(item, index) in queueDatas" :key="index">
+            <li v-for="(item, index) in queueDatas"
+                @mouseenter="mouseEnter"
+                @mouseleave="mouseLeave"
+                :key="index">
               <div class="ul-li-d1">
                 <el-tag
                   closable
@@ -210,7 +213,9 @@ export default {
     EventSearchPop,
     AccurateSearchPop
   },
-  created () {},
+  created () {
+    // const _this = this
+  },
   mounted () {
     this.getQueueDatas()
   },
@@ -290,7 +295,17 @@ export default {
         title1: '分组二',
         title2: '未纳入患者'
       })
+    },
+    mouseEnter () {
+      document.removeEventListener('click', this.handler, false)
+    },
+    mouseLeave () {
+      document.addEventListener('click', this.handler, false)
+    },
+    handler () {
+      this.idx = 999
     }
+
   }
 }
 </script>
