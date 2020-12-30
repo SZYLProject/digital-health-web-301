@@ -354,7 +354,7 @@ export default {
     }
     .grid-content-last {
       // height: 402;
-      padding: 142px 0px;
+      padding: 129px 0px;
     }
   }
 }

@@ -856,11 +856,11 @@ export default {
     },
     // 导出记录
     exportRecord () {
-      this.$router.push('ExportRecord')
+      this.$router.push('/PM/ExportRecord')
     },
     //
     goExportRecord () {
-      this.$router.push('ExportRecord')
+      this.$router.push('/PM/ExportRecord')
     }
   }
 }
