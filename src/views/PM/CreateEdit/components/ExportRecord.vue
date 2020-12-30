@@ -158,7 +158,14 @@ export default {
   methods: {
     ...mapMutations(['']),
     goBack () {
-      this.$router.push('ProjectListsDetails')
+      const type = window.sessionStorage.getItem('projectType')
+      this.$router.push({
+        name: 'ProjectListsDetails',
+        params: {
+          comName: 'SearchObjectCom',
+          projectType: Number(type)
+        }
+      })
     },
     getListRecord () {
       this.recordLists = this.res.map(item => {
