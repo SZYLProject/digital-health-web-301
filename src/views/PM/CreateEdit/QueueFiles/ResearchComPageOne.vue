@@ -18,6 +18,8 @@
             <li v-for="(item, index) in queueDatas"
                 @mouseenter="mouseEnter"
                 @mouseleave="mouseLeave"
+                class="pointer"
+                :class="{ actives: num === index ? true:false }"
                 :key="index">
               <div class="ul-li-d1">
                 <el-tag
@@ -44,7 +46,8 @@
                 >
                 </el-input>
               </div>
-              <div class="ul-li-d2">
+              <div class="ul-li-d2"
+                   @click="changeFn(index)">
                 <span>{{ item.title2 }}</span>
               </div>
             </li>
@@ -186,6 +189,7 @@ export default {
   data () {
     return {
       idx: 999,
+      num: 888,
       inputValue: null,
       oldMsg: null,
       queueDatas: [
@@ -304,6 +308,10 @@ export default {
     },
     handler () {
       this.idx = 999
+    },
+    changeFn (index) {
+      // console.log(index)
+      this.num = index
     }
 
   }
@@ -315,6 +323,10 @@ export default {
 .queue-container {
   .right-button {
     top: 9px;
+  }
+  .actives{
+    // border: 1px solid #0070f4!important;
+    box-shadow: 0px 0px 10px 5px rgba(0, 112, 244, 0.2);
   }
   .queue-content {
     width: 100%;
@@ -335,7 +347,7 @@ export default {
         display: inline-block;
         position: relative;
         .el-tags {
-          width: 160px;
+          width: 158px;
           height: 32px;
           position: absolute;
           left: 0;
