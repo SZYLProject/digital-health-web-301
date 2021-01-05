@@ -236,6 +236,7 @@ export default {
   components: {},
   created () {
     // console.log(this.$route.params?.obj)
+    this.$Storage.sessionRemove('projectId')
     if (this.$route.params?.obj) {
       this.itemName = this.$route.params.obj?.projectName
     } else {
@@ -289,6 +290,7 @@ export default {
       createProjects(data).then((res) => {
         if (res) {
           this['projectsMangement/storeitemdata'](res.obj)
+          this.$Storage.sessionSet('projectId', res.obj) // 将项目 id 存储在本地 session
           this.$emit('next', 1)
           this.loading = false
         }
@@ -308,6 +310,7 @@ export default {
       correctProject(data).then((res) => {
         if (res) {
           this['projectsMangement/storeitemdata'](res.obj)
+          this.$Storage.sessionSet('projectId', res.obj) // 将项目 id 存储在本地 session
           this.$emit('next', 1)
           this.loading = false
         }

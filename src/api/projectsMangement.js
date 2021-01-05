@@ -76,8 +76,8 @@ export function getQueueDatas (data) { // //{version}//{}
   const { projectId } = data
   return request({
     url: `/crp-project/projectGroup/v1/list/${projectId}`,
-    method: 'get',
-    params: data
+    method: 'get'
+    // params: data
     // timeout: 10 * 1000
   })
 }
@@ -86,6 +86,25 @@ export function addNewQueue (data) {
   return request({
     url: '/crp-project/projectGroup/v1/addGroup',
     method: 'put',
+    data: data
+  })
+}
+
+// 删除队列
+export function deleteQueue (data) {
+  const { id } = data
+  return request({
+    url: `/crp-project/projectGroup/v1/deleteGroup/${id}`,
+    method: 'delete',
+    data: data
+  })
+}
+
+// 修改队列
+export function correctQueue (data) {
+  return request({
+    url: '/crp-project/projectGroup/v1/updateGroup',
+    method: 'post',
     data: data
   })
 }

@@ -13,7 +13,6 @@
       </div>
       <div class="queue-content">
         <el-scrollbar style="height: 100%" ref="scroll">
-          <!-- <div class=""> -->
           <ul class="ul-l">
             <li v-for="(item, index) in queueDatas"
                 @mouseenter="mouseEnter"
@@ -27,35 +26,36 @@
                   class="el-tags"
                   :disable-transitions="true"
                   v-if="idx !== index"
-                  @close="handleClose(index)"
+                  @close="handleClose(item,index)"
                 >
-                  <span class="sn" @click="correctTag(index)">
-                    {{ item.title1 }}</span
+                  <span class="sn" @click="correctTag(item,index)">
+                    {{ item.groupName }}</span
                   >
                 </el-tag>
                 <el-input
                   class="input-new-tag"
                   v-else
                   placeholder="请输入修改名称"
-                  v-model="item.title1"
+                  v-model="item.groupName"
                   ref="saveTagInput"
                   size="small"
-                  @focus="handleFocus(item.title1)"
+                  @focus="handleFocus(item.groupName)"
                   @keyup.enter.native="handleInputConfirm(index)"
-                  @blur="handleInputConfirm(index)"
+                  @blur="handleInputConfirm(item,index)"
                 >
                 </el-input>
               </div>
               <div class="ul-li-d2"
                    @click="changeFn(index)">
-                <span>{{ item.title2 }}</span>
+                <span>{{ item.personCount === 0 ? '未纳入患者': item.personCount }}</span>
               </div>
             </li>
-            <li @click="addQueue">
-              <span class="el-icon-plus add-button">新增分组</span>
+            <li>
+              <el-button @click="addQueue"
+                         :loading="addLoading"
+                         class="el-icon-plus add-button">新增分组</el-button>
             </li>
           </ul>
-          <!-- </div> -->
         </el-scrollbar>
       </div>
     </div>
@@ -181,7 +181,7 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import { getQueueDatas } from '@/api/projectsMangement'
+import { getQueueDatas, addNewQueue, deleteQueue, correctQueue } from '@/api/projectsMangement'
 import { ConditionTreePop, EventSearchPop, AccurateSearchPop } from './components'
 
 export default {
@@ -192,16 +192,8 @@ export default {
       num: 888,
       inputValue: null,
       oldMsg: null,
-      queueDatas: [
-        {
-          title1: '分组一',
-          title2: '未纳入患者'
-        },
-        {
-          title1: '分组二',
-          title2: '未纳入患者'
-        }
-      ],
+      queueDatas: [],
+      addLoading: false,
       treeDialogVisible: false, // 是否条件树
       eventDialogVisible: false, // 事件搜索
       accurDialogVisible: false // 精确搜索
@@ -218,7 +210,7 @@ export default {
     AccurateSearchPop
   },
   created () {
-    // const _this = this
+
   },
   mounted () {
     this.getQueueDatas()
@@ -253,25 +245,25 @@ export default {
     // 获取队列数据
     getQueueDatas () {
       const data = {
-        projectId: 10
+        projectId: this.$Storage.sessionGet('projectId')
       }
       getQueueDatas(data).then((res) => {
-        console.log(res)
+        if (res) {
+          this.queueDatas = res?.obj ?? []
+        }
+      }).catch(() => {
+
       })
     },
     // 删除队列
-    handleClose (index) {
+    handleClose (item, index) {
       this.$confirm('确定删除?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
-          this.queueDatas.splice(index, 1)
+          this.deleteQueue(item, index)
         })
         .catch(() => {
           this.$message({
@@ -280,25 +272,69 @@ export default {
           })
         })
     },
+    //
+    deleteQueue (item, index) {
+      const { id } = item
+      const data = { id }
+      deleteQueue(data).then(res => {
+        if (res) {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.queueDatas.splice(index, 1)
+        }
+      }).catch(() => {})
+    },
+    // 新增队列
+    addQueue () {
+      this.addLoading = true
+      const data = {
+        createBy: this.userInfo?.pkId,
+        createTime: '',
+        groupName: '分组名称',
+        id: null,
+        personCount: 0,
+        projectId: this.$Storage.sessionGet('projectId')
+      }
+      addNewQueue(data).then((res) => {
+        if (res?.obj) {
+          this.queueDatas.unshift(res.obj)
+          this.$message({
+            type: 'success',
+            message: '新增成功!'
+          })
+        }
+        this.addLoading = false
+      }).catch(() => {
+        this.addLoading = false
+      })
+    },
+    // 修改队列
+    correctQueue (item) {
+      const data = item
+      correctQueue(data).then(res => {
+        if (res) {
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+        }
+      }).catch(() => {})
+    },
 
-    correctTag (index) {
+    correctTag (item, index) {
       this.idx = index
     },
     handleFocus (val) {
       this.oldMsg = val
     },
-    handleInputConfirm (index) {
+    handleInputConfirm (item, index) {
       this.idx = 999
-      if (!this.queueDatas[index].title1) {
-        this.queueDatas[index].title1 = this.oldMsg
+      if (!this.queueDatas[index].groupName) {
+        this.queueDatas[index].groupName = this.oldMsg
       }
-    },
-    // 新增队列
-    addQueue () {
-      this.queueDatas.push({
-        title1: '分组二',
-        title2: '未纳入患者'
-      })
+      this.correctQueue(item) // 调用修改接口
     },
     mouseEnter () {
       document.removeEventListener('click', this.handler, false)
@@ -463,6 +499,11 @@ export default {
             border-radius: 0;
           }
         }
+      }
+      .el-button{
+        border: none!important;
+        padding: 30px 38px;
+        background: rgba(0, 112, 244, 0.1);
       }
     }
   }

@@ -35,7 +35,8 @@ const getters = {
 
   // 项目管理数据
   dragData: state => state.projectsMangement.dragData, // 拖拽对象数据
-  projectType: state => state.projectsMangement.projectType // 拖拽对象数据
+  projectType: state => state.projectsMangement.projectType, // 拖拽对象数据
+  itemData: state => state.projectsMangement.itemData // 新建修改项目 id
 
 }
 export default getters
