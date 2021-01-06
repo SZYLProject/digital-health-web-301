@@ -14,9 +14,9 @@
       <div class="queue-content">
         <el-scrollbar style="height: 100%" ref="scroll">
           <ul class="ul-l">
+            <!-- @mouseenter="mouseEnter"
+                @mouseleave="mouseLeave" -->
             <li v-for="(item, index) in queueDatas"
-                @mouseenter="mouseEnter"
-                @mouseleave="mouseLeave"
                 class="pointer"
                 :class="{ actives: num === index ? true:false }"
                 :key="index">
@@ -39,6 +39,7 @@
                   v-model="item.groupName"
                   ref="saveTagInput"
                   size="small"
+                  v-fo
                   @focus="handleFocus(item.groupName)"
                   @keyup.enter.native="handleInputConfirm(index)"
                   @blur="handleInputConfirm(item,index)"

@@ -4,13 +4,13 @@
     <div class="itxsting">
       <p class="info">请将左侧指标拖入此处</p>
       <draggable
+      animation="300"
+        class="drag-mdl"
         :list="valD"
-        animation="300"
         :options="{
           group: { name: 'itxst', pull: false, put: true },
           sort: false,
         }"
-        class="drag-mdl"
         @change="toChange"
       >
         <transition-group> </transition-group>
@@ -20,26 +20,29 @@
     <div class="content-collapse">
       <el-collapse
         value="1"
-        @change="handleChange"
+        v-model="activeName"
         style="margin-bottom: 20px"
         v-for="(item, index) in firstdatas"
         :key="index"
-        v-model="activeName"
+        @change="handleChange"
       >
-        <el-collapse-item :name="item.parentId"
+        <el-collapse-item
+                :name="item.parentId"
                 @mouseenter.native="mouseEnter(index)"
                 @mouseleave.native="mouseLeave">
           <template slot="title">
             <div class="title-collapse">
-              {{ item.parentName }}
+              {{ item.parentName1 }}
+              <em class="el-icon-caret-right"></em>
+              {{ item.parentName2 }}
               <el-button
                 type="text"
                 size="mini"
-                @click.native.stop="delAll(index)"
                 v-if="del === index"
                 icon="el-icon-delete"
                 style="margin-left: 0px"
                 circle
+                @click.native.stop="delAll(index)"
               ></el-button>
             </div>
           </template>
@@ -47,9 +50,9 @@
             <el-row :gutter="0">
               <el-col
                 :span="12"
+                :key="idx"
                 class="el-cols"
                 v-for="(itm, idx) in item.child"
-                :key="idx"
               >
                 <div class="grid-content">
                   <el-row>
@@ -61,7 +64,18 @@
                     <el-col :span="6">
                       <div class="grid-content-child grid-center">
                         <el-divider content-position="center">
-                          <div>取首次</div>
+                          <div class="get-times">
+                            <span>取首次</span>
+                            <span class="get-times-button">
+                              <el-button
+                                type="text"
+                                size="mini"
+                                icon="el-icon-edit"
+                                circle
+                                @click.native="getButton(itm, index, idx)"
+                              ></el-button>
+                            </span>
+                          </div>
                         </el-divider>
                       </div>
                     </el-col>
@@ -73,8 +87,10 @@
                           class="input-map"
                           v-model="itm.types"
                           ref="saveTagInput"
-                          @blur="changeFn(index, idx)"
+                          v-fo
                           size="mini"
+                          @focus="focusFn()"
+                          @blur="changeFn(index, idx)"
                         />
                       </div>
                     </el-col>
@@ -82,18 +98,18 @@
                   <div class="edit-wrap">
                     <el-button
                       type="text"
-                      @click.native="editButton(index, idx)"
                       size="mini"
                       icon="el-icon-edit"
                       circle
+                      @click.native="editButton(itm, index, idx)"
                     ></el-button>
                     <el-button
                       type="text"
                       size="mini"
-                      @click.native="delButton(index, idx)"
                       icon="el-icon-delete"
                       style="margin-left: 0px"
                       circle
+                      @click.native="delButton(index, idx)"
                     ></el-button>
                   </div>
                 </div>
@@ -104,6 +120,19 @@
         </el-collapse-item>
       </el-collapse>
     </div>
+
+    <!-- 取首次弹窗 -->
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose">
+      <span>这是一段信息</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -118,7 +147,8 @@ export default {
       firstdatas: [],
       valD: [],
       del: 888,
-      activeName: []
+      activeName: [],
+      dialogVisible: false
     }
   },
   props: {
@@ -157,17 +187,22 @@ export default {
     },
     changeFn (index, idx) {
       this.firstdatas[index].child[idx].edits = true
+      // this.addEventObj.inputStatus = false
       this['projectsMangement/storedragdata']({
         data: this.firstdatas,
         index: this.tabIndex
       })
     },
-    editButton (index, idx) {
+    focusFn () {},
+    editButton (itm, index, idx) {
       this.firstdatas[index].child[idx].edits = false
       this['projectsMangement/storedragdata']({
         data: this.firstdatas,
         index: this.tabIndex
       })
+    },
+    getButton (itm, index, idx) {
+      this.dialogVisible = true
     },
     delButton (index, idx) {
       this.firstdatas[index].child.splice(idx, 1)
@@ -203,19 +238,23 @@ export default {
             id: v.id,
             dataItemName: v.dataItemName,
             types: v.dataItemName, // 映射修改的值
-            edits: true
+            edits: true,
+            inputStatus: false
           })
         } else {
           const obj = {
             parentId: v.parentId,
             parentName: v.parentName,
+            parentName1: v.parentName1,
+            parentName2: v.parentName2,
             child: []
           }
           obj.child.push({
             id: v.id,
             dataItemName: v.dataItemName,
             types: v.dataItemName, // 映射修改的值
-            edits: true
+            edits: true,
+            inputStatus: false
           })
           this.firstdatas.push(obj)
           this.activeName.push(obj.parentId)
@@ -225,6 +264,13 @@ export default {
           index: this.tabIndex
         })
       }
+    },
+    handleClose (done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done()
+        })
+        .catch(_ => {})
     }
   }
 }
@@ -298,6 +344,17 @@ export default {
         }
         .grid-left {
           padding: 0 10px;
+        }
+        .grid-center{
+          .get-times{
+            position: relative;
+            padding-right: 5px;
+            .get-times-button{
+              position: absolute;
+              right: -18px;
+              top: -2px;
+            }
+          }
         }
         .grid-right {
           padding: 0 10px;

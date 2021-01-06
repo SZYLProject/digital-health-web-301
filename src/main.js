@@ -10,6 +10,7 @@ import '@/icons/Iconfont/iconfont.css' // class
 import '@/icons' // icon symbol
 import './permission' // permission control
 import '@/filters' // 引入全局过滤
+import '@/directives' // 全局自定义指令
 import Storage from '@/utils/storage.js'
 import * as d3 from 'd3'
 Vue.prototype.$Storage = Storage

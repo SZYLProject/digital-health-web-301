@@ -10,17 +10,47 @@
       <div class="one-dictionary">
         <el-scrollbar style="height: 100%"
                       ref="scroll">
-          <el-tree
-            node-key="id"
-            accordion
-            :data="distionaryDatas"
-            :props="defaultProps"
-            :highlight-current="true"
-            :current-node-key="1"
-            :default-expanded-keys="[0]"
-            :indent="3"
-            @node-click="handleNodeClick">
-          </el-tree>
+          <div class="one-lists lists itxst">
+            <div class="item item-lists"
+                 v-for="(item, index) in distionaryDatas"
+                 :class="{ 'is-active': isActive === index }"
+                 :key="index"
+                 :id="item.id"
+                 @click="firstDictory(item, index)">
+              <i class="el-icon-arrow-right"></i>
+              <span>
+                {{ item.dataItemName }}
+              </span>
+            </div>
+            <!-- <draggable
+              v-model="distionaryDatas"
+              group="site"
+              animation="300"
+              :options="{
+                group: { name: 'itxst', pull: false, put: false },
+                sort: false,
+              }"
+              @end="endDragg"
+            >
+              <transition-group>
+                <div
+                  class="item item-lists"
+                  v-for="(item,index) in distionaryDatas"
+                  :class="{ 'is-active': isActive === index }"
+                  :key="index"
+                  :id="item.id"
+                  :types="item.types"
+                  @click="firstDictory(item,index)"
+                  :dataItemName="item.dataItemName"
+                >
+                  <i class="el-icon-arrow-right"></i>
+                  <span>
+                    {{ item.dataItemName }}
+                  </span>
+                </div>
+              </transition-group>
+            </draggable> -->
+          </div>
         </el-scrollbar>
       </div>
       <div class="two-dictionary">
@@ -28,7 +58,7 @@
                       ref="scroll">
           <div class="two-lists lists">
             <h2 class="tit-name">
-              {{ secondName }} <span class="num">{{ num }}个字段</span>
+              {{ secondName }} <span>{{ num }}个字段</span>
             </h2>
             <draggable animation="300"
                        v-model="distionaChildDatas"
@@ -62,15 +92,11 @@ export default {
   name: 'PageTwoRightLists',
   data () {
     return {
-      defaultProps: {
-        children: 'children',
-        label: 'label'
-      },
       distionaryDatas: [],
       distionaChildDatas: [],
       secondName: '',
       num: 0,
-      parentLabel: null
+      isActive: 0
     }
   },
   props: {},
@@ -93,40 +119,16 @@ export default {
     ...mapMutations(['projectsMangement/storedragdata']),
     init () {
       this.distionaryDatas = dataing.obj.data
-      this.distionaryDatas.map(item => {
-        item.label = item.dataItemName
-        item.children = item.dataItemEntityList
-        item.children.map(a => {
-          a.label = a.dataItemName
-          a.children = []
-        })
-      })
-      this.distionaChildDatas = this.distionaryDatas[0]?.children[0].dataItemEntityList
-      this.secondName = this.distionaryDatas[0]?.children[0]?.dataItemName
-      this.num = this.distionaryDatas[0]?.children[0]?.dataItemEntityList?.length
-      this.parentLabel = this.distionaryDatas[0]?.dataItemName
+      this.distionaChildDatas = this.distionaryDatas[0]?.dataItemEntityList
       this.distionaChildDatas.map((item) => {
-        item.parentId = this.distionaryDatas[0]?.children[0]?.id
-        item.parentName = this.distionaryDatas[0].dataItemName + '~' + this.distionaryDatas[0]?.children[0]?.dataItemName
+        item.parentId = this.distionaryDatas[0].id
+        item.parentName = this.distionaryDatas[0].dataItemName
         item.disable = false
+        return item
       })
+      this.secondName = this.distionaryDatas[0]?.dataItemName
+      this.num = this.distionaryDatas[0]?.dataItemEntityList?.length
     },
-    handleNodeClick (data) {
-      if (data.parentCode !== 0) {
-        this.secondName = data.dataItemName
-        this.num = data.dataItemEntityList?.length
-        this.distionaChildDatas = []
-        this.distionaChildDatas = data.dataItemEntityList
-        this.distionaChildDatas.map((item) => {
-          item.parentId = data.id
-          item.parentName = this.parentLabel + '~' + data.dataItemName
-          item.disable = false
-        })
-      } else {
-        this.parentLabel = data.dataItemName // 存储一级字典名称
-      }
-    },
-    // 接口获取字典数据
     getOneDictionaryDatas () {
       const data = {
         userId: this.userInfo?.pkId,
@@ -138,26 +140,38 @@ export default {
         .then((res) => {
           if (res) {
             this.distionaryDatas = res.obj?.data
-            this.distionaryDatas.map(item => {
-              item.label = item.dataItemName
-              item.children = item.dataItemEntityList
-              item.children.map(a => {
-                a.label = a.dataItemName
-                a.children = []
+            this.distionaryDatas.map((item, index) => {
+              item.types = 'type' + index
+              item.dataItemEntityList.map((itm) => {
+                itm.types = 'type' + index
               })
+              return item
             })
-            this.distionaChildDatas = this.distionaryDatas[0]?.children[0].dataItemEntityList
-            this.secondName = this.distionaryDatas[0]?.children[0]?.dataItemName
-            this.num = this.distionaryDatas[0]?.children[0]?.dataItemEntityList?.length
-            this.parentLabel = this.distionaryDatas[0]?.dataItemName
+            this.distionaChildDatas = this.distionaryDatas[0]?.dataItemEntityList
             this.distionaChildDatas.map((item) => {
-              item.parentId = this.distionaryDatas[0]?.children[0]?.id
-              item.parentName = this.distionaryDatas[0].dataItemName + '~' + this.distionaryDatas[0]?.children[0]?.dataItemName
-              item.disable = false
+              item.parentId = this.distionaryDatas[0].id
+              item.parentName = this.distionaryDatas[0].dataItemName
+              return item
             })
+
+            this.secondName = this.distionaryDatas[0]?.dataItemName
+            this.num = this.distionaryDatas[0]?.dataItemEntityList?.length
           }
         })
         .catch((er) => { })
+    },
+    firstDictory (item, index) {
+      this.secondName = item.dataItemName
+      this.num = item.dataItemEntityList?.length
+      this.distionaChildDatas = []
+      this.distionaChildDatas = item.dataItemEntityList
+      this.distionaChildDatas.map((ite) => {
+        ite.parentId = item.id
+        ite.parentName = item.dataItemName
+        ite.disable = false
+        return ite
+      })
+      this.isActive = index
     },
     secondDictory (item) {
       // console.log(item)
@@ -168,10 +182,6 @@ export default {
       //     item.disable = true
       //   }
       // })
-      const p = clone.parentName.split('~')
-      clone.parentName1 = p[0]
-      clone.parentName2 = p[1]
-      // console.log(clone)
       return clone
     }
   }
@@ -235,7 +245,7 @@ export default {
     }
     .one-dictionary {
       width: 160px;
-      padding: 5px 5px 0px 25px ;
+      padding: 0px 25px;
       border-right: solid 1px #f2f4f5;
     }
     .two-dictionary {
@@ -246,7 +256,7 @@ export default {
           color: #333333;
           font-size: 14px;
           margin-bottom: 10px;
-          .num {
+          span {
             color: #999999;
             font-size: 12px;
           }
@@ -260,17 +270,6 @@ export default {
 .left-container {
   .el-scrollbar__wrap {
     overflow-x: hidden !important;
-  }
-  .one-dictionary{
-    .el-tree-node__children{
-      .el-tree-node__label{
-        max-width: 100px;
-        overflow: hidden; /* 溢出时不显示溢出的内容 */
-        text-overflow: ellipsis; /* 发生溢出时使用省略号代替 */
-        -webkit-box-orient: vertical; /* 垂直排列元素 */
-        -webkit-line-clamp: 1; /* 显示多少行 */
-      }
-    }
   }
   .two-dictionary {
     .two-lists {
@@ -287,6 +286,5 @@ export default {
       }
     }
   }
-
 }
 </style>
