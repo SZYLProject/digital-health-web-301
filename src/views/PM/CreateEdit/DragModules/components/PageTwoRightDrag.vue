@@ -230,6 +230,7 @@ export default {
     toChange (val) {
       if (val?.added?.element) {
         const v = val?.added?.element
+        console.log(v)
         var fn = this.firstdatas.findIndex(
           (item) => item.parentId === v.parentId
         )
@@ -259,10 +260,12 @@ export default {
           this.firstdatas.push(obj)
           this.activeName.push(obj.parentId)
         }
+        // console.log(this.firstdatas)
         this['projectsMangement/storedragdata']({
           data: this.firstdatas,
           index: this.tabIndex
         })
+        console.log(this.firstdatas)
       }
     },
     handleClose (done) {

@@ -337,15 +337,15 @@ export default {
       }
       this.correctQueue(item) // 调用修改接口
     },
-    mouseEnter () {
-      document.removeEventListener('click', this.handler, false)
-    },
-    mouseLeave () {
-      document.addEventListener('click', this.handler, false)
-    },
-    handler () {
-      this.idx = 999
-    },
+    // mouseEnter () {
+    //   document.removeEventListener('click', this.handler, false)
+    // },
+    // mouseLeave () {
+    //   document.addEventListener('click', this.handler, false)
+    // },
+    // handler () {
+    //   this.idx = 999
+    // },
     changeFn (index) {
       // console.log(index)
       this.num = index

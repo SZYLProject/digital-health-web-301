@@ -39,6 +39,7 @@
               </el-tabs>
               <el-button type="text"
                          size="medium"
+                         disabled
                          @click.native="addButton"
                          class="el-icon-circle-plus-outline add-button">
                 新增阶段
@@ -64,6 +65,7 @@ export default {
   name: 'ResearchComPageTwo',
   data () {
     return {
+      projectType: null,
       activeName: 'step1',
       tabIndex: 0,
       stepDatas: [
@@ -77,13 +79,13 @@ export default {
   },
   props: {},
   computed: {
-    ...mapGetters(['theme', 'userInfo', 'projectType'])
+    ...mapGetters(['theme', 'userInfo'])
   },
   watch: {},
   components: { PageTwoLeftLists, PageTwoRightDrag },
   created () {},
   mounted () {
-    // console.log(this.$route.params?.obj)
+    this.projectType = this.$Storage.sessionGet('projectType')
   },
   destroyed () {
     this['projectsMangement/storedragdata'](null)

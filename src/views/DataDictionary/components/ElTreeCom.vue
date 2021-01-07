@@ -44,16 +44,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-tree-com{
-
+.el-tree-com {
 }
 </style>
 <style lang="scss">
-.el-tree-com{
-  .el-tree-node__content:hover{
+.el-tree-com {
+  .el-tree-node__content:hover {
     color: #0070f4;
   }
-  .el-tree-node{
+  .el-tree-node {
     padding: 5px 0;
   }
 }

@@ -34,7 +34,8 @@
                 :key="index">
           <div class="grid-content module-container-two">
             <div class="title"
-                 style="height: 48px">
+                 style="height: 48px"
+            >
               <h1>
                 <span @click="goItemLists(item)"
                       class="pointer">
@@ -54,9 +55,22 @@
             <div class="item-lists con">
               <div class="item-top">
                 <p class="left-t">
-                  项目牵头人：<span>{{ item.leader || "无" }}</span>
-                  研究目的/方案：<span>{{ item.purpose || "无" }}</span>
-                  拟收集患者数：<span>{{ item.planNum || "0" }}</span>
+                  <span>项目牵头人：</span>
+                  <span class="mo">{{ item.leader || "无" }}</span>
+                  <span>研究目的/方案：</span>
+                  <span class="mo aim">
+                    <el-tooltip
+                      effect="dark"
+                      placement="top"
+                    >
+                      <div slot="content" style="max-width:100px;">
+                        {{ item.purpose || "无" }}
+                      </div>
+                      <i>{{ item.purpose || "无" }}</i>
+                    </el-tooltip>
+                  </span>
+                  <span>拟收集患者数：</span>
+                  <span class="mo">{{ item.planNum || "0" }}</span>
                 </p>
                 <p class="right-t">
                   <span>单中心</span>
@@ -211,13 +225,11 @@ export default {
           this.loading = false
         })
     },
-
     // 分页函数
     handleSizeChange (val) {
       this.pageSize = val
       this.getProjectLists()
     },
-
     handleCurrentChange (val) {
       this.pageNo = val
       this.getProjectLists()
@@ -233,9 +245,11 @@ export default {
         }
       })
     },
-    // 进入项目创建 需要回显
+    // 进入项目修改
     goSearchObj (item) {
-      this['projectsMangement/projecttype'](item.projectType)
+      // this['projectsMangement/projecttype'](item.projectType)
+      // this.$Storage.sessionSet('projectType', item.projectType)
+      this.resetSetItem('projectType', item.projectType) // vue 自定义监听本地存储
       this.$router.push({
         name: 'ResearchObject',
         params: {
@@ -244,8 +258,9 @@ export default {
         }
       })
     },
-    // 项目创建
+    // 创建新项目
     createButton () {
+      this.$Storage.sessionSet('projectType', 2)
       if (this.dataSourceValue.id) {
         this.$router.push('/ResearchObject/ProjectCreate')
       } else {
@@ -275,9 +290,19 @@ export default {
             font-size: 12px;
             color: #999999;
             float: left;
-            span {
+            line-height: 20px;
+            display: flex;
+            .mo{
               color: #666666;
               margin-right: 10px;
+            }
+            i{
+              max-width: 50px;
+              overflow: hidden; /* 溢出时不显示溢出的内容 */
+              text-overflow: ellipsis; /* 发生溢出时使用省略号代替 */
+              display: -webkit-box; /* chrome浏览器的私有属性。显示为box。 */
+              -webkit-box-orient: vertical; /* 垂直排列元素 */
+              -webkit-line-clamp: 1; /* 显示多少行 */
             }
           }
           .right-t {

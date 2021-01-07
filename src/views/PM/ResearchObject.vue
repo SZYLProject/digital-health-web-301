@@ -17,8 +17,8 @@
     <div class="progress-bar">
       <el-steps :active="step" align-center>
         <el-step
+          v-for="(item, index) in stepList.filter(item => item.show)"
           :title="item.title"
-          v-for="(item, index) in stepList.filter((item) => item.show)"
           :key="index"
         ></el-step>
       </el-steps>
@@ -42,9 +42,9 @@ export default {
   name: 'ResearchObject',
   data () {
     return {
+      projectType: null,
       step: 0,
       whichCom: this.$route.params.stepName,
-      // whichCom: 'ResearchComPageOne', //    ResearchComPageOne ProjectCreate
       stepList: [
         {
           title: '项目信息',
@@ -71,7 +71,7 @@ export default {
   },
   props: {},
   computed: {
-    ...mapGetters(['theme', 'userInfo', 'projectType'])
+    ...mapGetters(['theme', 'userInfo'])
   },
   watch: {
     step (val) {
@@ -84,6 +84,7 @@ export default {
     },
     projectType: {
       immediate: true,
+      deep: true,
       handler: function (newValue, oldValue) {
         this.stepList[3].show = newValue === 2
       }
@@ -97,10 +98,15 @@ export default {
   },
   created () {
     this.step = this.stepList.findIndex(
-      (item) => item.component === this.$route.params.stepName
+      item => item.component === this.$route.params.stepName
     )
   },
-  mounted () {},
+  mounted () {
+    this.projectType = this.$Storage.sessionGet('projectType')
+    window.addEventListener('setItem', () => {
+      this.projectType = this.$Storage.sessionGet('projectType')
+    })
+  },
   destroyed () {},
   methods: {
     ...mapMutations(['']),

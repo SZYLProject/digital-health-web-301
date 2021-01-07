@@ -1,12 +1,13 @@
 <!-- 项目創建 -->
 <template>
   <div class="project-create module-container-two"
+       element-loading-spinner="el-icon-loading"
+       element-loading-background="rgba(255, 255, 255, 0.8)"
        v-loading="loading"
        :element-loading-text="txt"
-       element-loading-spinner="el-icon-loading"
-       element-loading-background="rgba(255, 255, 255, 0.8)">
+  >
     <div class="title">
-      <h1>{{itemName}}</h1>
+      <h1>{{ itemName }}</h1>
       <span class="right right-button">
         <el-button size="mini"
                    @click.native="goBack">取消</el-button>
@@ -235,7 +236,6 @@ export default {
   },
   components: {},
   created () {
-    // console.log(this.$route.params?.obj)
     this.$Storage.sessionRemove('projectId')
     if (this.$route.params?.obj) {
       this.itemName = this.$route.params.obj?.projectName
@@ -427,7 +427,9 @@ export default {
     },
     // 回顾性 前瞻性
     changeRadio (val) {
-      this['projectsMangement/projecttype'](val)
+      // this['projectsMangement/projecttype'](val)
+      // this.$Storage.sessionSet('projectType', val)
+      this.resetSetItem('projectType', val)
     }
   }
 }

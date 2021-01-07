@@ -80,8 +80,8 @@ export default {
   watch: {},
   components: { draggable },
   created () {
-    // this.getOneDictionaryDatas()
-    this.init()
+    this.getOneDictionaryDatas()
+    // this.init()
   },
   mounted () {
     this.$nextTick(() => {
