@@ -4,7 +4,7 @@
     <div class="itxsting">
       <p class="info">请将左侧指标拖入此处</p>
       <draggable
-      animation="300"
+        animation="300"
         class="drag-mdl"
         :list="valD"
         :options="{
@@ -27,9 +27,10 @@
         @change="handleChange"
       >
         <el-collapse-item
-                :name="item.parentId"
-                @mouseenter.native="mouseEnter(index)"
-                @mouseleave.native="mouseLeave">
+          :name="item.parentId"
+          @mouseenter.native="mouseEnter(index)"
+          @mouseleave.native="mouseLeave"
+        >
           <template slot="title">
             <div class="title-collapse">
               {{ item.parentName1 }}
@@ -58,15 +59,69 @@
                   <el-row>
                     <el-col :span="9">
                       <div class="grid-content-children grid-left">
-                        <p class="name-map">{{ itm.dataItemName }}</p>
+                        <p class="name-map ellipsis1">{{ itm.dataItemName }}</p>
                       </div>
                     </el-col>
                     <el-col :span="6">
                       <div class="grid-content-child grid-center">
+                        <p class="f-tit ellipsis1">判定时间：记录时间</p>
                         <el-divider content-position="center">
                           <div class="get-times">
-                            <span>取首次</span>
-                            <span class="get-times-button">
+                            <el-tooltip
+                              effect="dark"
+                              placement="top-start"
+                            >
+                              <div slot="content">
+                                {{
+                                  itm.rayingStatus === 1
+                                    ? "直接映射"
+                                    : itm.rayingStatus === 2
+                                    ? "首次"
+                                    : itm.rayingStatus === 3
+                                    ? "末次"
+                                    : itm.rayingStatus === 4
+                                    ? "所有次"
+                                    : itm.rayingStatus === 5
+                                    ? "计数"
+                                    : itm.rayingStatus === 6
+                                    ? "最大值"
+                                    : itm.rayingStatus === 7
+                                    ? "最小值"
+                                    : itm.rayingStatus === 8
+                                    ? "求和"
+                                    : itm.rayingStatus === 9
+                                    ? "平均值"
+                                    : "无"
+                                }}
+                              </div>
+                              <p class="q-info ellipsis1">
+                                {{
+                                  itm.rayingStatus === 1
+                                    ? "直接映射"
+                                    : itm.rayingStatus === 2
+                                    ? "首次"
+                                    : itm.rayingStatus === 3
+                                    ? "末次"
+                                    : itm.rayingStatus === 4
+                                    ? "所有次"
+                                    : itm.rayingStatus === 5
+                                    ? "计数"
+                                    : itm.rayingStatus === 6
+                                    ? "最大值"
+                                    : itm.rayingStatus === 7
+                                    ? "最小值"
+                                    : itm.rayingStatus === 8
+                                    ? "求和"
+                                    : itm.rayingStatus === 9
+                                    ? "平均值"
+                                    : "无"
+                                }}
+                              </p>
+                            </el-tooltip>
+                            <p
+                              class="get-times-button"
+                              v-if="itm.rayingStatus !== 1"
+                            >
                               <el-button
                                 type="text"
                                 size="mini"
@@ -74,14 +129,16 @@
                                 circle
                                 @click.native="getButton(itm, index, idx)"
                               ></el-button>
-                            </span>
+                            </p>
                           </div>
                         </el-divider>
                       </div>
                     </el-col>
                     <el-col :span="9">
                       <div class="grid-content-children grid-right">
-                        <p class="name-map" v-if="itm.edits">{{ itm.types }}</p>
+                        <p class="name-map ellipsis1" v-if="itm.edits">
+                          {{ itm.types }}
+                        </p>
                         <el-input
                           v-else
                           class="input-map"
@@ -121,17 +178,177 @@
       </el-collapse>
     </div>
 
-    <!-- 取首次弹窗 -->
-    <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose">
-      <span>这是一段信息</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
+    <!-- 外弹窗 -->
+    <el-dialog :visible.sync="outerVisible" class="pop-first" width="40%">
+      <!-- 内层弹窗 -->
+      <el-dialog
+        :visible.sync="innerVisible"
+        width="40%"
+        class="body-dialog-pop"
+        append-to-body
+      >
+        <!-- 内层弹窗头部 -->
+        <div slot="title" class="dialog-headers">
+          <h1>个人史<i class="el-icon-caret-right"></i>个人史</h1>
+        </div>
+        <!-- 内层弹窗内容区 -->
+        <div class="inner-con">
+          <el-button type="text" @click.native="innerButton()">123</el-button>
+        </div>
+        <!-- 内层弹窗底部 -->
+        <!-- <span slot="footer" class="dialog-footer">
+          <el-button type="primary"
+                     size="small"
+                     @click="innerVisible = false"
+                     >确 定</el-button>
+          <el-button @click="innerVisible = false"
+                     size="small"
+                     >取 消</el-button>
+        </span> -->
+      </el-dialog>
+
+      <!-- 外弹窗标题 -->
+      <div slot="title" class="dialog-headers">
+        <h1>
+          <span>编辑规则</span>
+          <span>个人史<i class="el-icon-caret-right"></i>个人史</span>
+        </h1>
+      </div>
+      <!-- 外弹窗内容 -->
+      <div class="dialog-con">
+        <p class="one-d">
+          <span>
+            以
+            <el-select
+              v-model="time"
+              clearable
+              size="mini"
+              style="width: 130px"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="(item, index) in options"
+                :key="index"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+            为判断标准
+          </span>
+          <span v-if="conditionObj.length > 0">
+            ，取满足以下
+            <el-select
+              v-model="condition"
+              clearable
+              size="mini"
+              style="width: 130px"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="(item, index) in options"
+                :key="index"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </span>
+        </p>
+        <!-- 筛选条件 -->
+        <ul class="two-d" style="margin-top: 20px">
+          <li v-for="(item, index) in conditionObj" :key="index">
+            <el-input
+              placeholder="点+获取数据"
+              v-model="item.stateType1"
+              size="mini"
+              style="width: 130px"
+              clearable
+              class="mrg"
+            >
+              <i
+                slot="suffix"
+                class="el-icon-plus el-input__icon pointer"
+                @click="handleIconClick()"
+              >
+              </i>
+            </el-input>
+            <el-select
+              v-model="item.stateType2"
+              clearable
+              size="mini"
+              style="width: 90px"
+              placeholder="请选择"
+              class="mrg"
+            >
+              <el-option
+                v-for="(itm, idx) in options"
+                :key="idx"
+                :label="itm.label"
+                :value="itm.value"
+              >
+              </el-option>
+            </el-select>
+            <el-input
+              placeholder="请输入"
+              clearable
+              v-model="item.stateType3"
+              style="width: 200px"
+              size="mini"
+              class="mrg"
+            >
+            </el-input>
+            <el-button
+              type="text"
+              icon="el-icon-delete"
+              @click.native="deleteButton(index)"
+            ></el-button>
+          </li>
+          <li>
+            <el-button
+              type="text"
+              icon="el-icon-plus"
+              @click.native="addButton"
+            >
+              添加筛选条件
+            </el-button>
+          </li>
+        </ul>
+        <p>
+          的
+          <el-select
+            v-model="times"
+            clearable
+            size="mini"
+            style="width: 130px"
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="(item, index) in options"
+              :key="index"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </p>
+      </div>
+      <!-- 外弹窗底部 -->
+      <p slot="footer" class="dialog-footer">
+        <span>
+          <el-link type="info" @click.native="conditionObj = []"
+            >清空条件</el-link
+          >
+        </span>
+        <span>
+          <el-button type="primary" size="small" @click="outerVisible = false"
+            >确 定</el-button
+          >
+          <el-button @click="outerVisible = false" size="small"
+            >取 消</el-button
+          >
+        </span>
+      </p>
     </el-dialog>
   </div>
 </template>
@@ -148,7 +365,37 @@ export default {
       valD: [],
       del: 888,
       activeName: [],
-      dialogVisible: false
+
+      // 外弹窗数据
+      outerVisible: false,
+      options: [
+        {
+          value: '选项1',
+          label: '黄金糕'
+        },
+        {
+          value: '选项2',
+          label: '双皮奶'
+        },
+        {
+          value: '选项3',
+          label: '蚵仔煎'
+        },
+        {
+          value: '选项4',
+          label: '龙须面'
+        },
+        {
+          value: '选项5',
+          label: '北京烤鸭'
+        }
+      ],
+      time: '',
+      times: '',
+      condition: '',
+      conditionObj: [], // 筛选条件数据
+      // 内弹窗数据
+      innerVisible: false
     }
   },
   props: {
@@ -187,7 +434,6 @@ export default {
     },
     changeFn (index, idx) {
       this.firstdatas[index].child[idx].edits = true
-      // this.addEventObj.inputStatus = false
       this['projectsMangement/storedragdata']({
         data: this.firstdatas,
         index: this.tabIndex
@@ -202,7 +448,7 @@ export default {
       })
     },
     getButton (itm, index, idx) {
-      this.dialogVisible = true
+      this.outerVisible = true
     },
     delButton (index, idx) {
       this.firstdatas[index].child.splice(idx, 1)
@@ -230,17 +476,19 @@ export default {
     toChange (val) {
       if (val?.added?.element) {
         const v = val?.added?.element
-        console.log(v)
+        // console.log(v)
         var fn = this.firstdatas.findIndex(
           (item) => item.parentId === v.parentId
         )
         if (fn !== -1) {
           this.firstdatas[fn].child.push({
-            id: v.id,
-            dataItemName: v.dataItemName,
-            types: v.dataItemName, // 映射修改的值
-            edits: true,
-            inputStatus: false
+            id: v.id, // 三级字典对应 id
+            dataItemName: v.dataItemName, // 三级字典对应名称
+            secondId: v.parentId, // 二级字典对应id
+            secondName: v.parentName2, // 二级字典对应名称
+            types: v.dataItemName, // 被修改的名称
+            rayingStatus: v.rayingStatus, // 映射修改的值
+            edits: true
           })
         } else {
           const obj = {
@@ -251,11 +499,13 @@ export default {
             child: []
           }
           obj.child.push({
-            id: v.id,
-            dataItemName: v.dataItemName,
-            types: v.dataItemName, // 映射修改的值
-            edits: true,
-            inputStatus: false
+            id: v.id, // 三级字典对应 id
+            dataItemName: v.dataItemName, // 三级字典对应名称
+            secondId: v.parentId, // 二级字典对应id
+            secondName: v.parentName2, // 二级字典对应名称
+            types: v.dataItemName, // 被修改的名称
+            rayingStatus: v.rayingStatus, // 映射修改的值
+            edits: true
           })
           this.firstdatas.push(obj)
           this.activeName.push(obj.parentId)
@@ -268,13 +518,23 @@ export default {
         console.log(this.firstdatas)
       }
     },
-    handleClose (done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done()
-        })
-        .catch(_ => {})
-    }
+    handleIconClick () {
+      this.innerVisible = true
+    },
+    // 添加筛选条件
+    addButton () {
+      this.conditionObj.push({
+        stateType1: '',
+        stateType2: '',
+        stateType3: ''
+      })
+    },
+    // 删除筛选条件
+    deleteButton (index) {
+      this.conditionObj.splice(index, 1)
+    },
+    // 内层弹窗
+    innerButton () {}
   }
 }
 </script>
@@ -348,14 +608,27 @@ export default {
         .grid-left {
           padding: 0 10px;
         }
-        .grid-center{
-          .get-times{
+        .grid-center {
+          position: relative;
+          .f-tit {
+            font-size: 12px;
+            color: #999999;
+            max-width: 110px;
+            position: absolute;
+            left: 10%;
+            top: -32px;
+          }
+          .get-times {
             position: relative;
-            padding-right: 5px;
-            .get-times-button{
+            border: dashed 1px rgba(0, 112, 244, 0.3);
+            border-radius: 5px;
+            padding: 0px 5px;
+            max-width: 55px;
+            // max-width: 68px;
+            .get-times-button {
               position: absolute;
-              right: -18px;
-              top: -2px;
+              right: -22px;
+              top: -5px;
             }
           }
         }
@@ -363,14 +636,37 @@ export default {
           padding: 0 10px;
         }
         .name-map {
-          overflow: hidden; /* 溢出时不显示溢出的内容 */
-          text-overflow: ellipsis; /* 发生溢出时使用省略号代替 */
-          display: -webkit-box; /* chrome浏览器的私有属性。显示为box。 */
-          -webkit-box-orient: vertical; /* 垂直排列元素 */
-          -webkit-line-clamp: 1; /* 显示多少行 */
         }
       }
     }
+  }
+  .dialog-headers {
+    padding-bottom: 8px;
+    h1 {
+      span:nth-child(1) {
+        margin-right: 20px;
+      }
+      span:nth-child(2) {
+        color: #999999;
+        font-size: 12px;
+      }
+    }
+  }
+  .dialog-con {
+    min-height: 300px;
+    .two-d {
+      li {
+        padding-left: 10px;
+      }
+      .mrg {
+        margin-right: 15px;
+      }
+    }
+  }
+  .dialog-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 </style>
@@ -402,6 +698,31 @@ export default {
         padding: 0;
       }
     }
+  }
+  .pop-first {
+    .el-dialog__body {
+      border-top: 1px solid #e6e6e6;
+      border-bottom: 1px solid #e6e6e6;
+    }
+    .el-dialog__footer {
+      padding-bottom: 10px !important;
+    }
+  }
+}
+.body-dialog-pop {
+  .dialog-headers {
+    padding-bottom: 8px;
+    h1 {
+      font-weight: normal;
+      font-size: 16px;
+    }
+  }
+  .el-dialog__body {
+    border-top: 1px solid #e6e6e6;
+    border-bottom: 1px solid #e6e6e6;
+  }
+  .el-dialog__footer {
+    padding-bottom: 10px !important;
   }
 }
 </style>

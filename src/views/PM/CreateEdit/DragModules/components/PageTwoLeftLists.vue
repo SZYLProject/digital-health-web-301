@@ -70,7 +70,8 @@ export default {
       distionaChildDatas: [],
       secondName: '',
       num: 0,
-      parentLabel: null
+      parentLabel: null, // 一级字典的标题
+      fieldsStatus: null // 一级字典的 直接映射 or others
     }
   },
   props: {},
@@ -118,12 +119,15 @@ export default {
         this.distionaChildDatas = []
         this.distionaChildDatas = data.dataItemEntityList
         this.distionaChildDatas.map((item) => {
-          item.parentId = data.id
-          item.parentName = this.parentLabel + '~' + data.dataItemName
+          item.parentId = data.id // 二级字典id
+          item.parentName = this.parentLabel + '~' + data.dataItemName // 一级字典名称 + 二级字典名称
           item.disable = false
+          item.rayingStatus = this.fieldsStatus // 判断直接映射还是其他  1 位为直接映射 2 为其它
         })
+        console.log(this.distionaChildDatas)
       } else {
         this.parentLabel = data.dataItemName // 存储一级字典名称
+        this.fieldsStatus = data.fieldsStatus
       }
     },
     // 接口获取字典数据
@@ -154,6 +158,7 @@ export default {
               item.parentId = this.distionaryDatas[0]?.children[0]?.id
               item.parentName = this.distionaryDatas[0].dataItemName + '~' + this.distionaryDatas[0]?.children[0]?.dataItemName
               item.disable = false
+              item.rayingStatus = this.distionaryDatas[0].fieldsStatus // 判断直接映射还是其他  1 位为直接映射 2 为其它
             })
           }
         })
@@ -163,11 +168,6 @@ export default {
       // console.log(item)
     },
     cloneElement (clone) {
-      // this.distionaChildDatas.map(item => {
-      //   if (clone.id === item.id) {
-      //     item.disable = true
-      //   }
-      // })
       const p = clone.parentName.split('~')
       clone.parentName1 = p[0]
       clone.parentName2 = p[1]
