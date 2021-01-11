@@ -224,17 +224,17 @@
           <span>
             以
             <el-select
-              v-model="time"
+              v-model="objPop.time"
               clearable
               size="mini"
               style="width: 130px"
               placeholder="请选择"
             >
               <el-option
-                v-for="(item, index) in options"
+                v-for="(item, index) in optionsTime"
                 :key="index"
-                :label="item.label"
-                :value="item.value"
+                :label="item.dataItemName"
+                :value="item.id"
               >
               </el-option>
             </el-select>
@@ -243,17 +243,17 @@
           <span v-if="conditionObj.length > 0">
             ，取满足以下
             <el-select
-              v-model="condition"
+              v-model="objPop.condition"
               clearable
               size="mini"
               style="width: 130px"
               placeholder="请选择"
             >
               <el-option
-                v-for="(item, index) in options"
+                v-for="(item, index) in optionsCon"
                 :key="index"
-                :label="item.label"
-                :value="item.value"
+                :label="item.name"
+                :value="item.id"
               >
               </el-option>
             </el-select>
@@ -321,7 +321,7 @@
         <p>
           的
           <el-select
-            v-model="times"
+            v-model="objPop.times"
             clearable
             size="mini"
             style="width: 130px"
@@ -395,9 +395,21 @@ export default {
           label: '北京烤鸭'
         }
       ],
-      time: '',
-      times: '',
-      condition: '',
+      optionsTime: [], // 判断标准
+      optionsCon: [
+        {
+          id: 1,
+          name: '全部条件'
+        }, {
+          id: 2,
+          name: '任意条件'
+        }
+      ], // 满足条件
+      objPop: {
+        time: '', // 判断标准
+        times: '',
+        condition: '' // 满足条件
+      },
       conditionObj: [], // 筛选条件数据
       // 内弹窗数据
       innerVisible: false
@@ -425,6 +437,16 @@ export default {
       this.firstdatas = []
       if (this.dragData[newVal]) {
         this.firstdatas = this.dragData[newVal]
+      }
+    },
+    outerVisible (newVal, oldVal) {
+      if (!newVal) {
+        this.objPop = {
+          time: '', // 判断标准
+          times: '',
+          condition: '' // 满足条件
+        }
+        this.conditionObj = []
       }
     }
   },
@@ -487,6 +509,7 @@ export default {
     },
     getButton (itm, index, idx) {
       this.outerVisible = true
+      this.optionsTime = itm.list || []
     },
     delButton (itm, index, idx) {
       const data = {
