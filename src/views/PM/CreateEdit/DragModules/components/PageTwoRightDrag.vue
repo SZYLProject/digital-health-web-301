@@ -1,6 +1,10 @@
 <!-- 项目列表 -->
 <template>
-  <div class="drag-container">
+  <div class="drag-container"
+       v-loading="loading"
+       element-loading-text="加载中..."
+       element-loading-spinner="el-icon-loading"
+  >
     <div class="itxsting">
       <p class="info">请将左侧指标拖入此处</p>
       <draggable
@@ -59,12 +63,12 @@
                   <el-row>
                     <el-col :span="9">
                       <div class="grid-content-children grid-left">
-                        <p class="name-map ellipsis1">{{ itm.dataItemName }}</p>
+                        <p class="name-map ellipsis1">{{ itm.sourceName }}</p>
                       </div>
                     </el-col>
                     <el-col :span="6">
                       <div class="grid-content-child grid-center">
-                        <p class="f-tit ellipsis1">判定时间：记录时间</p>
+                        <p class="f-tit ellipsis1">判定时间：{{ itm.dataRule.indexName || '无' }}</p>
                         <el-divider content-position="center">
                           <div class="get-times">
                             <el-tooltip
@@ -137,17 +141,17 @@
                     <el-col :span="9">
                       <div class="grid-content-children grid-right">
                         <p class="name-map ellipsis1" v-if="itm.edits">
-                          {{ itm.types }}
+                          {{ itm.displayName }}
                         </p>
                         <el-input
                           v-else
                           class="input-map"
-                          v-model="itm.types"
+                          v-model="itm.displayName"
                           ref="saveTagInput"
                           v-fo
                           size="mini"
-                          @focus="focusFn()"
-                          @blur="changeFn(index, idx)"
+                          @focus="focusFn(itm, index, idx)"
+                          @blur="changeFn(itm,index, idx)"
                         />
                       </div>
                     </el-col>
@@ -166,7 +170,7 @@
                       icon="el-icon-delete"
                       style="margin-left: 0px"
                       circle
-                      @click.native="delButton(index, idx)"
+                      @click.native="delButton(itm, index, idx)"
                     ></el-button>
                   </div>
                 </div>
@@ -355,12 +359,13 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-// import { oneDictionaryDatas } from '@/api/projectsMangement'
+import { dragStoreDatas, delStoreDatas } from '@/api/projectsMangement'
 import draggable from 'vuedraggable'
 export default {
   name: 'PageTwoRightDrag',
   data () {
     return {
+      loading: false,
       firstdatas: [],
       valD: [],
       del: 888,
@@ -432,14 +437,47 @@ export default {
     handleChange (val) {
       // console.log(val.index)
     },
-    changeFn (index, idx) {
+
+    //  修改失去焦点
+    changeFn (itm, index, idx) {
       this.firstdatas[index].child[idx].edits = true
-      this['projectsMangement/storedragdata']({
-        data: this.firstdatas,
-        index: this.tabIndex
+
+      const data = {
+        id: itm.id,
+        projectId: this.$Storage.sessionGet('projectId'),
+        parentId: itm.secondId,
+        parentName: itm.secondName,
+        targetId: itm.targetId, // 三级字典对应 id
+        sourceName: itm.sourceName, // 三级字典对应名称
+        fieldType: itm.fieldType, // 对应类型 lll
+        displayName: itm.displayName, // 被修改的名称
+        rayingStatus: itm.rayingStatus, // 映射修改的值
+        dataRule: JSON.stringify({
+          indexId: itm.dataRule.indexId,
+          indexName: itm.dataRule.indexName
+        })
+      }
+
+      // 拖拽数据提交接口调用
+      dragStoreDatas(data).then(res => {
+        if (res) {
+          this.$message({
+            message: '修改成功~',
+            type: 'success'
+          })
+          this['projectsMangement/storedragdata']({
+            data: this.firstdatas,
+            index: this.tabIndex
+          })
+        }
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
     },
-    focusFn () {},
+
+    //
+    focusFn (itm, index, idx) {},
     editButton (itm, index, idx) {
       this.firstdatas[index].child[idx].edits = false
       this['projectsMangement/storedragdata']({
@@ -450,15 +488,23 @@ export default {
     getButton (itm, index, idx) {
       this.outerVisible = true
     },
-    delButton (index, idx) {
-      this.firstdatas[index].child.splice(idx, 1)
-      if (this.firstdatas[index].child.length === 0) {
-        this.firstdatas.splice(index, 1)
+    delButton (itm, index, idx) {
+      const data = {
+        id: itm.id
       }
-      this['projectsMangement/storedragdata']({
-        data: this.firstdatas,
-        index: this.tabIndex
-      })
+      delStoreDatas(data).then(res => {
+        // console.log(res)
+        if (res) {
+          this.firstdatas[index].child.splice(idx, 1)
+          if (this.firstdatas[index].child.length === 0) {
+            this.firstdatas.splice(index, 1)
+          }
+          this['projectsMangement/storedragdata']({
+            data: this.firstdatas,
+            index: this.tabIndex
+          })
+        }
+      }).catch(() => {})
     },
     delAll (index) {
       this.firstdatas.splice(index, 1)
@@ -473,51 +519,100 @@ export default {
     mouseLeave () {
       this.del = 888
     },
+
+    //  拖拽数据渲染
+    moveFn (v, id) {
+      const fn = this.firstdatas.findIndex(
+        (item) => item.parentId === v.id2
+      )
+      if (fn !== -1) {
+        this.firstdatas[fn].child.push({
+          id: id, // 拖拽数据提交成功那以后返回的 id 供修改用
+          targetId: v.id, // 三级字典对应 id
+          sourceName: v.dataItemName, // 三级字典对应名称
+          fieldType: v.dataOptionType, // 对应类型
+          secondId: v.id2, // 二级字典对应id
+          secondName: v.name2, // 二级字典对应名称
+          displayName: v.displayName, // 被修改的名称
+          rayingStatus: v.rayingStatus, // 映射修改的值
+          list: v.list, // 弹窗下拉列表，
+          dataRule: {
+            indexId: v.indexId,
+            indexName: v.indexName
+          },
+          edits: true
+        })
+      } else {
+        const obj = {
+          parentId: v.id2,
+          parentName: v.name2,
+          parentName1: v.name1,
+          parentName2: v.name2,
+          child: []
+        }
+        obj.child.push({
+          id: id, // 拖拽数据提交成功那以后返回的 id 供修改用
+          targetId: v.id, // 三级字典对应 id
+          sourceName: v.dataItemName, // 三级字典对应名称
+          fieldType: v.dataOptionType, // 对应类型
+          secondId: v.id2, // 二级字典对应id
+          secondName: v.name2, // 二级字典对应名称
+          displayName: v.displayName, // 被修改的名称
+          rayingStatus: v.rayingStatus, // 映射修改的值
+          list: v.list, // 弹窗下拉列表，
+          dataRule: {
+            indexId: v.indexId,
+            indexName: v.indexName
+          },
+          edits: true
+        })
+        this.firstdatas.push(obj)
+        this.activeName.push(obj.parentId)
+      }
+      // console.log(this.firstdatas)
+      this['projectsMangement/storedragdata']({
+        data: this.firstdatas,
+        index: this.tabIndex
+      })
+    },
     toChange (val) {
       if (val?.added?.element) {
+        this.loading = true
         const v = val?.added?.element
-        // console.log(v)
-        var fn = this.firstdatas.findIndex(
-          (item) => item.parentId === v.parentId
-        )
-        if (fn !== -1) {
-          this.firstdatas[fn].child.push({
-            id: v.id, // 三级字典对应 id
-            dataItemName: v.dataItemName, // 三级字典对应名称
-            secondId: v.parentId, // 二级字典对应id
-            secondName: v.parentName2, // 二级字典对应名称
-            types: v.dataItemName, // 被修改的名称
-            rayingStatus: v.rayingStatus, // 映射修改的值
-            edits: true
+        // 拖拽数据提交
+        const data = {
+          id: null,
+          projectId: this.$Storage.sessionGet('projectId'),
+          parentId: v.id2,
+          parentName: v.name2,
+          targetId: v.id, // 三级字典对应 id
+          sourceName: v.dataItemName, // 三级字典对应名称
+          fieldType: v.dataOptionType, // 对应类型
+          displayName: v.displayName, // 被修改的名称
+          rayingStatus: v.rayingStatus, // 映射修改的值
+          dataRule: JSON.stringify({
+            indexId: v.indexId,
+            indexName: v.indexName
           })
-        } else {
-          const obj = {
-            parentId: v.parentId,
-            parentName: v.parentName,
-            parentName1: v.parentName1,
-            parentName2: v.parentName2,
-            child: []
-          }
-          obj.child.push({
-            id: v.id, // 三级字典对应 id
-            dataItemName: v.dataItemName, // 三级字典对应名称
-            secondId: v.parentId, // 二级字典对应id
-            secondName: v.parentName2, // 二级字典对应名称
-            types: v.dataItemName, // 被修改的名称
-            rayingStatus: v.rayingStatus, // 映射修改的值
-            edits: true
-          })
-          this.firstdatas.push(obj)
-          this.activeName.push(obj.parentId)
         }
-        // console.log(this.firstdatas)
-        this['projectsMangement/storedragdata']({
-          data: this.firstdatas,
-          index: this.tabIndex
+
+        // 拖拽数据提交接口调用
+        dragStoreDatas(data).then(res => {
+          if (res) {
+            const id = res.obj
+            this.moveFn(v, id)
+          }
+          this.loading = false
+        }).catch(() => {
+          this.loading = false
         })
-        console.log(this.firstdatas)
       }
     },
+    // 修改
+    correctDragObj (id, v) {
+
+    },
+
     handleIconClick () {
       this.innerVisible = true
     },
@@ -654,6 +749,7 @@ export default {
   }
   .dialog-con {
     min-height: 300px;
+    padding-bottom: 20px;
     .two-d {
       li {
         padding-left: 10px;

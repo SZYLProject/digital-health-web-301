@@ -108,3 +108,46 @@ export function correctQueue (data) {
     data: data
   })
 }
+
+/**
+ * 拖拽模块接口
+*/
+
+// 获取数据字典一二级标题（数据字典）
+export function datasDictionariesTitle (data) {
+  const { dataSourceId } = data
+  return request({
+    url: `/acl/api/dataItem/getDataItemsTree/${dataSourceId}`,
+    method: 'GET',
+    params: {}
+  })
+}
+
+// 获取三级字典
+export function getThreeDictionaries (data) {
+  const { id } = data
+  return request({
+    url: `/acl/api/dataItem/getAllItem?id=${id}`,
+    method: 'GET',
+    params: {},
+    timeout: 10 * 1000
+  })
+}
+
+// 拖拽存储
+export function dragStoreDatas (data) {
+  return request({
+    url: '/crp-project/projectFields/v1/addField',
+    method: 'post',
+    data: data
+  })
+}
+
+// 拖拽删除
+export function delStoreDatas (data) {
+  return request({
+    url: '/crp-project/projectFields/v1/delField',
+    method: 'post',
+    data: data
+  })
+}

@@ -23,7 +23,11 @@
           </el-tree>
         </el-scrollbar>
       </div>
-      <div class="two-dictionary">
+      <div class="two-dictionary"
+           v-loading="loading"
+           element-loading-text="加载中..."
+           element-loading-spinner="el-icon-loading"
+      >
         <el-scrollbar style="height: 100%"
                       ref="scroll">
           <div class="two-lists lists">
@@ -55,13 +59,14 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import { oneDictionaryDatas } from '@/api/projectsMangement'
+import { oneDictionaryDatas, datasDictionariesTitle, getThreeDictionaries } from '@/api/projectsMangement'
 import draggable from 'vuedraggable'
-import dataing from '../../dic'
+// import dataing from '../../dic'
 export default {
   name: 'PageTwoRightLists',
   data () {
     return {
+      loading: false,
       defaultProps: {
         children: 'children',
         label: 'label'
@@ -81,38 +86,80 @@ export default {
   watch: {},
   components: { draggable },
   created () {
-    this.getOneDictionaryDatas()
-    // this.init()
+    // this.getOneDictionaryDatas() // " 一二三 " 三级接口的调用
+    this.getOneTwoDicData() // 获取一二级字典接口
   },
   mounted () {
     this.$nextTick(() => {
-      // this.init()
+
     })
   },
   destroyed () { },
   methods: {
     ...mapMutations(['projectsMangement/storedragdata']),
-    init () {
-      this.distionaryDatas = dataing.obj.data
-      this.distionaryDatas.map(item => {
-        item.label = item.dataItemName
-        item.children = item.dataItemEntityList
-        item.children.map(a => {
-          a.label = a.dataItemName
-          a.children = []
+    // 获取一二级字典
+    async getOneTwoDicData () {
+      const data = {
+        dataSourceId: this.dataSourceValue?.id ?? 0
+      }
+      await datasDictionariesTitle(data)
+        .then(res => {
+          const obj = res.obj
+          if (obj) {
+            this.distionaryDatas = obj
+            this.distionaryDatas.map(item => {
+              item.label = item.dataItemName
+              item.children = item.dataItemEntityList
+              item.children.map(a => {
+                a.label = a.dataItemName
+                a.children = []
+              })
+            })
+          }
         })
-      })
-      this.distionaChildDatas = this.distionaryDatas[0]?.children[0].dataItemEntityList
-      this.secondName = this.distionaryDatas[0]?.children[0]?.dataItemName
-      this.num = this.distionaryDatas[0]?.children[0]?.dataItemEntityList?.length
-      this.parentLabel = this.distionaryDatas[0]?.dataItemName
-      this.distionaChildDatas.map((item) => {
-        item.parentId = this.distionaryDatas[0]?.children[0]?.id
-        item.parentName = this.distionaryDatas[0].dataItemName + '~' + this.distionaryDatas[0]?.children[0]?.dataItemName
-        item.disable = false
+        .catch(() => {})
+
+      await this.initThree(this.distionaryDatas[0].children[0].id, this.distionaryDatas[0].children[0].dataItemName)
+    },
+    // 初始化三级字典数据
+    initThree (id, name) {
+      this.loading = true
+      const datas = { id }
+      getThreeDictionaries(datas).then(res => {
+        if (res?.obj) {
+          this.distionaChildDatas = res.obj
+          this.secondName = name
+          this.num = this.distionaChildDatas?.length ?? 0
+        }
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
     },
+
+    // 点击二级字典
     handleNodeClick (data) {
+      if (data.parentCode !== 0) {
+        this.distionaChildDatas = [] // 清空三级字典
+        this.loading = true
+        const datas = {
+          id: data.id
+        }
+        getThreeDictionaries(datas).then(res => {
+          if (res?.obj) {
+            this.distionaChildDatas = res.obj
+            this.secondName = data.dataItemName
+            this.num = this.distionaChildDatas?.length ?? 0
+          }
+          this.loading = false
+        }).catch(() => {
+          this.loading = false
+        })
+      }
+    },
+
+    // 点击二级字典(保留)
+    handleNodeClick1 (data) {
       if (data.parentCode !== 0) {
         this.secondName = data.dataItemName
         this.num = data.dataItemEntityList?.length
@@ -130,7 +177,8 @@ export default {
         this.fieldsStatus = data.fieldsStatus
       }
     },
-    // 接口获取字典数据
+
+    // 接口获取字典数据(保留)
     getOneDictionaryDatas () {
       const data = {
         userId: this.userInfo?.pkId,
@@ -141,6 +189,7 @@ export default {
       oneDictionaryDatas(data)
         .then((res) => {
           if (res) {
+            // console.log(res.obj?.data)
             this.distionaryDatas = res.obj?.data
             this.distionaryDatas.map(item => {
               item.label = item.dataItemName
@@ -164,13 +213,14 @@ export default {
         })
         .catch((er) => { })
     },
+
     secondDictory (item) {
       // console.log(item)
     },
     cloneElement (clone) {
-      const p = clone.parentName.split('~')
-      clone.parentName1 = p[0]
-      clone.parentName2 = p[1]
+      // const p = clone.parentName.split('~')
+      // clone.parentName1 = p[0]
+      // clone.parentName2 = p[1]
       // console.log(clone)
       return clone
     }
