@@ -228,6 +228,7 @@
               clearable
               size="mini"
               style="width: 130px"
+              @change="selectchange"
               placeholder="请选择"
             >
               <el-option
@@ -268,6 +269,7 @@
               size="mini"
               style="width: 130px"
               clearable
+              :readonly="true"
               class="mrg"
             >
               <i
@@ -346,7 +348,8 @@
           >
         </span>
         <span>
-          <el-button type="primary" size="small" @click="outerVisible = false"
+          <!-- outerVisible = false -->
+          <el-button type="primary" size="small" @click="commitDataPop"
             >确 定</el-button
           >
           <el-button @click="outerVisible = false" size="small"
@@ -390,8 +393,9 @@ export default {
         }
       ], // 满足条件
       objPop: {
+        id: null, // 被修改数据的id
         time: '', // 判断标准
-        times: '',
+        times: '', // 映射条件
         condition: '' // 满足条件
       },
       conditionObj: [], // 筛选条件数据
@@ -470,11 +474,13 @@ export default {
         projectId: this.$Storage.sessionGet('projectId')
       }
       allListsStateDatas(data).then(res => {
-        console.log(res)
         if (res?.obj) {
           this.firstdatas = res.obj || []
           this.firstdatas.map(item => {
             this.activeName.push(item.parentId)
+            item.child.map(m => {
+              m.dataRule = JSON.parse(m.dataRule)
+            })
           })
         }
         this.loading = false
@@ -666,6 +672,11 @@ export default {
       this.fieldTypeP = itm.fieldType
       this.outerVisible = true
       this.optionsTime = itm.list || []
+      this.objPop.id = itm.id
+      this.objPop.time = itm.dataRule.indexId
+      this.objPop.times = itm.rayingStatus // 映射条件
+      this.objPop.condition = ''
+
       this.outPopTitle = {
         T1: itm.secondName,
         T2: itm.sourceName
@@ -696,7 +707,44 @@ export default {
       this.conditionObj.splice(index, 1)
     },
     // 内层弹窗
-    innerButton () {}
+    innerButton () {},
+    // 弹窗确认提交
+    commitDataPop () {
+      let indexName = null
+      this.optionsTime.map(item => {
+        if (this.objPop.time === item.id) {
+          indexName = item.dataItemName
+        }
+      })
+      const data = {
+        id: this.objPop.id,
+        dataRule: JSON.stringify({
+          indexId: this.objPop.time,
+          indexName: indexName,
+          times: this.objPop.times,
+          condition: this.objPop.condition
+        })
+      }
+      // console.log(data)
+      dragStoreDatas(data).then(res => {
+        if (res) {
+          this.$message({
+            message: '修改成功~',
+            type: 'success'
+          })
+          this.outerVisible = false
+          this.getAllListsStateDatas()
+          this['projectsMangement/storedragdata']({
+            data: this.firstdatas,
+            index: this.tabIndex
+          })
+        }
+      }).catch(() => {})
+    },
+    selectchange (val) {
+      console.log(val)
+    }
+
   }
 }
 </script>
