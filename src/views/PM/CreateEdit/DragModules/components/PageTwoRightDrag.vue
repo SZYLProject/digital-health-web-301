@@ -47,7 +47,7 @@
                 icon="el-icon-delete"
                 style="margin-left: 0px"
                 circle
-                @click.native.stop="delAll(index)"
+                @click.native.stop="delAll(item,index)"
               ></el-button>
             </div>
           </template>
@@ -215,7 +215,7 @@
       <div slot="title" class="dialog-headers">
         <h1>
           <span>编辑规则</span>
-          <span>个人史<i class="el-icon-caret-right"></i>个人史</span>
+          <span>{{outPopTitle.T1 || '二级标题'}}<i class="el-icon-caret-right"></i>{{outPopTitle.T2 || '三级标题'}}</span>
         </h1>
       </div>
       <!-- 外弹窗内容 -->
@@ -327,11 +327,12 @@
             style="width: 130px"
             placeholder="请选择"
           >
+          <!--  -->
             <el-option
-              v-for="(item, index) in options"
+              v-for="(item, index) in getOption(fieldTypeP)"
               :key="index"
-              :label="item.label"
-              :value="item.value"
+              :label="item.name"
+              :value="item.id"
             >
             </el-option>
           </el-select>
@@ -359,7 +360,8 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import { dragStoreDatas, delStoreDatas } from '@/api/projectsMangement'
+import { dragStoreDatas, delStoreDatas, allListsStateDatas } from '@/api/projectsMangement'
+import { getOption } from '@/utils/classRelation'
 import draggable from 'vuedraggable'
 export default {
   name: 'PageTwoRightDrag',
@@ -373,35 +375,17 @@ export default {
 
       // 外弹窗数据
       outerVisible: false,
-      options: [
-        {
-          value: '选项1',
-          label: '黄金糕'
-        },
-        {
-          value: '选项2',
-          label: '双皮奶'
-        },
-        {
-          value: '选项3',
-          label: '蚵仔煎'
-        },
-        {
-          value: '选项4',
-          label: '龙须面'
-        },
-        {
-          value: '选项5',
-          label: '北京烤鸭'
-        }
-      ],
+      outPopTitle: {
+        T1: '',
+        T2: ''
+      }, // 弹窗标题
       optionsTime: [], // 判断标准
       optionsCon: [
         {
-          id: 1,
+          id: '全部条件',
           name: '全部条件'
         }, {
-          id: 2,
+          id: '任意条件',
           name: '任意条件'
         }
       ], // 满足条件
@@ -411,8 +395,25 @@ export default {
         condition: '' // 满足条件
       },
       conditionObj: [], // 筛选条件数据
+      fieldTypeP: null,
       // 内弹窗数据
-      innerVisible: false
+      innerVisible: false,
+      options: [{
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }]
     }
   },
   props: {
@@ -451,45 +452,29 @@ export default {
     }
   },
   components: { draggable },
-  created () {},
+  created () {
+    this.getAllListsStateDatas()
+  },
   mounted () {},
   destroyed () {},
   methods: {
     ...mapMutations(['projectsMangement/storedragdata']),
+    getOption, // 弹窗内部类型选择
     handleChange (val) {
-      // console.log(val.index)
+      console.log(val)
     },
-
-    //  修改失去焦点
-    changeFn (itm, index, idx) {
-      this.firstdatas[index].child[idx].edits = true
-
+    // 获取初始化回显数据
+    getAllListsStateDatas () {
+      this.loading = true
       const data = {
-        id: itm.id,
-        projectId: this.$Storage.sessionGet('projectId'),
-        parentId: itm.secondId,
-        parentName: itm.secondName,
-        targetId: itm.targetId, // 三级字典对应 id
-        sourceName: itm.sourceName, // 三级字典对应名称
-        fieldType: itm.fieldType, // 对应类型 lll
-        displayName: itm.displayName, // 被修改的名称
-        rayingStatus: itm.rayingStatus, // 映射修改的值
-        dataRule: JSON.stringify({
-          indexId: itm.dataRule.indexId,
-          indexName: itm.dataRule.indexName
-        })
+        projectId: this.$Storage.sessionGet('projectId')
       }
-
-      // 拖拽数据提交接口调用
-      dragStoreDatas(data).then(res => {
-        if (res) {
-          this.$message({
-            message: '修改成功~',
-            type: 'success'
-          })
-          this['projectsMangement/storedragdata']({
-            data: this.firstdatas,
-            index: this.tabIndex
+      allListsStateDatas(data).then(res => {
+        console.log(res)
+        if (res?.obj) {
+          this.firstdatas = res.obj || []
+          this.firstdatas.map(item => {
+            this.activeName.push(item.parentId)
           })
         }
         this.loading = false
@@ -498,51 +483,39 @@ export default {
       })
     },
 
-    //
-    focusFn (itm, index, idx) {},
-    editButton (itm, index, idx) {
-      this.firstdatas[index].child[idx].edits = false
-      this['projectsMangement/storedragdata']({
-        data: this.firstdatas,
-        index: this.tabIndex
-      })
-    },
-    getButton (itm, index, idx) {
-      this.outerVisible = true
-      this.optionsTime = itm.list || []
-    },
-    delButton (itm, index, idx) {
-      const data = {
-        id: itm.id
-      }
-      delStoreDatas(data).then(res => {
-        // console.log(res)
-        if (res) {
-          this.firstdatas[index].child.splice(idx, 1)
-          if (this.firstdatas[index].child.length === 0) {
-            this.firstdatas.splice(index, 1)
-          }
-          this['projectsMangement/storedragdata']({
-            data: this.firstdatas,
-            index: this.tabIndex
+    // 拖拽完成函数调用
+    toChange (val) {
+      if (val?.added?.element) {
+        this.loading = true
+        const v = val?.added?.element
+        // 拖拽单个数据提交
+        const data = {
+          id: null,
+          projectId: this.$Storage.sessionGet('projectId'), // 项目id
+          parentId: v.id2, // 二级字典对应id
+          parentName: v.name2, // 二级字典对应名称
+          targetId: v.id, // 三级字典对应 id
+          sourceName: v.dataItemName, // 三级字典对应名称
+          fieldType: v.dataOptionType, // 三级字典对应类型
+          displayName: v.displayName, // 被修改的名称
+          rayingStatus: v.rayingStatus, // 映射修改的值
+          dataRule: JSON.stringify({ // 映射来源对象
+            indexId: v.indexId,
+            indexName: v.indexName
           })
         }
-      }).catch(() => {})
+        // 拖拽单个数据提交接口调用
+        dragStoreDatas(data).then(res => {
+          if (res) {
+            const id = res.obj // 存储数据后台返回的唯一数据 id
+            this.moveFn(v, id) // 拖拽数据交互成功后渲染列表函数
+          }
+          this.loading = false
+        }).catch(() => {
+          this.loading = false
+        })
+      }
     },
-    delAll (index) {
-      this.firstdatas.splice(index, 1)
-      this['projectsMangement/storedragdata']({
-        data: this.firstdatas,
-        index: this.tabIndex
-      })
-    },
-    mouseEnter (val) {
-      this.del = val
-    },
-    mouseLeave () {
-      this.del = 888
-    },
-
     //  拖拽数据渲染
     moveFn (v, id) {
       const fn = this.firstdatas.findIndex(
@@ -550,10 +523,10 @@ export default {
       )
       if (fn !== -1) {
         this.firstdatas[fn].child.push({
-          id: id, // 拖拽数据提交成功那以后返回的 id 供修改用
+          id: id, // 拖拽数据提交成功以后返回的 id 供修改用
           targetId: v.id, // 三级字典对应 id
           sourceName: v.dataItemName, // 三级字典对应名称
-          fieldType: v.dataOptionType, // 对应类型
+          fieldType: v.dataOptionType, // 三级字典对应类型
           secondId: v.id2, // 二级字典对应id
           secondName: v.name2, // 二级字典对应名称
           displayName: v.displayName, // 被修改的名称
@@ -577,7 +550,7 @@ export default {
           id: id, // 拖拽数据提交成功那以后返回的 id 供修改用
           targetId: v.id, // 三级字典对应 id
           sourceName: v.dataItemName, // 三级字典对应名称
-          fieldType: v.dataOptionType, // 对应类型
+          fieldType: v.dataOptionType, // 三级字典对应类型
           secondId: v.id2, // 二级字典对应id
           secondName: v.name2, // 二级字典对应名称
           displayName: v.displayName, // 被修改的名称
@@ -589,53 +562,124 @@ export default {
           },
           edits: true
         })
-        this.firstdatas.push(obj)
-        this.activeName.push(obj.parentId)
+        this.firstdatas.push(obj) //
+        this.activeName.push(obj.parentId) // 折叠板展开判断
+        // console.log(this.firstdatas)
       }
       // console.log(this.firstdatas)
+      // 将数据存储到本地
       this['projectsMangement/storedragdata']({
         data: this.firstdatas,
         index: this.tabIndex
       })
     },
-    toChange (val) {
-      if (val?.added?.element) {
-        this.loading = true
-        const v = val?.added?.element
-        // 拖拽数据提交
-        const data = {
-          id: null,
-          projectId: this.$Storage.sessionGet('projectId'),
-          parentId: v.id2,
-          parentName: v.name2,
-          targetId: v.id, // 三级字典对应 id
-          sourceName: v.dataItemName, // 三级字典对应名称
-          fieldType: v.dataOptionType, // 对应类型
-          displayName: v.displayName, // 被修改的名称
-          rayingStatus: v.rayingStatus, // 映射修改的值
-          dataRule: JSON.stringify({
-            indexId: v.indexId,
-            indexName: v.indexName
-          })
-        }
-
-        // 拖拽数据提交接口调用
-        dragStoreDatas(data).then(res => {
-          if (res) {
-            const id = res.obj
-            this.moveFn(v, id)
-          }
-          this.loading = false
-        }).catch(() => {
-          this.loading = false
+    // 编辑按钮
+    editButton (itm, index, idx) {
+      this.firstdatas[index].child[idx].edits = false
+      // this['projectsMangement/storedragdata']({
+      //   data: this.firstdatas,
+      //   index: this.tabIndex
+      // })
+    },
+    // 编辑获取焦点函数
+    focusFn (itm, index, idx) {
+      // console.log(itm)
+    },
+    //  修改失去焦点函数
+    changeFn (itm, index, idx) {
+      this.firstdatas[index].child[idx].edits = true
+      const data = {
+        id: itm.id, // 修改数据对应的唯一 id
+        projectId: this.$Storage.sessionGet('projectId'), // 项目 ID
+        parentId: itm.secondId, // 二级字典对应id
+        parentName: itm.secondName, // 二级字典对应名称
+        targetId: itm.targetId, // 三级字典对应 id
+        sourceName: itm.sourceName, // 三级字典对应名称
+        fieldType: itm.fieldType, // 三级字典对应类型
+        displayName: itm.displayName, // 被修改的名称
+        rayingStatus: itm.rayingStatus, // 映射修改的值
+        dataRule: JSON.stringify({
+          indexId: itm.dataRule.indexId,
+          indexName: itm.dataRule.indexName
         })
       }
+      // 拖拽数据提交接口调用
+      dragStoreDatas(data).then(res => {
+        if (res) {
+          this.$message({
+            message: '修改成功~',
+            type: 'success'
+          })
+          this['projectsMangement/storedragdata']({
+            data: this.firstdatas,
+            index: this.tabIndex
+          })
+        }
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
     },
-    // 修改
-    correctDragObj (id, v) {
-
+    // 单个删除
+    delButton (itm, index, idx) {
+      const data = [itm.id]
+      delStoreDatas(data).then(res => {
+        if (res) {
+          this.firstdatas[index].child.splice(idx, 1)
+          if (this.firstdatas[index].child.length === 0) {
+            this.firstdatas.splice(index, 1)
+          }
+          this['projectsMangement/storedragdata']({
+            data: this.firstdatas,
+            index: this.tabIndex
+          })
+          this.$message({
+            message: res.msg,
+            type: 'success'
+          })
+        }
+      }).catch(() => {})
+    },
+    // 整体删除
+    delAll (item, index) {
+      const data = []
+      item.child.map(n => {
+        data.push(n.id)
+      })
+      delStoreDatas(data).then(res => {
+        if (res) {
+          this.firstdatas.splice(index, 1)
+          this['projectsMangement/storedragdata']({
+            data: this.firstdatas,
+            index: this.tabIndex
+          })
+          this.$message({
+            message: res.msg,
+            type: 'success'
+          })
+        }
+      }).catch(() => {})
+    },
+    // 取首次点击显示弹窗函数
+    getButton (itm, index, idx) {
+      // console.log(itm)
+      this.fieldTypeP = itm.fieldType
+      this.outerVisible = true
+      this.optionsTime = itm.list || []
+      this.outPopTitle = {
+        T1: itm.secondName,
+        T2: itm.sourceName
+      }
+    },
+    // 鼠标移入移出
+    mouseEnter (val) {
+      this.del = val
+    },
+    mouseLeave () {
+      this.del = 888
     },
 
+    // 单击内部弹窗显示
     handleIconClick () {
       this.innerVisible = true
     },

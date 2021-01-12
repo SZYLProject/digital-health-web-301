@@ -134,6 +134,15 @@ export function getThreeDictionaries (data) {
   })
 }
 
+// 回显数据列表 /projectFields/{version}/list/74
+export function allListsStateDatas (data) {
+  const { projectId } = data
+  return request({
+    url: `/crp-project/projectFields/v1/list/${projectId}`,
+    method: 'GET',
+    params: {}
+  })
+}
 // 拖拽存储
 export function dragStoreDatas (data) {
   return request({
