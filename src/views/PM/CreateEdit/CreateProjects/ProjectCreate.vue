@@ -164,7 +164,7 @@
                              :on-remove="onRemove"
                              :show-file-list="true"
                              :on-exceed="onExceed"
-                             :file-list="fileList"
+                             :file-list="form.fileList"
                              multiple>
                     <el-button size="small">
                       <i class="el-icon-upload el-icon--left"></i>
@@ -210,10 +210,10 @@ export default {
         projectType: '', // 项目类型
         researchType: '', // 研究类型
         description: '', // 项目说明（可选）：
-        fileList: []
+        fileList: [] // 上传文件返回值
       },
       loading: false,
-      fileList: [],
+      // fileList: [],
       listObj: null // 存储回显数据
     }
   },
@@ -227,6 +227,7 @@ export default {
     listObj: {
       handler (newName, oldName) {
         if (newName) {
+          // console.log(newName)
           this.form = newName
         }
       },
@@ -237,6 +238,7 @@ export default {
   components: {},
   created () {
     this.$Storage.sessionRemove('projectId')
+    // console.log(this.$route.params.obj)
     if (this.$route.params?.obj) {
       this.itemName = this.$route.params.obj?.projectName
     } else {
@@ -287,13 +289,14 @@ export default {
         dataSourceId: this.dataSourceValue?.id
       }
       const data = Object.assign(datas, this.form)
+      // console.log(data)
       createProjects(data).then((res) => {
         if (res) {
           this['projectsMangement/storeitemdata'](res.obj)
           this.$Storage.sessionSet('projectId', res.obj) // 将项目 id 存储在本地 session
           this.$emit('next', 1)
-          this.loading = false
         }
+        this.loading = false
       }).catch(() => {
         this.loading = false
       })
@@ -312,8 +315,8 @@ export default {
           this['projectsMangement/storeitemdata'](res.obj)
           this.$Storage.sessionSet('projectId', res.obj) // 将项目 id 存储在本地 session
           this.$emit('next', 1)
-          this.loading = false
         }
+        this.loading = false
       }).catch(() => {
         this.loading = false
       })
@@ -327,6 +330,9 @@ export default {
       fileUploading(formData).then((res) => {
         if (res?.obj) {
           this.form.fileList.push(res.obj[0])
+          const s = this.form.fileList[this.form.fileList.length - 1]
+          s.name = s.oldFileName
+          s.url = s.filePath
           this.$message({
             message: '上传成功~',
             type: 'success'
@@ -353,6 +359,7 @@ export default {
         }
       })
     },
+    // 上传前文件格式判断
     beforeUpload (file) {
       const filePng = file.name.lastIndexOf('.png')
       const fileWord1 = file.name.lastIndexOf('.doc')
@@ -385,15 +392,12 @@ export default {
         return false
       }
     },
+    // 删除上传的文件
     onRemove (file) {
+      console.log(file)
       const deleteFile = this.form.fileList.filter(
         (item) => file.name === item.oldFileName
       )[0].fileName // 返回被删除的对象
-      this.form.fileList.map((item, index) => {
-        if (file.name === item.oldFileName) {
-          this.form.fileList.splice(index, 1)
-        }
-      })
       const data = {
         fileName: deleteFile
       }
@@ -403,9 +407,15 @@ export default {
             message: res.msg,
             type: 'success'
           })
+          this.form.fileList.map((item, index) => {
+            if (file.name === item.oldFileName) {
+              this.form.fileList.splice(index, 1)
+            }
+          })
         }
       })
     },
+    // 上传文件个数限制
     onExceed () {
       this.$message({
         message: '最多允许上传5个文件奥~',
@@ -419,8 +429,10 @@ export default {
       }
       comeUploadFiles(data).then((res) => {
         if (res) {
-          res.obj.map((item) => {
+          res.obj.map((item, index) => {
             this.form.fileList.push(item)
+            this.form.fileList[index].name = item.oldFileName
+            this.form.fileList[index].url = item.filePath
           })
         }
       })
@@ -429,7 +441,7 @@ export default {
     changeRadio (val) {
       // this['projectsMangement/projecttype'](val)
       // this.$Storage.sessionSet('projectType', val)
-      this.resetSetItem('projectType', val)
+      this.resetSetItem('projectType', val) // 存储到本地
     }
   }
 }
