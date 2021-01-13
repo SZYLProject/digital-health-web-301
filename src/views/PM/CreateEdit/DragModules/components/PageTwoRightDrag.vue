@@ -1,9 +1,10 @@
 <!-- 项目列表 -->
 <template>
-  <div class="drag-container"
-       v-loading="loading"
-       element-loading-text="加载中..."
-       element-loading-spinner="el-icon-loading"
+  <div
+    class="drag-container"
+    v-loading="loading"
+    element-loading-text="加载中..."
+    element-loading-spinner="el-icon-loading"
   >
     <div class="itxsting">
       <p class="info">请将左侧指标拖入此处</p>
@@ -47,7 +48,7 @@
                 icon="el-icon-delete"
                 style="margin-left: 0px"
                 circle
-                @click.native.stop="delAll(item,index)"
+                @click.native.stop="delAll(item, index)"
               ></el-button>
             </div>
           </template>
@@ -68,13 +69,18 @@
                     </el-col>
                     <el-col :span="6">
                       <div class="grid-content-child grid-center">
-                        <p class="f-tit ellipsis1">判定时间：{{ itm.dataRule.indexName || '无' }}</p>
+                        <el-tooltip effect="dark" placement="top-start" v-if="itm.rayingStatus !== 1">
+                          <div slot="content">
+                            {{ itm.dataRule.indexName || "无" }}
+                          </div>
+                          <p class="f-tit ellipsis1">
+                          判定时间：{{ itm.dataRule.indexName || "无" }}
+                          </p>
+                        </el-tooltip>
+
                         <el-divider content-position="center">
                           <div class="get-times">
-                            <el-tooltip
-                              effect="dark"
-                              placement="top-start"
-                            >
+                            <el-tooltip effect="dark" placement="top-start">
                               <div slot="content">
                                 {{
                                   itm.rayingStatus === 1
@@ -151,7 +157,7 @@
                           v-fo
                           size="mini"
                           @focus="focusFn(itm, index, idx)"
-                          @blur="changeFn(itm,index, idx)"
+                          @blur="changeFn(itm, index, idx)"
                         />
                       </div>
                     </el-col>
@@ -183,41 +189,48 @@
     </div>
 
     <!-- 外弹窗 -->
-    <el-dialog :visible.sync="outerVisible" class="pop-first" width="40%">
+    <el-dialog :visible.sync="outerVisible" class="pop-first" width="50%">
       <!-- 内层弹窗 -->
       <el-dialog
         :visible.sync="innerVisible"
-        width="40%"
+        width="50%"
         class="body-dialog-pop"
         append-to-body
       >
         <!-- 内层弹窗头部 -->
         <div slot="title" class="dialog-headers">
-          <h1>个人史<i class="el-icon-caret-right"></i>个人史</h1>
+          <h1>
+            {{ outPopTitle.T1 || "二级标题" }}
+            <i class="el-icon-caret-right" ></i>
+            {{ outPopTitle.T2 || "三级标题" }}
+          </h1>
         </div>
         <!-- 内层弹窗内容区 -->
-        <div class="inner-con">
-          <el-button type="text" @click.native="innerButton()">123</el-button>
+        <div class="inner-con"
+             v-loading="innerLoading"
+             element-loading-text="数据加载中..."
+             element-loading-spinner="el-icon-loading">
+          <el-button
+                type="text"
+                v-for="(n,i) in innerDataLists"
+                :key="i"
+                @click.native="innerButton(n)"
+          >{{n.dataItemName}}</el-button>
         </div>
-        <!-- 内层弹窗底部 -->
-        <!-- <span slot="footer" class="dialog-footer">
-          <el-button type="primary"
-                     size="small"
-                     @click="innerVisible = false"
-                     >确 定</el-button>
-          <el-button @click="innerVisible = false"
-                     size="small"
-                     >取 消</el-button>
-        </span> -->
       </el-dialog>
 
       <!-- 外弹窗标题 -->
       <div slot="title" class="dialog-headers">
         <h1>
           <span>编辑规则</span>
-          <span>{{outPopTitle.T1 || '二级标题'}}<i class="el-icon-caret-right"></i>{{outPopTitle.T2 || '三级标题'}}</span>
+          <span
+            >{{ outPopTitle.T1 || "二级标题"
+            }}<i class="el-icon-caret-right"></i
+            >{{ outPopTitle.T2 || "三级标题" }}</span
+          >
         </h1>
       </div>
+
       <!-- 外弹窗内容 -->
       <div class="dialog-con">
         <p class="one-d">
@@ -245,7 +258,6 @@
             ，取满足以下
             <el-select
               v-model="objPop.condition"
-              clearable
               size="mini"
               style="width: 130px"
               placeholder="请选择"
@@ -263,47 +275,124 @@
         <!-- 筛选条件 -->
         <ul class="two-d" style="margin-top: 20px">
           <li v-for="(item, index) in conditionObj" :key="index">
+            <!-- one -->
             <el-input
               placeholder="点+获取数据"
-              v-model="item.stateType1"
+              v-model="item.name"
               size="mini"
               style="width: 130px"
               clearable
-              :readonly="true"
               class="mrg"
+              :readonly="true"
             >
               <i
                 slot="suffix"
                 class="el-icon-plus el-input__icon pointer"
-                @click="handleIconClick()"
+                @click="handleIconClick(item, index)"
               >
               </i>
             </el-input>
+            <!-- two -->
             <el-select
-              v-model="item.stateType2"
+              v-model="item.option"
               clearable
               size="mini"
               style="width: 90px"
               placeholder="请选择"
               class="mrg"
             >
-              <el-option
-                v-for="(itm, idx) in options"
-                :key="idx"
-                :label="itm.label"
-                :value="itm.value"
-              >
+              <el-option v-for="(options, i) in getOptionPop(item.dataOptionType)"
+                         :key="i"
+                         :label="options"
+                         :value="options"></el-option>
+            </el-select>
+            <!-- three -->
+
+            <!--根据type显示不同的框-->
+            <!--radio-->
+            <el-radio-group
+                      v-model="item.listThree.value"
+                      style="width: 130px"
+                      size="mini"
+                      v-if="getFormType(item.dataOptionType) === 'radio'">
+              <el-radio label="'是'">是</el-radio>
+              <el-radio label="'否'">否</el-radio>
+            </el-radio-group>
+
+            <!--select-->
+            <el-select
+                    v-model="item.listThree.value"
+                    placeholder="请选择"
+                    style="width: 150px;margin-right:10px;"
+                    size="mini"
+                    v-else-if="getFormType(item.dataOptionType) === 'select'">
+              <el-option v-for="(listItem, index) in item.dataOption"
+                         :key="index"
+                         :label="listItem.dataOptionValue"
+                         :value="listItem.dataOptionValue">
               </el-option>
             </el-select>
-            <el-input
-              placeholder="请输入"
-              clearable
-              v-model="item.stateType3"
-              style="width: 200px"
-              size="mini"
-              class="mrg"
-            >
+
+            <!--date-->
+            <!-- 非区间 -->
+            <el-date-picker
+                        v-model="item.listThree.value"
+                        type="datetime"
+                        placeholder="选择日期时间"
+                        size="mini"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        style="width:180px;margin-right:10px;"
+                        v-else-if="getFormType(item.dataOptionType) === 'date' &&
+                        (item.option !== '区间外' && item.option !== '区间内') ">
+            </el-date-picker>
+            <!-- 区间内 -->
+            <span v-else-if="getFormType(item.dataOptionType) === 'date' &&
+                  (item.option === '区间外' || item.option === '区间内')">
+                <el-date-picker
+                            v-model="item.listThree.date1"
+                            type="datetime"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            placeholder="选择日期时间"
+                            size="mini"
+                            style="width:180px;">
+                </el-date-picker>
+                -
+                <el-date-picker
+                            v-model="item.listThree.date2"
+                            type="datetime"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            placeholder="选择日期时间"
+                            size="mini"
+                            style="width:180px;margin-right:10px;">
+                </el-date-picker>
+            </span>
+            <!--input-->
+            <!-- 区间内 -->
+            <span v-else-if="item.dataOptionType === 1 &&
+                  (item.option === '区间外' || item.option === '区间内')">
+                <el-input size="mini"
+                          placeholder="最小值"
+                          style="width:180px;"
+                          v-model="item.listThree.date1">
+                </el-input>
+                -
+                <el-input size="mini"
+                          placeholder="最大值"
+                          style="width:180px;margin-right:10px;"
+                          v-model="item.listThree.date2">
+                </el-input>
+            </span>
+
+            <!-- 非区间 -->
+            <el-input size="mini"
+                      placeholder="对比值"
+                      style="width:180px;margin-right:10px;"
+                      v-model="item.listThree.value"
+                      v-else>
             </el-input>
+            <!--根据type显示不同的框-->
+
+            <!-- 删除 -->
             <el-button
               type="text"
               icon="el-icon-delete"
@@ -329,7 +418,7 @@
             style="width: 130px"
             placeholder="请选择"
           >
-          <!--  -->
+            <!--  -->
             <el-option
               v-for="(item, index) in getOption(fieldTypeP)"
               :key="index"
@@ -363,8 +452,15 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import { dragStoreDatas, delStoreDatas, allListsStateDatas } from '@/api/projectsMangement'
+import {
+  dragStoreDatas,
+  delStoreDatas,
+  allListsStateDatas,
+  getInsidePopDatas,
+  getDataOption
+} from '@/api/projectsMangement'
 import { getOption } from '@/utils/classRelation'
+import { getOptionPop, getFormType } from '@/utils/itemLists'
 import draggable from 'vuedraggable'
 export default {
   name: 'PageTwoRightDrag',
@@ -375,6 +471,7 @@ export default {
       valD: [],
       del: 888,
       activeName: [],
+      secondIds: null, // 存储二级id
 
       // 外弹窗数据
       outerVisible: false,
@@ -387,7 +484,8 @@ export default {
         {
           id: '全部条件',
           name: '全部条件'
-        }, {
+        },
+        {
           id: '任意条件',
           name: '任意条件'
         }
@@ -396,28 +494,17 @@ export default {
         id: null, // 被修改数据的id
         time: '', // 判断标准
         times: '', // 映射条件
-        condition: '' // 满足条件
+        condition: '全部条件' // 满足条件
       },
       conditionObj: [], // 筛选条件数据
+      options1: [], //
+      options2: [], //
+      listIndex: 0,
       fieldTypeP: null,
       // 内弹窗数据
       innerVisible: false,
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
-      }]
+      innerLoading: false,
+      innerDataLists: []
     }
   },
   props: {
@@ -449,7 +536,7 @@ export default {
         this.objPop = {
           time: '', // 判断标准
           times: '',
-          condition: '' // 满足条件
+          condition: '全部条件' // 满足条件
         }
         this.conditionObj = []
       }
@@ -464,6 +551,8 @@ export default {
   methods: {
     ...mapMutations(['projectsMangement/storedragdata']),
     getOption, // 弹窗内部类型选择
+    getOptionPop, //
+    getFormType,
     handleChange (val) {
       console.log(val)
     },
@@ -473,20 +562,22 @@ export default {
       const data = {
         projectId: this.$Storage.sessionGet('projectId')
       }
-      allListsStateDatas(data).then(res => {
-        if (res?.obj) {
-          this.firstdatas = res.obj || []
-          this.firstdatas.map(item => {
-            this.activeName.push(item.parentId)
-            item.child.map(m => {
-              m.dataRule = JSON.parse(m.dataRule)
+      allListsStateDatas(data)
+        .then((res) => {
+          if (res?.obj) {
+            this.firstdatas = res.obj || []
+            this.firstdatas.map((item) => {
+              this.activeName.push(item.parentId)
+              item.child.map((m) => {
+                m.dataRule = JSON.parse(m.dataRule)
+              })
             })
-          })
-        }
-        this.loading = false
-      }).catch(() => {
-        this.loading = false
-      })
+          }
+          this.loading = false
+        })
+        .catch(() => {
+          this.loading = false
+        })
     },
 
     // 拖拽完成函数调用
@@ -505,28 +596,29 @@ export default {
           fieldType: v.dataOptionType, // 三级字典对应类型
           displayName: v.displayName, // 被修改的名称
           rayingStatus: v.rayingStatus, // 映射修改的值
-          dataRule: JSON.stringify({ // 映射来源对象
+          dataRule: JSON.stringify({
+            // 映射来源对象
             indexId: v.indexId,
             indexName: v.indexName
           })
         }
         // 拖拽单个数据提交接口调用
-        dragStoreDatas(data).then(res => {
-          if (res) {
-            const id = res.obj // 存储数据后台返回的唯一数据 id
-            this.moveFn(v, id) // 拖拽数据交互成功后渲染列表函数
-          }
-          this.loading = false
-        }).catch(() => {
-          this.loading = false
-        })
+        dragStoreDatas(data)
+          .then((res) => {
+            if (res) {
+              const id = res.obj // 存储数据后台返回的唯一数据 id
+              this.moveFn(v, id) // 拖拽数据交互成功后渲染列表函数
+            }
+            this.loading = false
+          })
+          .catch(() => {
+            this.loading = false
+          })
       }
     },
     //  拖拽数据渲染
     moveFn (v, id) {
-      const fn = this.firstdatas.findIndex(
-        (item) => item.parentId === v.id2
-      )
+      const fn = this.firstdatas.findIndex((item) => item.parentId === v.id2)
       if (fn !== -1) {
         this.firstdatas[fn].child.push({
           id: id, // 拖拽数据提交成功以后返回的 id 供修改用
@@ -610,72 +702,80 @@ export default {
         })
       }
       // 拖拽数据提交接口调用
-      dragStoreDatas(data).then(res => {
-        if (res) {
-          this.$message({
-            message: '修改成功~',
-            type: 'success'
-          })
-          this['projectsMangement/storedragdata']({
-            data: this.firstdatas,
-            index: this.tabIndex
-          })
-        }
-        this.loading = false
-      }).catch(() => {
-        this.loading = false
-      })
+      dragStoreDatas(data)
+        .then((res) => {
+          if (res) {
+            this.$message({
+              message: '修改成功~',
+              type: 'success'
+            })
+            this['projectsMangement/storedragdata']({
+              data: this.firstdatas,
+              index: this.tabIndex
+            })
+          }
+          this.loading = false
+        })
+        .catch(() => {
+          this.loading = false
+        })
     },
     // 单个删除
     delButton (itm, index, idx) {
       const data = [itm.id]
-      delStoreDatas(data).then(res => {
-        if (res) {
-          this.firstdatas[index].child.splice(idx, 1)
-          if (this.firstdatas[index].child.length === 0) {
-            this.firstdatas.splice(index, 1)
+      delStoreDatas(data)
+        .then((res) => {
+          if (res) {
+            this.firstdatas[index].child.splice(idx, 1)
+            if (this.firstdatas[index].child.length === 0) {
+              this.firstdatas.splice(index, 1)
+            }
+            this['projectsMangement/storedragdata']({
+              data: this.firstdatas,
+              index: this.tabIndex
+            })
+            this.$message({
+              message: res.msg,
+              type: 'success'
+            })
           }
-          this['projectsMangement/storedragdata']({
-            data: this.firstdatas,
-            index: this.tabIndex
-          })
-          this.$message({
-            message: res.msg,
-            type: 'success'
-          })
-        }
-      }).catch(() => {})
+        })
+        .catch(() => {})
     },
     // 整体删除
     delAll (item, index) {
       const data = []
-      item.child.map(n => {
+      item.child.map((n) => {
         data.push(n.id)
       })
-      delStoreDatas(data).then(res => {
-        if (res) {
-          this.firstdatas.splice(index, 1)
-          this['projectsMangement/storedragdata']({
-            data: this.firstdatas,
-            index: this.tabIndex
-          })
-          this.$message({
-            message: res.msg,
-            type: 'success'
-          })
-        }
-      }).catch(() => {})
+      delStoreDatas(data)
+        .then((res) => {
+          if (res) {
+            this.firstdatas.splice(index, 1)
+            this['projectsMangement/storedragdata']({
+              data: this.firstdatas,
+              index: this.tabIndex
+            })
+            this.$message({
+              message: res.msg,
+              type: 'success'
+            })
+          }
+        })
+        .catch(() => {})
     },
     // 取首次点击显示弹窗函数
     getButton (itm, index, idx) {
       // console.log(itm)
+      this.secondIds = itm.secondId // 存储二级id
       this.fieldTypeP = itm.fieldType
       this.outerVisible = true
       this.optionsTime = itm.list || []
       this.objPop.id = itm.id
       this.objPop.time = itm.dataRule.indexId
       this.objPop.times = itm.rayingStatus // 映射条件
-      this.objPop.condition = ''
+      this.objPop.condition = itm.dataRule.condition || '全部条件'
+      this.conditionObj = itm.dataRule?.list ?? []
 
       this.outPopTitle = {
         T1: itm.secondName,
@@ -689,31 +789,85 @@ export default {
     mouseLeave () {
       this.del = 888
     },
-
     // 单击内部弹窗显示
-    handleIconClick () {
+    handleIconClick (item, index) {
+      this.innerDataLists = []
       this.innerVisible = true
+      this.innerLoading = true
+      this.listIndex = index
+      // 内弹窗数据
+      const data = {
+        id: this.secondIds
+      }
+      getInsidePopDatas(data)
+        .then((res) => {
+          if (res?.obj) {
+            this.innerDataLists = res.obj || []
+          }
+          this.innerLoading = false
+        })
+        .catch(() => {
+          this.innerLoading = false
+        })
     },
     // 添加筛选条件
     addButton () {
       this.conditionObj.push({
-        stateType1: '',
-        stateType2: '',
-        stateType3: ''
+        id: '', //
+        name: '',
+        dataOptionType: null,
+        option: '', // 中间选项赋值字段
+        dataOption: [], // 选项级数据
+        // 第三级数据
+        listThree: {
+          value: null,
+          date1: '',
+          date2: ''
+        }
       })
     },
     // 删除筛选条件
     deleteButton (index) {
       this.conditionObj.splice(index, 1)
     },
-    // 内层弹窗
-    innerButton () {},
+    // 内层弹窗选中点击
+    innerButton (n) {
+      // console.log(n)
+      if (n.dataOptionType === 4) { // 获取下拉数据
+        getDataOption(n.dataItemCode).then(res => {
+          // console.log(res)
+          if (res?.obj) {
+            this.conditionObj[this.listIndex].dataOption = res.obj || []
+          }
+        })
+      }
+      this.innerVisible = false
+      this.conditionObj[this.listIndex].id = n.id
+      this.conditionObj[this.listIndex].name = n.dataItemName
+      this.conditionObj[this.listIndex].dataOptionType = n.dataOptionType // 类型判断
+      this.conditionObj[this.listIndex].option = '' // 类型判断
+      this.conditionObj[this.listIndex].listThree = {
+        value: null,
+        date1: '',
+        date2: ''
+      } // 类型判断
+    },
     // 弹窗确认提交
     commitDataPop () {
       let indexName = null
-      this.optionsTime.map(item => {
+      this.optionsTime.map((item) => {
         if (this.objPop.time === item.id) {
           indexName = item.dataItemName
+        }
+      })
+      this.conditionObj.map(item => {
+        if (getFormType(item.dataOptionType) === 'date' &&
+          (item.option === '区间外' || item.option === '区间内')) {
+          item.listThree.value = [item.listThree.date1, item.listThree.date2]
+        }
+        if (item.dataOptionType === 1 &&
+          (item.option === '区间外' || item.option === '区间内')) {
+          item.listThree.value = [item.listThree.date1, item.listThree.date2]
         }
       })
       const data = {
@@ -722,29 +876,31 @@ export default {
           indexId: this.objPop.time,
           indexName: indexName,
           times: this.objPop.times,
-          condition: this.objPop.condition
+          condition: this.objPop.condition,
+          list: this.conditionObj
         })
       }
       // console.log(data)
-      dragStoreDatas(data).then(res => {
-        if (res) {
-          this.$message({
-            message: '修改成功~',
-            type: 'success'
-          })
-          this.outerVisible = false
-          this.getAllListsStateDatas()
-          this['projectsMangement/storedragdata']({
-            data: this.firstdatas,
-            index: this.tabIndex
-          })
-        }
-      }).catch(() => {})
+      dragStoreDatas(data)
+        .then((res) => {
+          if (res) {
+            this.$message({
+              message: '修改成功~',
+              type: 'success'
+            })
+            this.outerVisible = false
+            this.getAllListsStateDatas()
+            this['projectsMangement/storedragdata']({
+              data: this.firstdatas,
+              index: this.tabIndex
+            })
+          }
+        })
+        .catch(() => {})
     },
     selectchange (val) {
       console.log(val)
     }
-
   }
 }
 </script>
@@ -874,11 +1030,18 @@ export default {
       }
     }
   }
+
   .dialog-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
+}
+// 内弹窗
+.body-dialog-pop{
+   .inner-con{
+      min-height: 352px;
+    }
 }
 </style>
 <style lang="scss">
@@ -931,9 +1094,16 @@ export default {
   .el-dialog__body {
     border-top: 1px solid #e6e6e6;
     border-bottom: 1px solid #e6e6e6;
+    .inner-con{
+      .el-button--text{
+        margin-left: 0px;
+        margin-right: 15px;
+      }
+    }
   }
   .el-dialog__footer {
     padding-bottom: 10px !important;
   }
+
 }
 </style>

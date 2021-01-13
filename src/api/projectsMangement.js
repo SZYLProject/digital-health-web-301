@@ -160,3 +160,22 @@ export function delStoreDatas (data) {
     data: data
   })
 }
+
+// // 获取内弹窗数据
+export function getInsidePopDatas (data) {
+  const { id } = data
+  return request({
+    url: `/acl/api/dataItem/getSearchAllItem?id=${id}`,
+    method: 'GET',
+    params: {},
+    timeout: 10 * 1000
+  })
+}
+
+// 根据数据字典数据项编码查询所属option选项
+export function getDataOption (code) {
+  return request({
+    url: `/acl/api/dataOption/list/${code}`,
+    method: 'GET'
+  })
+}
