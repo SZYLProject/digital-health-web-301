@@ -164,7 +164,7 @@
                              :on-remove="onRemove"
                              :show-file-list="true"
                              :on-exceed="onExceed"
-                             :file-list="fileList"
+                             :file-list="form.fileList"
                              multiple>
                     <el-button size="small">
                       <i class="el-icon-upload el-icon--left"></i>
