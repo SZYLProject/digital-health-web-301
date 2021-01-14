@@ -9,13 +9,13 @@
                  @click="addTree(node.id)"
                  size="medium"
                  plain></el-button>
-      <el-button v-if="node.children&&node.children.length>1&&condition==='and'"
+      <el-button v-if="node.children&&node.children.length>1&&condition.opt==='AND'"
                  type="primary"
-                 @click="change('or')"
+                 @click="change(node.id,'OR')"
                  size="small">并</el-button>
       <el-button type="success"
-                 @click="change('and')"
-                 v-if="node.children&&node.children.length>1&&condition==='or'"
+                 @click="change(node.id,'AND')"
+                 v-if="node.children&&node.children.length>1&&condition.opt==='OR'"
                  size="small">或</el-button>
     </div>
 
@@ -43,12 +43,12 @@
       <div class="andOr"
            v-if="node.children&&node.children.length>1">
         <el-button type="primary"
-                   @click="change('or')"
-                   v-if="condition==='and'"
+                   @click="change('OR')"
+                   v-if="condition.opt==='AND'"
                    size="small">并</el-button>
         <el-button type="success"
-                   @click="change('and')"
-                   v-if="condition==='or'"
+                   @click="change('AND')"
+                   v-if="condition.opt==='OR'"
                    size="small">或</el-button>
       </div>
       <div class="addIcon">
@@ -62,44 +62,165 @@
     </div>
     <div v-else
          class="tree-form-block">
-      <el-select placeholder="请选择模块"
-                 size="small"
-                 v-model="select"
-                 style="width:150px">
-        <el-option label="姓名"
-                   :value="'姓名'"></el-option>
-        <el-option label="性别"
-                   :value="'性别'"></el-option>
-        <el-option label="年龄"
-                   :value="'年龄'"></el-option>
-      </el-select>
-      <el-select placeholder="请选择数据项"
-                 size="small"
-                 v-model="select"
-                 style="width:60px;margin:0 10px">
-        <el-option label="并且"
-                   :value="'数据'"></el-option>
-        <el-option label="或者"
-                   :value="'数据'"></el-option>
-        <el-option label="排除"
-                   :value="'数据'"></el-option>
-      </el-select>
-      <el-input v-model="select"
-                size="small"
-                style="width:180px;margin-right:20px"
-                placeholder="请输入内容"></el-input>
-      <el-button type="primary"
-                 size="small"
-                 @click="confirm(node.data)">确认</el-button>
-      <el-button size="small"
-                 @click="cancel(node.id)">取消</el-button>
+      <el-row :gutter="10">
+        <!-- 搜索主题 -->
+        <el-col style="width:150px">
+          <el-input placeholder="搜索项"
+                    v-model="condition.name"
+                    size="small"
+                    style="width: 130px"
+                    clearable
+                    :readonly="true">
+            <i slot="suffix"
+               class="el-icon-plus el-input__icon pointer"
+               @click="handleIconClick(node)">
+            </i>
+          </el-input>
+        </el-col>
+
+        <!-- 搜索条件 -->
+        <el-col :span="4">
+          <el-select placeholder="关系"
+                     size="small"
+                     :disabled="!condition.name"
+                     v-model="condition.itselfOpt">
+            <el-option v-for="option in getOption(condition.dataOptionType)"
+                       :key="option"
+                       :label="option"
+                       :value="option"></el-option>
+
+          </el-select>
+        </el-col>
+
+        <!-- 值域范围 -->
+        <el-col :span="6">
+          <!--根据type显示不同的框-->
+
+          <!--radio-->
+          <el-radio-group :disabled="!condition.name"
+                          v-model="condition.value"
+                          size="small"
+                          v-if="getFormType(condition.dataOptionType) === 'radio'">
+            <el-radio label="'是'">是</el-radio>
+            <el-radio label="'否'">否</el-radio>
+          </el-radio-group>
+
+          <!--select-->
+          <el-select :disabled="!condition.name"
+                     v-model="condition.value"
+                     placeholder="请选择"
+                     size="small"
+                     v-else-if="getFormType(condition.dataOptionType) === 'select'">
+            <el-option v-for="(listItem,index) in condition.dataOptionType"
+                       :key="index"
+                       :label="listItem"
+                       :value="listItem">
+            </el-option>
+          </el-select>
+
+          <!--date-->
+          <!-- 非区间 -->
+          <el-date-picker :disabled="!condition.name"
+                          v-model="condition.value"
+                          type="datetime"
+                          placeholder="选择日期时间"
+                          size="small"
+                          value-format="yyyy-MM-dd HH:mm:ss"
+                          style="width:100%"
+                          v-else-if="getFormType(condition.dataOptionType) === 'date' &&
+                            (condition.itselfOpt!=='区间外'&&condition.itselfOpt !== '区间内')">
+          </el-date-picker>
+          <!-- 区间内 -->
+          <el-row v-else-if="getFormType(condition.dataOptionType) === 'date' &&
+                            (condition.itselfOpt==='区间外' || condition.itselfOpt === '区间内')"
+                  style="margin-bottom:0">
+            <el-col :span="11">
+              <el-date-picker :disabled="!condition.name"
+                              v-model="condition.date1"
+                              type="datetime"
+                              value-format="yyyy-MM-dd HH:mm:ss"
+                              placeholder="选择日期时间"
+                              size="small"
+                              style="width:100%">
+              </el-date-picker>
+            </el-col>
+            <el-col class="line"
+                    :span="2">-</el-col>
+            <el-col :span="11">
+              <el-date-picker :disabled="!condition.name"
+                              v-model="condition.date2"
+                              type="datetime"
+                              value-format="yyyy-MM-dd HH:mm:ss"
+                              placeholder="选择日期时间"
+                              size="small"
+                              style="width:100%">
+              </el-date-picker>
+            </el-col>
+          </el-row>
+          <!--input-->
+          <!-- 区间内 -->
+          <el-row v-else-if="condition.dataOptionType===1 &&
+                            (condition.itselfOpt==='区间外' || condition.itselfOpt === '区间内')"
+                  style="margin-bottom:0">
+            <el-col :span="11">
+              <el-input size="small"
+                        :disabled="!condition.name"
+                        placeholder="最小值"
+                        v-model="condition.date1">
+              </el-input>
+            </el-col>
+            <el-col class="line"
+                    :span="2">-</el-col>
+            <el-col :span="11">
+              <el-input size="small"
+                        :disabled="!condition.name"
+                        placeholder="最大值"
+                        v-model="condition.date2">
+              </el-input>
+            </el-col>
+          </el-row>
+          <!-- 非区间 -->
+          <el-input size="small"
+                    :disabled="!condition.name"
+                    placeholder="对比值"
+                    v-model="condition.value"
+                    v-else>
+          </el-input>
+          <!--根据type显示不同的框-->
+        </el-col>
+
+        <!-- 操作按钮 -->
+        <el-col :span="4">
+          <el-button type="primary"
+                     size="small"
+                     @click="confirm(node.data)">确认</el-button>
+          <el-button size="small"
+                     @click="cancel(node.id)">取消</el-button>
+        </el-col>
+      </el-row>
+
     </div>
+    <!-- 弹窗 -->
+    <el-dialog width="50%"
+               :visible.sync="searchTitVisi"
+               append-to-body>
+      <DataDictionaryPop @dialogDatas="dialogDatas"
+                         :openDialog="searchTitVisi"
+                         :popArguments='popArguments' />
+    </el-dialog>
   </div>
 </template>
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, createNamespacedHelpers } from 'vuex'
+
+import { getDataOption } from '@/api/caseSearch'
+import { getOption, getFormType } from '@/utils/searchRelation'
+import DataDictionaryPop from '@/components/DataDictionaryPop' // 引入弹窗
+import { stringToArr, deepClone } from '@/utils/index'
+const { mapMutations, mapActions } = createNamespacedHelpers('conditionTree')
 export default {
   name: 'linkNode',
+  components: { DataDictionaryPop },
   props: {
     node: {
       type: Object
@@ -122,43 +243,133 @@ export default {
   },
   data () {
     return {
-      condition: 'and',
-      select: '',
-      show: false
-
+      condition: {
+        opt: 'AND', // 并或关系
+        indexName: '', // 后台需要的tableName
+        name: '', // 前台回显的dataItemName
+        key: '', // 后台需要的fieldName
+        fieldId: '', // 排除历史搜索id
+        dataOptionType: 0, // 确定条件关系类型
+        itselfOpt: '', // 条件关系
+        value: '', // 一个输入框
+        date1: '', // 两个输入框时回显
+        date2: '', // 两个输入框时回显
+        dataOption: [] // 下拉选项
+      },
+      popArguments: [],
+      popArg: [],
+      show: false,
+      searchTitVisi: false // 是否显示搜索主题弹窗
     }
   },
   methods: {
-    ...mapMutations(['conditionTree/FLATTEN_DATA']),
+    ...mapMutations(['syncFlattenData']),
+    ...mapActions(['upadteFlattenData']),
+    getOption, // 根据类型展示不同选项
+    getFormType, // 根据类型展示不同组件
     addTree (pid) {
       var timestamp = new Date().getTime()
       const obj = {
-        id: timestamp,
-        name: '检查',
-        parent: pid,
+        id: String(timestamp),
+        parentId: pid,
+        value: '',
         edit: true,
         num: 0
       }
       this.flattenData.push(obj)
-      this['conditionTree/FLATTEN_DATA'](this.flattenData)
+      this.syncFlattenData(this.flattenData)
     },
     confirm (data) {
-      if (this.select) {
-        data.name = this.select
-      }
-
+      Object.assign(data, this.condition)
       data.edit = false
-      this['conditionTree/FLATTEN_DATA'](this.flattenData)
-      this.select = ''
+      console.log(this.flattenData)
+      const summitData = deepClone(this.flattenData)
+      summitData.map((item, index) => {
+        if (getFormType(item.dataOptionType) === 'date' &&
+          (item.type === '区间外' || item.type === '区间内')) {
+          item.value = [item.date1, item.date2]
+        } else {
+          item.value = stringToArr(item.value, 'toArray')
+        }
+        if (item.dataOptionType === 1 &&
+          (item.type === '区间外' || item.type === '区间内')) {
+          item.value = [item.date1, item.date2]
+        }
+      })
+      this.upadteFlattenData(summitData)
     },
     cancel (id) {
       this.flattenData.splice(this.flattenData.findIndex(item => item.id === id), 1)
-      this['conditionTree/FLATTEN_DATA'](this.flattenData)
+      this.syncFlattenData(this.flattenData)
     },
-    change (val) {
-      this.condition = val
-    }
+    change (id, val) {
+      this.condition.opt = val
+      this.flattenData.forEach(item => {
+        if (item.id === id) {
+          item.opt = val
+        }
+      })
+      console.log(this.flattenData)
+      const summitData = deepClone(this.flattenData)
+      summitData.map((item, index) => {
+        if (getFormType(item.dataOptionType) === 'date' &&
+          (item.type === '区间外' || item.type === '区间内')) {
+          item.value = [item.date1, item.date2]
+        } else {
+          item.value = stringToArr(item.value, 'toArray')
+        }
+        if (item.dataOptionType === 1 &&
+          (item.type === '区间外' || item.type === '区间内')) {
+          item.value = [item.date1, item.date2]
+        }
+      })
+      this.upadteFlattenData(summitData)
+    },
 
+    // 获取搜索主题
+    dialogDatas (val) {
+      if (val) {
+        this.$set(val, 'value', val.dataItemName)
+        this.condition.indexName = val.tableName
+        this.condition.fieldId = val.id
+        this.condition.name = val.dataItemName
+        this.condition.key = val.fieldName
+        this.condition.dataOptionType = val.dataOptionType
+        // if 类型是4 需要接口获取option
+        if (val.dataOptionType === 4) {
+          getDataOption(val.dataItemCode).then(res => {
+            const list = []
+            res.obj.map(v => {
+              list.push(v.dataOptionValue)
+            })
+            this.condition.dataOption = list
+          })
+        }
+        this.searchTitVisi = false
+      }
+    },
+
+    // 循父Id
+    checkPID (id) {
+      this.flattenData.forEach(item => {
+        if (item.id === id) {
+          this.popArg.push(item.fieldId)
+          if (item.parent !== 'root') {
+            this.checkPID(item.parent)
+          }
+        }
+      })
+    },
+    // 点击+打开字典弹出层
+    handleIconClick (node) {
+      this.popArguments = []
+      this.popArg = []
+      if (node.parent.id !== 'root') {
+        this.checkPID(node.parent.id)
+      }
+      this.popArguments = stringToArr(this.popArg, 'toString')
+      this.searchTitVisi = true
+    }
   }
 }
 </script>
@@ -173,7 +384,7 @@ export default {
     position: absolute;
     top: 14px;
     left: -20px;
-    width:20px;
+    width: 20px;
     height: 100%;
     border-style: solid none none none;
     border-width: 2px;

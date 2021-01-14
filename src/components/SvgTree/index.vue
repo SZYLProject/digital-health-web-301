@@ -33,7 +33,7 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters } from 'vuex'
 import { debounce, uniqueArr } from '@/utils'
 import linkLine from './linkLine'
 import linkNode from './linkNode'
@@ -124,19 +124,6 @@ export default {
     this.drawTree()
   },
   methods: {
-    ...mapMutations(['conditionTree/FLATTEN_DATA']),
-    addTree (pid) {
-      var timestamp = new Date().getTime()
-      const obj = {
-        id: timestamp,
-        name: '1',
-        parent: pid,
-        edit: true,
-        num: 0
-      }
-      this.flattenData.push(obj)
-      this['conditionTree/FLATTEN_DATA'](this.flattenData)
-    },
     formatPx (d) {
       return (d + '').replace(/[px]/gi, '') + 'px'
     },
@@ -172,7 +159,7 @@ export default {
     innerDrawTree () {
       let hierarchyNode
       if (this.isFlatten) {
-        hierarchyNode = this.$d3.stratify().id(d => d.id).parentId(d => d.parent)(this.flattenData)
+        hierarchyNode = this.$d3.stratify().id(d => d.id).parentId(d => d.parentId)(this.flattenData)
       } else {
         hierarchyNode = this.$d3.hierarchy(this.treeData)
       }

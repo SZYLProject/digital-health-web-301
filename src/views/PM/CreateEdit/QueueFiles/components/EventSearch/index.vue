@@ -387,7 +387,7 @@
     <!-- 弹窗 -->
     <el-dialog width="50%"
                :visible.sync="searchTitVisi" append-to-body>
-      <search-pop-com @dialogDatas="dialogDatas"
+      <DataDictionaryPop @dialogDatas="dialogDatas"
                       :openDialog="searchTitVisi"
                       :popArguments='popArguments' />
     </el-dialog>
@@ -398,7 +398,7 @@
 
 import { mapGetters, mapMutations } from 'vuex'
 import { advancedSearchHistoryDatas, getDataOption, advancedSearchCommit } from '@/api/caseSearch'
-import SearchPopCom from './SearchPopCom' // 引入弹窗
+import DataDictionaryPop from '@/components/DataDictionaryPop' // 引入弹窗
 import { getOption, getFormType } from '@/utils/searchRelation'
 import { stringToArr, deepClone } from '@/utils/index'
 
@@ -475,7 +475,7 @@ export default {
       }
     }
   },
-  components: { SearchPopCom },
+  components: { DataDictionaryPop },
   created () {
     this.personNumber = this.advanceSearchListDatas ? this.advanceSearchListDatas.personNumber : 0 // 患者
     this.visitNumber = this.advanceSearchListDatas ? this.advanceSearchListDatas.visitNumber : 0 // 病例数

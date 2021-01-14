@@ -165,7 +165,7 @@ import {
 } from '@/api/caseSearch'
 
 export default {
-  name: 'searchPopCom',
+  name: 'DataDictionaryPop',
   data () {
     return {
       searchInput: '', // 输入的搜索关键字
