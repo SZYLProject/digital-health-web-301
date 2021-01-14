@@ -33,11 +33,11 @@ export function fileUploading (data) {
 
 // 删除上传的文件
 export function deleteUploadFiles (data) {
-  const { fileName } = data
+  const { fileName, id } = data
   return request({
-    url: `/crp-project/file/v1/deleteFile/${fileName}`,
-    method: 'get',
-    params: {}
+    url: `/crp-project/file/v1/deleteFile?fileName=${fileName}&id=${id}`,
+    method: 'post',
+    data: data
   })
 }
 
@@ -158,5 +158,24 @@ export function delStoreDatas (data) {
     url: '/crp-project/projectFields/v1/delField',
     method: 'post',
     data: data
+  })
+}
+
+// // 获取内弹窗数据
+export function getInsidePopDatas (data) {
+  const { id } = data
+  return request({
+    url: `/acl/api/dataItem/getSearchAllItem?id=${id}`,
+    method: 'GET',
+    params: {},
+    timeout: 10 * 1000
+  })
+}
+
+// 根据数据字典数据项编码查询所属option选项
+export function getDataOption (code) {
+  return request({
+    url: `/acl/api/dataOption/list/${code}`,
+    method: 'GET'
   })
 }
