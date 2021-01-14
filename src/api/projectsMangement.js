@@ -33,11 +33,11 @@ export function fileUploading (data) {
 
 // 删除上传的文件
 export function deleteUploadFiles (data) {
-  const { fileName } = data
+  const { fileName, id } = data
   return request({
-    url: `/crp-project/file/v1/deleteFile/${fileName}`,
-    method: 'get',
-    params: {}
+    url: `/crp-project/file/v1/deleteFile?fileName=${fileName}&id=${id}`,
+    method: 'post',
+    data: data
   })
 }
 

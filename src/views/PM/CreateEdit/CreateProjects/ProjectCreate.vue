@@ -394,12 +394,13 @@ export default {
     },
     // 删除上传的文件
     onRemove (file) {
-      console.log(file)
+      // console.log(file)
       const deleteFile = this.form.fileList.filter(
         (item) => file.name === item.oldFileName
       )[0].fileName // 返回被删除的对象
       const data = {
-        fileName: deleteFile
+        fileName: deleteFile,
+        id: file.id || ''
       }
       deleteUploadFiles(data).then((res) => {
         if (res) {
@@ -434,6 +435,7 @@ export default {
             this.form.fileList[index].name = item.oldFileName
             this.form.fileList[index].url = item.filePath
           })
+          // console.log(this.form)
         }
       })
     },
