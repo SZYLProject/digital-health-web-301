@@ -299,11 +299,11 @@ export default {
           this.condition = item
         }
       })
-      this.syncFlattenData(this.flattenData)
+      this.updateFlattenData(this.flattenData)
     },
     deleteTree (id) {
       this.flattenData.splice(this.flattenData.findIndex(item => item.id === id), 1)
-      this.syncFlattenData(this.flattenData)
+      this.updateFlattenData(this.flattenData)
     },
     addTree (pid) {
       var timestamp = new Date().getTime()
