@@ -340,6 +340,7 @@ export default {
         this.flattenData.splice(this.flattenData.findIndex(item => item.id === data.id), 1)
         this.syncFlattenData(this.flattenData)
       } else {
+        this.edit = false
         data.edit = false
         this.syncFlattenData(this.flattenData)
       }
@@ -434,7 +435,7 @@ export default {
   }
 }
 .tree-form-block {
-  // position: absolute;
+  position: absolute;
   text-align: left;
   background: #ffffff;
   border: 1px solid #ddd;
