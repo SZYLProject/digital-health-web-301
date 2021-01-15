@@ -299,7 +299,7 @@ export default {
           this.condition = item
         }
       })
-      this.updateFlattenData(this.flattenData)
+      this.syncFlattenData(this.flattenData)
     },
     deleteTree (id) {
       this.flattenData.splice(this.flattenData.findIndex(item => item.id === id), 1)
@@ -442,7 +442,7 @@ export default {
   padding: 8px 12px;
   width: 600px;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
-  z-index: 999;
+  z-index: 9999;
 }
 .num {
   position: absolute;
