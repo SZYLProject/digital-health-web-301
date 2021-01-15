@@ -2,8 +2,8 @@
   <div class="disease-container">
     <el-button class="disease-button"
                :disabled="$route.name==='View360'"
-               round
                size="small"
+               plain
                @click="dialogFormVisible = true">
       <span class="text">{{dataSourceValue.sourceName || '选择病种'}}</span>
       <i class="el-icon-arrow-down el-icon--right"></i>

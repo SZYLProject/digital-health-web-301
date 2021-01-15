@@ -117,34 +117,39 @@ export default {
         xAxis: {
           type: 'category',
           data: this.dataX,
+          axisLabel: {
+            color: '#999999'
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#E6E6E6'
+            }
+          },
           splitLine: {
             show: false
           },
           axisTick: {
-            show: false
-          },
-          axisLine: {
             show: false
           }
         },
         yAxis: {
           type: 'value',
           axisLabel: {
-            color: '#999',
-            textStyle: {
-              fontSize: 12
+            color: '#999999'
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#E6E6E6'
             }
           },
           splitLine: {
-            show: true,
             lineStyle: {
-              color: '#F3F4F4'
+              color: '#f5f5f5',
+              type: 'dashed'
             }
           },
+
           axisTick: {
-            show: false
-          },
-          axisLine: {
             show: false
           }
         },

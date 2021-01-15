@@ -38,9 +38,24 @@
                      size="mini"></el-button>
         </div>
         <!-- 标签信息 -->
-        <span slot="reference"
-              style="max-width:100px"
-              class="ellipsis pointer">{{node.data.name}}</span>
+        <!-- <div> -->
+        <el-tooltip placement="bottom"
+                    slot="reference"
+                    style="max-width:100px"
+                    class="ellipsis pointer"
+                    effect="light"
+                    popper-class="atooltip">
+          <div slot="content"><span>{{node.data.name}}</span>
+            <span style="margin:0 5px">{{node.data.itselfOpt}}</span>
+            <span>{{stringToArr(node.data.value, 'toString')}}</span>
+          </div>
+          <div>
+            <span>{{node.data.name}}</span>
+            <span style="margin:0 5px">{{node.data.itselfOpt}}</span>
+            <span>{{stringToArr(node.data.value, 'toString')}}</span>
+          </div>
+        </el-tooltip>
+        <!-- </div> -->
       </el-popover>
       <div class="andOr"
            v-if="node.children&&node.children.length>1">
@@ -271,6 +286,7 @@ export default {
     ...mapActions(['updateFlattenData']),
     getOption, // 根据类型展示不同选项
     getFormType, // 根据类型展示不同组件
+    stringToArr, // 格式转换
     addTree (pid) {
       var timestamp = new Date().getTime()
       const obj = {
@@ -286,7 +302,6 @@ export default {
     confirm (data) {
       Object.assign(data, this.condition)
       data.edit = false
-      console.log(this.flattenData)
       const summitData = deepClone(this.flattenData)
       summitData.map((item, index) => {
         if (getFormType(item.dataOptionType) === 'date' &&
@@ -307,14 +322,12 @@ export default {
       this.syncFlattenData(this.flattenData)
     },
     change (id, val) {
-      console.log(id)
       this.condition.opt = val
       this.flattenData.forEach(item => {
         if (item.id === id) {
           item.opt = val
         }
       })
-      console.log(this.flattenData)
       const summitData = deepClone(this.flattenData)
       summitData.map((item, index) => {
         if (getFormType(item.dataOptionType) === 'date' &&
@@ -367,6 +380,7 @@ export default {
     },
     // 点击+打开字典弹出层
     handleIconClick (node) {
+      console.log(node)
       this.popArguments = []
       this.popArg = []
       if (node.parent.id !== 'root') {

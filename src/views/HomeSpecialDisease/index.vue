@@ -391,6 +391,7 @@ export default {
       background: #ffffff;
       position: relative;
       margin-bottom: 15px;
+      border-radius: 2px;
       .stomach-2 {
         width: 80px;
         height: 80px;

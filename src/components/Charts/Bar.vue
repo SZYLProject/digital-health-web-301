@@ -119,8 +119,21 @@ export default {
           {
             type: this.direction ? 'value' : 'category',
             axisLabel: {
+              color: '#999999',
               // interval: 0, // 横轴信息全部显示
               rotate: -40 // -30度角倾斜显示
+            }, // 设置轴线的属性
+            axisLine: {
+              lineStyle: {
+                color: '#E6E6E6'
+              }
+            },
+            splitLine: {
+              show: false,
+              lineStyle: {
+                color: '#f5f5f5',
+                type: 'dashed'
+              }
             },
             data: this.dataX
           }
@@ -128,6 +141,24 @@ export default {
         yAxis: [
           {
             type: this.direction ? 'category' : 'value',
+            axisLabel: {
+              color: '#999999'
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#E6E6E6'
+              }
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: '#f5f5f5',
+                type: 'dashed'
+              }
+            },
+            nameTextStyle: {
+              color: '#999999'
+            },
             name: this.nameY,
             data: this.dataY
           }

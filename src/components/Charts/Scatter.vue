@@ -104,7 +104,13 @@ export default {
           type: 'value',
           scale: true,
           axisLabel: {
+            color: '#999999',
             formatter: '{value}'
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#E6E6E6'
+            }
           },
           splitLine: {
             show: false,
@@ -117,10 +123,17 @@ export default {
           type: 'value',
           scale: true,
           axisLabel: {
+            color: '#999999',
             formatter: '{value}'
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#E6E6E6'
+            }
           },
           splitLine: {
             lineStyle: {
+              color: '#f5f5f5',
               type: 'dashed'
             }
           }

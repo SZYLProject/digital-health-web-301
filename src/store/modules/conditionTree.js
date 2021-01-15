@@ -8,7 +8,7 @@ const state = {
       name: 'root',
       parentId: '',
       edit: false,
-      value: [],
+      value: '',
       opt: 'AND'
     }
   ]

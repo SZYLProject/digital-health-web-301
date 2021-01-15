@@ -5,14 +5,16 @@
       <div class="title">
         <h1>队列入排</h1>
         <span class="right right-button">
-          <el-button size="mini" @click.native="goPrev">上一步</el-button>
-          <el-button size="mini" type="primary" @click.native="nextStep"
-            >下一步</el-button
-          >
+          <el-button size="mini"
+                     @click.native="goPrev">上一步</el-button>
+          <el-button size="mini"
+                     type="primary"
+                     @click.native="nextStep">下一步</el-button>
         </span>
       </div>
       <div class="queue-content">
-        <el-scrollbar style="height: 100%" ref="scroll">
+        <el-scrollbar style="height: 100%"
+                      ref="scroll">
           <ul class="ul-l">
             <!-- @mouseenter="mouseEnter"
                 @mouseleave="mouseLeave" -->
@@ -21,29 +23,25 @@
                 :class="{ actives: num === index ? true:false }"
                 :key="index">
               <div class="ul-li-d1">
-                <el-tag
-                  closable
-                  class="el-tags"
-                  :disable-transitions="true"
-                  v-if="idx !== index"
-                  @close="handleClose(item,index)"
-                >
-                  <span class="sn" @click="correctTag(item,index)">
-                    {{ item.groupName }}</span
-                  >
+                <el-tag closable
+                        class="el-tags"
+                        :disable-transitions="true"
+                        v-if="idx !== index"
+                        @close="handleClose(item,index)">
+                  <span class="sn"
+                        @click="correctTag(item,index)">
+                    {{ item.groupName }}</span>
                 </el-tag>
-                <el-input
-                  class="input-new-tag"
-                  v-else
-                  placeholder="请输入修改名称"
-                  v-model="item.groupName"
-                  ref="saveTagInput"
-                  size="small"
-                  v-fo
-                  @focus="handleFocus(item.groupName)"
-                  @keyup.enter.native="handleInputConfirm(index)"
-                  @blur="handleInputConfirm(item,index)"
-                >
+                <el-input class="input-new-tag"
+                          v-else
+                          placeholder="请输入修改名称"
+                          v-model="item.groupName"
+                          ref="saveTagInput"
+                          size="small"
+                          v-fo
+                          @focus="handleFocus(item.groupName)"
+                          @keyup.enter.native="handleInputConfirm(index)"
+                          @blur="handleInputConfirm(item,index)">
                 </el-input>
               </div>
               <div class="ul-li-d2"
@@ -72,15 +70,15 @@
             </span>
           </div>
           <el-row>
-            <el-col :span="18" class="table-left">
+            <el-col :span="18"
+                    class="table-left">
               <!-- 条件树 -->
               <el-row class="left-col">
                 <el-col :span="6"><span>树形检索</span></el-col>
                 <el-col :span="12"><span>10,000 人</span></el-col>
                 <el-col :span="6">
-                  <el-button type="text" @click="openDialog('tree')"
-                    >编辑</el-button
-                  >
+                  <el-button type="text"
+                             @click="openDialog('tree')">编辑</el-button>
                 </el-col>
               </el-row>
               <!-- 事件 -->
@@ -88,7 +86,8 @@
                 <el-col :span="6"><span>事件检索</span></el-col>
                 <el-col :span="12"><span>10,000 人</span></el-col>
                 <el-col :span="6">
-                  <el-button type="text" @click="openDialog('event')">编辑</el-button>
+                  <el-button type="text"
+                             @click="openDialog('event')">编辑</el-button>
                 </el-col>
               </el-row>
               <!-- 精确搜索 -->
@@ -96,13 +95,13 @@
                 <el-col :span="6"><span>精确检索</span></el-col>
                 <el-col :span="12"><span>10,000 人</span></el-col>
                 <el-col :span="6">
-                  <el-button type="text" @click="openDialog('accurate')"
-                    >编辑</el-button
-                  >
+                  <el-button type="text"
+                             @click="openDialog('accurate')">编辑</el-button>
                 </el-col>
               </el-row>
             </el-col>
-            <el-col :span="6" class="table-right">
+            <el-col :span="6"
+                    class="table-right">
               <div class="text">
                 <p>纳入患者总数</p>
                 <p class="num">1,458</p>
@@ -120,13 +119,15 @@
             </span>
           </div>
           <el-row>
-            <el-col :span="18" class="table-left">
+            <el-col :span="18"
+                    class="table-left">
               <!-- 条件树 -->
               <el-row class="left-col">
                 <el-col :span="6"><span>树形检索</span></el-col>
                 <el-col :span="12"><span>10,000 人</span></el-col>
                 <el-col :span="6">
-                  <el-button type="text" @click="openDialog('tree')">编辑</el-button>
+                  <el-button type="text"
+                             @click="openDialog('tree')">编辑</el-button>
                 </el-col>
               </el-row>
               <!-- 事件 -->
@@ -134,7 +135,8 @@
                 <el-col :span="6"><span>事件检索</span></el-col>
                 <el-col :span="12"><span>10,000 人</span></el-col>
                 <el-col :span="6">
-                  <el-button type="text" @click="openDialog('event')">编辑</el-button>
+                  <el-button type="text"
+                             @click="openDialog('event')">编辑</el-button>
                 </el-col>
               </el-row>
               <!-- 精确搜索 -->
@@ -142,11 +144,13 @@
                 <el-col :span="6"><span>精确检索</span></el-col>
                 <el-col :span="12"><span>10,000 人</span></el-col>
                 <el-col :span="6">
-                  <el-button type="text" @click="openDialog('accurate')">编辑</el-button>
+                  <el-button type="text"
+                             @click="openDialog('accurate')">编辑</el-button>
                 </el-col>
               </el-row>
             </el-col>
-            <el-col :span="6" class="table-right">
+            <el-col :span="6"
+                    class="table-right">
               <div class="text">
                 <p>纳入患者总数</p>
                 <p class="num">1,458</p>
@@ -158,25 +162,19 @@
     </el-row>
     <!-- 确认纳入按钮 -->
     <div class="queue-submit">
-      <el-button type="primary" style="width: 100%"
-        >确认纳入<span class="n">11111</span>人</el-button
-      >
+      <el-button type="primary"
+                 style="width: 100%">确认纳入<span class="n">11111</span>人</el-button>
     </div>
     <!-- 弹窗组件 -- 条件树 -->
-    <ConditionTreePop
-      :treeDialogVisible="treeDialogVisible"
-      @treeDialogEmit="treeDialogEmit"
-    />
-     <!-- 事件搜索 -->
-    <EventSearchPop
-      :eventDialogVisible="eventDialogVisible"
-      @eventDialogEmit="eventDialogEmit"
-    />
+    <ConditionTreePop v-if="treeDialogVisible"
+                      :treeDialogVisible="treeDialogVisible"
+                      @treeDialogEmit="treeDialogEmit" />
+    <!-- 事件搜索 -->
+    <EventSearchPop v-if="eventDialogVisible" :eventDialogVisible="eventDialogVisible"
+                    @eventDialogEmit="eventDialogEmit" />
     <!-- 精确搜索 -->
-    <AccurateSearchPop
-      :accurDialogVisible="accurDialogVisible"
-      @accurDialogEmit="accurDialogEmit"
-    />
+    <AccurateSearchPop v-if="accurDialogVisible" :accurDialogVisible="accurDialogVisible"
+                       @accurDialogEmit="accurDialogEmit" />
   </div>
 </template>
 
@@ -216,7 +214,7 @@ export default {
   mounted () {
     this.getQueueDatas()
   },
-  destroyed () {},
+  destroyed () { },
   methods: {
     ...mapMutations(['']),
     openDialog (val) {
@@ -285,7 +283,7 @@ export default {
           })
           this.queueDatas.splice(index, 1)
         }
-      }).catch(() => {})
+      }).catch(() => { })
     },
     // 新增队列
     addQueue () {
@@ -321,7 +319,7 @@ export default {
             message: '修改成功!'
           })
         }
-      }).catch(() => {})
+      }).catch(() => { })
     },
 
     correctTag (item, index) {
@@ -361,7 +359,7 @@ export default {
   .right-button {
     top: 9px;
   }
-  .actives{
+  .actives {
     // border: 1px solid #0070f4!important;
     box-shadow: 0px 0px 10px 5px rgba(0, 112, 244, 0.2);
   }
@@ -501,8 +499,8 @@ export default {
           }
         }
       }
-      .el-button{
-        border: none!important;
+      .el-button {
+        border: none !important;
         padding: 30px 38px;
         background: rgba(0, 112, 244, 0.1);
       }

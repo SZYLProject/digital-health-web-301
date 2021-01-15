@@ -3,9 +3,16 @@
     <div class="top-message">
       <!-- 标题 -->
       <p class="title">
-        <img v-if="!isCollapse" :src="logos" class="logos" alt />
-        <img v-if="isCollapse" :src="logo" class="logo" alt="">
-        <span v-if="!isCollapse" class="title-item">{{ title }}</span>
+        <img v-if="!isCollapse"
+             :src="logos"
+             class="logos"
+             alt />
+        <img v-if="isCollapse"
+             :src="logo"
+             class="logo"
+             alt="">
+        <span v-if="!isCollapse"
+              class="title-item">{{ title }}</span>
       </p>
       <div class="user-master">
         <!-- <el-avatar class="user-photo" :size="!isCollapse ? 70 : 20" :src="user">
@@ -16,51 +23,43 @@
       </div>
 
       <!-- 专病库 -->
-      <div
-        class="inlineBlock"
-        style="display: block; text-align: center; margin-top: 15px"
-      >
-        <el-popover
-          placement="right"
-          width="1045"
-          ref="popover"
-          trigger="click"
-        >
-          <el-button v-if="!isCollapse" round slot="reference" size="mini">
+      <div class="inlineBlock"
+           style="display: block; text-align: center; margin-top: 15px">
+        <el-popover placement="right"
+                    width="1045"
+                    ref="popover"
+                    trigger="click">
+          <el-button v-if="!isCollapse"
+                     class="patientsButton"
+                     plain
+                     slot="reference"
+                     size="mini">
             <span class="text">{{
               dataSourceValue.sourceName || "选择病种"
             }}</span>
-            <i class="el-icon-arrow-right el-icon--right"></i>
+            <i class="el-icon-caret-right"></i>
           </el-button>
-          <el-button
-            v-else
-            slot="reference"
-            type="text"
-            style="padding: 0 5px"
-            class="patients"
-            >{{ dataSourceValue.sourceName || "选择病种" }}</el-button
-          >
+          <el-button v-else
+                     slot="reference"
+                     type="text"
+                     style="padding: 0 5px"
+                     class="patients">{{ dataSourceValue.sourceName || "选择病种" }}</el-button>
           <div class="popover-p">
             <!-- 已开通 -->
             <div class="open-a on">
               <p style="color: #0070f4">已开通</p>
               <ul class="ul">
-                <li
-                  v-for="(item, index) in deseaseList"
-                  :key="index"
-                  class="yes"
-                >
-                  <span class="pn-1" @click="patientCheck(item)">
-                    <img
-                      :src="require('@/assets/patients/a/' + item.id + '.png')"
-                      alt=""
-                    />
+                <li v-for="(item, index) in deseaseList"
+                    :key="index"
+                    class="yes">
+                  <span class="pn-1"
+                        @click="patientCheck(item)">
+                    <img :src="require('@/assets/patients/a/' + item.id + '.png')"
+                         alt="" />
                     <i>{{ item.sourceName }}</i>
                   </span>
-                  <span
-                    class="pn-2"
-                    v-if="String(currentIndx) === String(item.id)"
-                  >
+                  <span class="pn-2"
+                        v-if="String(currentIndx) === String(item.id)">
                     <i class="triangle-topright"></i>
                     <i class="el-icon-check check"></i>
                   </span>
@@ -71,12 +70,12 @@
             <div class="open-n on">
               <p style="color: #999999">未开通</p>
               <ul class="ul">
-                <li v-for="(item, index) in noOpen" :key="index" class="no">
+                <li v-for="(item, index) in noOpen"
+                    :key="index"
+                    class="no">
                   <span class="pn-1">
-                    <img
-                      :src="require('@/assets/patients/b/w' + index + '.png')"
-                      alt=""
-                    />
+                    <img :src="require('@/assets/patients/b/w' + index + '.png')"
+                         alt="" />
                     <i>{{ item }}</i>
                   </span>
                 </li>
@@ -84,10 +83,11 @@
             </div>
             <!-- 按钮 -->
             <div class="footer-button">
-              <el-button size="mini" @click.native="cancelBtn">取消</el-button>
-              <el-button type="primary" size="mini" @click.native="commitPatiId"
-                >确定</el-button
-              >
+              <el-button size="mini"
+                         @click.native="cancelBtn">取消</el-button>
+              <el-button type="primary"
+                         size="mini"
+                         @click.native="commitPatiId">确定</el-button>
             </div>
           </div>
         </el-popover>
@@ -95,19 +95,15 @@
     </div>
     <!-- 侧边列表 -->
     <el-scrollbar wrap-class="scrollbar-wrapper">
-      <el-menu
-        :default-active="activeMenu"
-        :collapse="isCollapse"
-        :unique-opened="false"
-        :collapse-transition="false"
-        mode="vertical"
-      >
-        <sidebar-item
-          v-for="route in authList"
-          :key="route.pkId"
-          :item="route"
-          :base-path="route.menuUrl"
-        />
+      <el-menu :default-active="activeMenu"
+               :collapse="isCollapse"
+               :unique-opened="false"
+               :collapse-transition="false"
+               mode="vertical">
+        <sidebar-item v-for="route in authList"
+                      :key="route.pkId"
+                      :item="route"
+                      :base-path="route.menuUrl" />
       </el-menu>
     </el-scrollbar>
 
@@ -118,12 +114,10 @@
         <i class="iconfont icon-xiugai" />
         自定义导航
       </div> -->
-      <hamburger
-        id="hamburger-container"
-        :is-active="sidebar.opened"
-        class="hamburger-container"
-        @toggleClick="toggleSideBar"
-      />
+      <hamburger id="hamburger-container"
+                 :is-active="sidebar.opened"
+                 class="hamburger-container"
+                 @toggleClick="toggleSideBar" />
     </div>
   </div>
 </template>
@@ -224,7 +218,7 @@ export default {
           this.deseaseList = res.obj
           // console.log(res)
         })
-        .catch((res) => {})
+        .catch((res) => { })
     },
     // 专病 id 提交
     commitPatiId () {
@@ -253,7 +247,7 @@ export default {
             // this.selDesease = this.dataSourceValue?.sourceName
           }
         })
-        .catch((er) => {})
+        .catch((er) => { })
     }
   }
 }
@@ -277,7 +271,7 @@ export default {
       vertical-align: bottom;
       display: inline-block;
     }
-    .logo{
+    .logo {
       width: 40px;
       height: 30px;
       // margin: 0 5px;
@@ -301,6 +295,17 @@ export default {
     .user-name {
       font-size: 14px;
       margin: auto;
+    }
+  }
+  .patientsButton {
+    background: none;
+    color: #ffffff;
+    width: 160px;
+    text-align: left;
+    position: relative;
+    i {
+      position: absolute;
+      right: 10px;
     }
   }
   .patients {

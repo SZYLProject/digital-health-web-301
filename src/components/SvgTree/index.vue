@@ -33,7 +33,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+// import { mapGetters } from 'vuex'
 import { debounce, uniqueArr } from '@/utils'
 import linkLine from './linkLine'
 import linkNode from './linkNode'
@@ -52,16 +52,16 @@ export default {
     height: {
       type: [Number, String]
     },
-    treeData: {
+    treeData: { // 数据是嵌套好的使用 d3.hierarchy
       type: Object
     },
-    // flattenData: {
-    //   type: Array
-    // },
-    isFlatten: {
+    flattenData: { // 数据是扁平的使用 d3.stratify
+      type: Array
+    },
+    isFlatten: { // 使用嵌套或扁平数据
       type: Boolean
     },
-    horizontal: {
+    horizontal: { // 横向或者纵向 树
       type: Boolean
     },
     separation: {
@@ -71,10 +71,6 @@ export default {
 
   },
   computed: {
-    ...mapGetters(['flattenData']),
-    disable () {
-      return this.flattenData.some(item => (item.edit === true))
-    },
     containerSize () {
       const width = this.width || this.size.width + 20
       const height = this.height || this.size.height + 20

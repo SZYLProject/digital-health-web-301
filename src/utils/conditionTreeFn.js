@@ -3,7 +3,6 @@
    * fieldName 子集的字段名
    */
 export function listConvertTree (list, fieldName) { // 生成树结构
-  console.log(list)
   let result = null
   if (list && list.length) {
     result = {

@@ -92,6 +92,20 @@ export default {
         yAxis: {
           axisTick: {
             show: false
+          },
+          axisLabel: {
+            color: '#999999'
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#E6E6E6'
+            }
+          },
+          splitLine: {
+            lineStyle: {
+              color: '#f5f5f5',
+              type: 'dashed'
+            }
           }
         },
         series: [
