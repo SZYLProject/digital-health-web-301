@@ -189,3 +189,10 @@ export function treeSearch (data) {
     data
   })
 }
+// 根据用户项目id查询项目的纳排信息
+export function getListByGroupId (groupId) {
+  return request({
+    url: `/crp-project/projectInEx/v1/getListByGroupId/${groupId}`,
+    method: 'GET'
+  })
+}

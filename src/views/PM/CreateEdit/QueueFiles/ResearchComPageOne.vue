@@ -75,28 +75,28 @@
               <!-- 条件树 -->
               <el-row class="left-col">
                 <el-col :span="6"><span>树形检索</span></el-col>
-                <el-col :span="12"><span>10,000 人</span></el-col>
+                <el-col :span="12"><span>{{(leftDatas&&leftDatas.treeSearchResult)||0}} 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text"
-                             @click="openDialog('tree')">编辑</el-button>
+                             @click="openDialog('tree',1,leftDatas)">编辑</el-button>
                 </el-col>
               </el-row>
               <!-- 事件 -->
               <el-row class="left-col">
                 <el-col :span="6"><span>事件检索</span></el-col>
-                <el-col :span="12"><span>10,000 人</span></el-col>
+                <el-col :span="12"><span>{{(leftDatas&&leftDatas.eventSearchResult)||0}} 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text"
-                             @click="openDialog('event')">编辑</el-button>
+                             @click="openDialog('event',1,leftDatas)">编辑</el-button>
                 </el-col>
               </el-row>
               <!-- 精确搜索 -->
               <el-row class="left-col">
                 <el-col :span="6"><span>精确检索</span></el-col>
-                <el-col :span="12"><span>10,000 人</span></el-col>
+                <el-col :span="12"><span>{{(leftDatas&&leftDatas.exactSearchResult)||0}} 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text"
-                             @click="openDialog('accurate')">编辑</el-button>
+                             @click="openDialog('accurate',1,leftDatas)">编辑</el-button>
                 </el-col>
               </el-row>
             </el-col>
@@ -104,7 +104,7 @@
                     class="table-right">
               <div class="text">
                 <p>纳入患者总数</p>
-                <p class="num">1,458</p>
+                <p class="num">{{(leftDatas&&leftDatas.eventSearchResult)||0}}</p>
               </div>
             </el-col>
           </el-row>
@@ -124,28 +124,28 @@
               <!-- 条件树 -->
               <el-row class="left-col">
                 <el-col :span="6"><span>树形检索</span></el-col>
-                <el-col :span="12"><span>10,000 人</span></el-col>
+                <el-col :span="12"><span>{{(rightDatas&&rightDatas.treeSearchResult)||0}} 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text"
-                             @click="openDialog('tree')">编辑</el-button>
+                             @click="openDialog('tree',2,rightDatas)">编辑</el-button>
                 </el-col>
               </el-row>
               <!-- 事件 -->
               <el-row class="left-col">
                 <el-col :span="6"><span>事件检索</span></el-col>
-                <el-col :span="12"><span>10,000 人</span></el-col>
+                <el-col :span="12"><span>{{(rightDatas&&rightDatas.eventSearchResult)||0}} 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text"
-                             @click="openDialog('event')">编辑</el-button>
+                             @click="openDialog('event',2,rightDatas)">编辑</el-button>
                 </el-col>
               </el-row>
               <!-- 精确搜索 -->
               <el-row class="left-col">
                 <el-col :span="6"><span>精确检索</span></el-col>
-                <el-col :span="12"><span>10,000 人</span></el-col>
+                <el-col :span="12"><span>{{(rightDatas&&rightDatas.exactSearchResult)||0}} 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text"
-                             @click="openDialog('accurate')">编辑</el-button>
+                             @click="openDialog('accurate',2,rightDatas)">编辑</el-button>
                 </el-col>
               </el-row>
             </el-col>
@@ -153,7 +153,7 @@
                     class="table-right">
               <div class="text">
                 <p>纳入患者总数</p>
-                <p class="num">1,458</p>
+                <p class="num">{{(rightDatas&&rightDatas.eventSearchResult)||0}}</p>
               </div>
             </el-col>
           </el-row>
@@ -163,26 +163,29 @@
     <!-- 确认纳入按钮 -->
     <div class="queue-submit">
       <el-button type="primary"
-                 style="width: 100%">确认纳入<span class="n">11111</span>人</el-button>
+                 style="width: 100%">确认纳入<span class="n">{{totel}}</span>人</el-button>
     </div>
     <!-- 弹窗组件 -- 条件树 -->
     <ConditionTreePop v-if="treeDialogVisible"
                       :treeDialogVisible="treeDialogVisible"
                       @treeDialogEmit="treeDialogEmit" />
     <!-- 事件搜索 -->
-    <EventSearchPop v-if="eventDialogVisible" :eventDialogVisible="eventDialogVisible"
+    <EventSearchPop v-if="eventDialogVisible"
+                    :eventDialogVisible="eventDialogVisible"
                     @eventDialogEmit="eventDialogEmit" />
     <!-- 精确搜索 -->
-    <AccurateSearchPop v-if="accurDialogVisible" :accurDialogVisible="accurDialogVisible"
+    <AccurateSearchPop v-if="accurDialogVisible"
+                       :accurDialogVisible="accurDialogVisible"
                        @accurDialogEmit="accurDialogEmit" />
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
-import { getQueueDatas, addNewQueue, deleteQueue, correctQueue } from '@/api/projectsMangement'
+import { mapGetters, createNamespacedHelpers } from 'vuex'
+import { getQueueDatas, addNewQueue, deleteQueue, correctQueue, getListByGroupId } from '@/api/projectsMangement'
 import { ConditionTreePop, EventSearchPop, AccurateSearchPop } from './components'
-
+import { TreeConvertList } from '@/utils/conditionTreeFn'
+const { mapMutations } = createNamespacedHelpers('conditionTree')
 export default {
   name: 'ResearchComPageOne',
   data () {
@@ -195,7 +198,18 @@ export default {
       addLoading: false,
       treeDialogVisible: false, // 是否条件树
       eventDialogVisible: false, // 事件搜索
-      accurDialogVisible: false // 精确搜索
+      accurDialogVisible: false, // 精确搜索
+      // 纳排标准
+      leftDatas: null,
+      rightDatas: null,
+      totel: 0,
+      treeData: {
+        groupId: 0,
+        projectId: 0,
+        id: null,
+        type: 1
+      },
+      treedata: null
     }
   },
   props: {},
@@ -216,9 +230,20 @@ export default {
   },
   destroyed () { },
   methods: {
-    ...mapMutations(['']),
-    openDialog (val) {
+    ...mapMutations(['syncgroupData', 'syncFlattenData']),
+    openDialog (val, type, data) {
+      this.treeData.type = type
       if (val === 'tree') {
+        if (data && data.treeSearch) {
+          this.treeData.id = data.id
+          const jsondata = JSON.parse(data.treeSearch)
+          console.log(jsondata)
+          const newData = TreeConvertList(jsondata.condition, '', 'childList')
+          console.log(newData)
+          this.syncFlattenData(newData)
+        }
+
+        this.syncgroupData(this.treeData)
         this.treeDialogVisible = true
       } else if (val === 'accurate') {
         this.accurDialogVisible = true
@@ -227,6 +252,7 @@ export default {
       }
     },
     treeDialogEmit (val) {
+      this.getQueueDatas()
       this.treeDialogVisible = false
     },
     eventDialogEmit (val) {
@@ -241,6 +267,23 @@ export default {
     nextStep () {
       this.$emit('next', 2)
     },
+    // 纳排信息
+    getListByGroup (id) {
+      getListByGroupId(id).then((res) => {
+        this.totel = res.obj.count || 0
+        if (res.obj && res.obj.exInfoyList && res.obj.exInfoyList.length > 0) {
+          const left = res.obj.exInfoyList.filter(item => item.type === 1)
+          const right = res.obj.exInfoyList.filter(item => item.type === 2)
+          this.leftDatas = left.length > 0 ? left[0] : null
+          this.rightDatas = right.length > 0 ? right[0] : null
+        } else {
+          this.leftDatas = null
+          this.rightDatas = null
+        }
+      }).catch(() => {
+
+      })
+    },
     // 获取队列数据
     getQueueDatas () {
       const data = {
@@ -249,6 +292,11 @@ export default {
       getQueueDatas(data).then((res) => {
         if (res) {
           this.queueDatas = res?.obj ?? []
+          if (this.queueDatas.length > 0) {
+            this.treeData.groupId = this.queueDatas[0].id
+            this.treeData.projectId = this.queueDatas[0].projectId
+            this.getListByGroup(this.queueDatas[0].id)
+          }
         }
       }).catch(() => {
 
