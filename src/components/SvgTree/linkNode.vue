@@ -132,7 +132,7 @@
                      placeholder="请选择"
                      size="small"
                      v-else-if="getFormType(condition.dataOptionType) === 'select'">
-            <el-option v-for="(listItem,index) in condition.dataOptionType"
+            <el-option v-for="(listItem,index) in condition.dataOption"
                        :key="index"
                        :label="listItem"
                        :value="listItem">
