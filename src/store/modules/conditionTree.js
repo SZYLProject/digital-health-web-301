@@ -24,15 +24,16 @@ const mutations = {
 const actions = {
   // 关键词搜索列表数据
   updateFlattenData ({ commit }, data) {
-    const treeData = listConvertTree(data, 'root', 'childList')
+    const treeData = listConvertTree(data, '', 'childList')
     const newData = {
-      condition: treeData,
+      condition: treeData[0],
       groupId: 0,
       id: 0,
       projectId: 0,
       totalCount: 0,
       type: 0
     }
+    console.log(treeData)
     return new Promise((resolve, reject) => {
       treeSearch(newData).then(res => {
         const obj = res.obj

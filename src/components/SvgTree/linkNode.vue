@@ -26,16 +26,18 @@
       <el-popover placement="top"
                   trigger="hover"
                   style="min-width:100px!important">
-        <!-- 删除 -->
+        <!-- 编辑 删除 -->
         <div>
           <el-button type="warning"
                      icon="el-icon-edit"
                      size="mini"
-                     circle></el-button>
+                     circle
+                     @click="editTree(node.id)"></el-button>
           <el-button type="danger"
                      icon="el-icon-delete"
                      circle
-                     size="mini"></el-button>
+                     size="mini"
+                     @click="deleteTree(node.id)"></el-button>
         </div>
         <!-- 标签信息 -->
         <!-- <div> -->
@@ -214,7 +216,7 @@
                      size="small"
                      @click="confirm(node.data)">确认</el-button>
           <el-button size="small"
-                     @click="cancel(node.id)">取消</el-button>
+                     @click="cancel(node.data)">取消</el-button>
         </el-col>
       </el-row>
 
@@ -278,7 +280,8 @@ export default {
       popArguments: [],
       popArg: [],
       show: false,
-      searchTitVisi: false // 是否显示搜索主题弹窗
+      searchTitVisi: false, // 是否显示搜索主题弹窗,
+      edit: false
     }
   },
   methods: {
@@ -287,6 +290,21 @@ export default {
     getOption, // 根据类型展示不同选项
     getFormType, // 根据类型展示不同组件
     stringToArr, // 格式转换
+    editTree (id) {
+      this.edit = true
+      this.flattenData.forEach(item => {
+        if (item.id === id) {
+          item.value = stringToArr(item.value, 'toString')
+          item.edit = true
+          this.condition = item
+        }
+      })
+      this.syncFlattenData(this.flattenData)
+    },
+    deleteTree (id) {
+      this.flattenData.splice(this.flattenData.findIndex(item => item.id === id), 1)
+      this.syncFlattenData(this.flattenData)
+    },
     addTree (pid) {
       var timestamp = new Date().getTime()
       const obj = {
@@ -317,9 +335,14 @@ export default {
       })
       this.updateFlattenData(summitData)
     },
-    cancel (id) {
-      this.flattenData.splice(this.flattenData.findIndex(item => item.id === id), 1)
-      this.syncFlattenData(this.flattenData)
+    cancel (data) {
+      if (!this.edit) {
+        this.flattenData.splice(this.flattenData.findIndex(item => item.id === data.id), 1)
+        this.syncFlattenData(this.flattenData)
+      } else {
+        data.edit = false
+        this.syncFlattenData(this.flattenData)
+      }
     },
     change (id, val) {
       this.condition.opt = val
