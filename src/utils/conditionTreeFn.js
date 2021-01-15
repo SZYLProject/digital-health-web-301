@@ -1,37 +1,37 @@
 
 /**
-   * root 根结点名称
    * fieldName 子集的字段名
    */
-export function generateOptions (params, fieldName, root) { // 生成Cascader级联数据
-  var result = []
-  for (const param of params.filter(e => e.id !== root)) {
-    if (param.parentId === root) { // 判断是否为顶层节点
-      var parent = { // 转换成el-Cascader可以识别的数据结构
-        ...param
+export function listConvertTree (list, fieldName) { // 生成树结构
+  console.log(list)
+  let result = null
+  if (list && list.length) {
+    result = {
+      id: list[0].id,
+      name: list[0].name,
+      opt: list[0].opt,
+      value: [],
+      parentId: '',
+      [fieldName]: []
+    }
+    const group = {}
+    for (let index = 0; index < list.length; index += 1) {
+      if (list[index].parentId !== null && list[index].parentId !== undefined) {
+        if (!group[list[index].parentId]) {
+          group[list[index].parentId] = []
+        }
+        group[list[index].parentId].push(list[index])
       }
-      parent[fieldName] = getchilds(param.id, params)// 获取子节点
-      result.push(parent)
+    }
+    const queue = []
+    queue.push(result)
+    while (queue.length) {
+      const node = queue.shift()
+      node[fieldName] = group[node.id] && group[node.id].length ? group[node.id] : null
+      if (node[fieldName]) {
+        queue.push(...node[fieldName])
+      }
     }
   }
   return result
-}
-
-function getchilds (id, array) {
-  const childs = []
-  for (const arr of array) { // 循环获取子节点
-    if (arr.parentId === id) {
-      childs.push({
-        ...arr
-      })
-    }
-  }
-  for (const child of childs) { // 获取子节点的子节点
-    const childscopy = this.getchilds(child.value, array)// 递归获取子节点
-    console.log(childscopy)
-    if (childscopy.length > 0) {
-      child.children = childscopy
-    }
-  }
-  return childs
 }

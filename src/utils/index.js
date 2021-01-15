@@ -381,4 +381,5 @@ export function stringToArr (args, type) {
   if (args.constructor === Array && type === 'toString') {
     return args.filter(item => item).join(',')
   }
+  return args
 }

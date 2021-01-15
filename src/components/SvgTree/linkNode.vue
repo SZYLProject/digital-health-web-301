@@ -11,9 +11,11 @@
                  plain></el-button>
       <el-button v-if="node.children&&node.children.length>1&&condition.opt==='AND'"
                  type="primary"
+                 :disabled="disable"
                  @click="change(node.id,'OR')"
                  size="small">并</el-button>
       <el-button type="success"
+                 :disabled="disable"
                  @click="change(node.id,'AND')"
                  v-if="node.children&&node.children.length>1&&condition.opt==='OR'"
                  size="small">或</el-button>
@@ -43,11 +45,13 @@
       <div class="andOr"
            v-if="node.children&&node.children.length>1">
         <el-button type="primary"
-                   @click="change('OR')"
+                   :disabled="disable"
+                   @click="change(node.id,'OR')"
                    v-if="condition.opt==='AND'"
                    size="small">并</el-button>
         <el-button type="success"
-                   @click="change('AND')"
+                   :disabled="disable"
+                   @click="change(node.id,'AND')"
                    v-if="condition.opt==='OR'"
                    size="small">或</el-button>
       </div>
@@ -190,7 +194,7 @@
         </el-col>
 
         <!-- 操作按钮 -->
-        <el-col :span="4">
+        <el-col :span="6">
           <el-button type="primary"
                      size="small"
                      @click="confirm(node.data)">确认</el-button>
@@ -264,7 +268,7 @@ export default {
   },
   methods: {
     ...mapMutations(['syncFlattenData']),
-    ...mapActions(['upadteFlattenData']),
+    ...mapActions(['updateFlattenData']),
     getOption, // 根据类型展示不同选项
     getFormType, // 根据类型展示不同组件
     addTree (pid) {
@@ -296,13 +300,14 @@ export default {
           item.value = [item.date1, item.date2]
         }
       })
-      this.upadteFlattenData(summitData)
+      this.updateFlattenData(summitData)
     },
     cancel (id) {
       this.flattenData.splice(this.flattenData.findIndex(item => item.id === id), 1)
       this.syncFlattenData(this.flattenData)
     },
     change (id, val) {
+      console.log(id)
       this.condition.opt = val
       this.flattenData.forEach(item => {
         if (item.id === id) {
@@ -323,7 +328,7 @@ export default {
           item.value = [item.date1, item.date2]
         }
       })
-      this.upadteFlattenData(summitData)
+      this.updateFlattenData(summitData)
     },
 
     // 获取搜索主题
