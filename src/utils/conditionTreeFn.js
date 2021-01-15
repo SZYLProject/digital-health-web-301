@@ -1,35 +1,19 @@
 
 /**
    * fieldName 子集的字段名
+   * pid 父ID
    */
-export function listConvertTree (list, fieldName) { // 生成树结构
-  let result = null
-  if (list && list.length) {
-    result = {
-      id: list[0].id,
-      name: list[0].name,
-      opt: list[0].opt,
-      value: [],
-      parentId: '',
-      [fieldName]: []
-    }
-    const group = {}
-    for (let index = 0; index < list.length; index += 1) {
-      if (list[index].parentId !== null && list[index].parentId !== undefined) {
-        if (!group[list[index].parentId]) {
-          group[list[index].parentId] = []
-        }
-        group[list[index].parentId].push(list[index])
+export function listConvertTree (list, pid, fieldName) { // 生成树结构
+  const result = []
+  let temp = []
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].parentId === pid) {
+      const obj = { ...list[i] }
+      temp = this.convertToTreeData(list, list[i].id, fieldName)
+      if (temp.length > 0) {
+        obj[fieldName] = temp
       }
-    }
-    const queue = []
-    queue.push(result)
-    while (queue.length) {
-      const node = queue.shift()
-      node[fieldName] = group[node.id] && group[node.id].length ? group[node.id] : null
-      if (node[fieldName]) {
-        queue.push(...node[fieldName])
-      }
+      result.push(obj)
     }
   }
   return result

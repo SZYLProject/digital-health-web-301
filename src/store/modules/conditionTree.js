@@ -24,7 +24,7 @@ const mutations = {
 const actions = {
   // 关键词搜索列表数据
   updateFlattenData ({ commit }, data) {
-    const treeData = listConvertTree(data, 'childList')
+    const treeData = listConvertTree(data, 'root', 'childList')
     const newData = {
       condition: treeData,
       groupId: 0,
