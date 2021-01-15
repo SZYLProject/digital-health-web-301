@@ -21,7 +21,8 @@
             <li v-for="(item, index) in queueDatas"
                 class="pointer"
                 :class="{ actives: num === index ? true:false }"
-                :key="index">
+                :key="index"
+                @click="checkQueue(item)">
               <div class="ul-li-d1">
                 <el-tag closable
                         class="el-tags"
@@ -283,6 +284,11 @@ export default {
       }).catch(() => {
 
       })
+    },
+    checkQueue (data) {
+      this.getListByGroup(data.id)
+      this.treeData.groupId = data.id
+      this.treeData.projectId = data.projectId
     },
     // 获取队列数据
     getQueueDatas () {
