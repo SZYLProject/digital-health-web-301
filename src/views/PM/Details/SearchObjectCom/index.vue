@@ -358,7 +358,7 @@
       <div class="export-lists">
         <!-- 导出患者范围 -->
         <div class="export-patient_range">
-          <h3>导出患者范围</h3>
+          <!-- <h3>导出患者范围</h3> -->
           <el-button
             class="export-patien_record"
             style="font-size: 16px"
@@ -366,11 +366,11 @@
             type="text"
             >查看导出记录</el-button
           >
-          <div class="export-patien-item">
+          <!-- <div class="export-patien-item">
             <h4>分组一</h4>
             <p>1家医院（南方医科大学南方医院）</p>
             <p>共 3462 位患者</p>
-          </div>
+          </div> -->
         </div>
 
         <!-- 导出指标范围 -->
@@ -397,9 +397,9 @@
                 <el-checkbox label="1" style="margin-bottom: 10px">
                   将多个表单数据，合在一个sheet页上导出（默认一个表单一个sheet页）
                 </el-checkbox>
-                <el-checkbox label="2">
+                <!-- <el-checkbox label="2">
                   组自增题目多行展示（默认将组自增题目平铺成一行）
-                </el-checkbox>
+                </el-checkbox> -->
               </el-checkbox-group>
             </p>
             <p>

@@ -117,7 +117,15 @@ export default {
       }
       getPullDatas(data).then(res => {
         if (res) {
-          this.$router.push('/PM/ProjectLists')
+          this.$confirm('数据正在抽取中，请耐心等待...', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$router.push('/PM/ProjectLists')
+          }).catch(() => {
+
+          })
         }
       }).catch(() => {
 
