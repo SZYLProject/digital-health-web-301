@@ -76,7 +76,7 @@
               <!-- 条件树 -->
               <el-row class="left-col">
                 <el-col :span="6"><span>树形检索</span></el-col>
-                <el-col :span="12"><span>{{(leftDatas&&leftDatas.treeSearchResult)||0}} 人</span></el-col>
+                <el-col :span="12"><span>{{(leftDatas && leftDatas.treeSearchResult) || 0}} 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text"
                              @click="openDialog('tree',1,leftDatas)">编辑</el-button>
@@ -85,7 +85,7 @@
               <!-- 事件 -->
               <el-row class="left-col">
                 <el-col :span="6"><span>事件检索</span></el-col>
-                <el-col :span="12"><span>{{(leftDatas&&leftDatas.eventSearchResult)||0}} 人</span></el-col>
+                <el-col :span="12"><span>{{(leftDatas && leftDatas.eventSearchResult)||0}} 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text"
                              @click="openDialog('event',1,leftDatas)">编辑</el-button>
@@ -94,7 +94,7 @@
               <!-- 精确搜索 -->
               <el-row class="left-col">
                 <el-col :span="6"><span>精确检索</span></el-col>
-                <el-col :span="12"><span>{{(leftDatas&&leftDatas.exactSearchResult)||0}} 人</span></el-col>
+                <el-col :span="12"><span>{{ (leftDatas && leftDatas.exactSearchResult) || 0 }} 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text"
                              @click="openDialog('accurate',1,leftDatas)">编辑</el-button>
@@ -105,7 +105,7 @@
                     class="table-right">
               <div class="text">
                 <p>纳入患者总数</p>
-                <p class="num">{{(leftDatas&&leftDatas.eventSearchResult)||0}}</p>
+                <p class="num">{{ ( leftDatas && leftDatas.serachCount ) || 0 }}</p>
               </div>
             </el-col>
           </el-row>
@@ -125,10 +125,10 @@
               <!-- 条件树 -->
               <el-row class="left-col">
                 <el-col :span="6"><span>树形检索</span></el-col>
-                <el-col :span="12"><span>{{(rightDatas&&rightDatas.treeSearchResult)||0}} 人</span></el-col>
+                <el-col :span="12"><span>{{(rightDatas && rightDatas.treeSearchResult) || 0}} 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text"
-                             @click="openDialog('tree',2,rightDatas)">编辑</el-button>
+                             @click="openDialog('tree', 2, rightDatas)">编辑</el-button>
                 </el-col>
               </el-row>
               <!-- 事件 -->
@@ -154,7 +154,7 @@
                     class="table-right">
               <div class="text">
                 <p>纳入患者总数</p>
-                <p class="num">{{(rightDatas&&rightDatas.eventSearchResult)||0}}</p>
+                <p class="num">{{(rightDatas && rightDatas.serachCount) || 0}}</p>
               </div>
             </el-col>
           </el-row>
@@ -164,7 +164,14 @@
     <!-- 确认纳入按钮 -->
     <div class="queue-submit">
       <el-button type="primary"
-                 style="width: 100%">确认纳入<span class="n">{{totel}}</span>人</el-button>
+                 style="width: 100%"
+                 :disabled="(queueDatas && queueDatas.length > 0) ? false : true"
+                 :loading="loading"
+                 @click.native="getSureInputDatas"
+                 >
+                 确认纳入
+                 <span class="n">{{totel}}</span>人
+      </el-button>
     </div>
     <!-- 弹窗组件 -- 条件树 -->
     <ConditionTreePop v-if="treeDialogVisible"
@@ -183,7 +190,7 @@
 
 <script>
 import { mapGetters, createNamespacedHelpers } from 'vuex'
-import { getQueueDatas, addNewQueue, deleteQueue, correctQueue, getListByGroupId } from '@/api/projectsMangement'
+import { getQueueDatas, addNewQueue, deleteQueue, correctQueue, getListByGroupId, sureInputDatas } from '@/api/projectsMangement'
 import { ConditionTreePop, EventSearchPop, AccurateSearchPop } from './components'
 import { TreeConvertList } from '@/utils/conditionTreeFn'
 const { mapMutations } = createNamespacedHelpers('conditionTree')
@@ -192,7 +199,7 @@ export default {
   data () {
     return {
       idx: 999,
-      num: 888,
+      num: 0,
       inputValue: null,
       oldMsg: null,
       queueDatas: [],
@@ -210,7 +217,10 @@ export default {
         id: null,
         type: 1
       },
-      treedata: null
+      treedata: null,
+      // 分组id
+      groupIds: null,
+      loading: false
     }
   },
   props: {},
@@ -229,7 +239,9 @@ export default {
   mounted () {
     this.getQueueDatas()
   },
-  destroyed () { },
+  destroyed () {
+    this.groupIds = null
+  },
   methods: {
     ...mapMutations(['syncgroupData', 'syncFlattenData']),
     openDialog (val, type, data) {
@@ -289,6 +301,24 @@ export default {
       this.getListByGroup(data.id)
       this.treeData.groupId = data.id
       this.treeData.projectId = data.projectId
+      this.groupIds = data.id
+    },
+    // 确认纳入
+    getSureInputDatas () {
+      this.loading = true
+      const data = {
+        projectId: this.$Storage.sessionGet('projectId'),
+        groupId: this.groupIds
+      }
+      sureInputDatas(data).then(res => {
+        if (res?.obj) {
+          this.totel = res.obj
+          this.getQueueDatas()
+        }
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
     },
     // 获取队列数据
     getQueueDatas () {
@@ -300,6 +330,7 @@ export default {
           this.queueDatas = res?.obj ?? []
           if (this.queueDatas.length > 0) {
             this.treeData.groupId = this.queueDatas[0].id
+            this.groupIds = this.queueDatas[0].id
             this.treeData.projectId = this.queueDatas[0].projectId
             this.getListByGroup(this.queueDatas[0].id)
           }

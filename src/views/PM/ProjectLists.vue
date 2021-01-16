@@ -37,10 +37,19 @@
                  style="height: 48px"
             >
               <h1>
-                <span @click="goItemLists(item)"
+                <!-- <span @click="goItemLists(item)"
                       class="pointer">
                   {{ item.projectName || "无" }}
-                </span>
+                </span> -->
+                <el-button
+                    type="text"
+                    size="mini"
+                    :disabled="Number(item.inputCount) === 0 ? false: true"
+                    style="font-size: 16px;padding: 2px 0px;"
+                    @click="goItemLists(item)"
+                >
+                  {{ item.projectName || "无" }}
+                </el-button>
               </h1>
               <span class="right pointer" @click="goSearchObj(item)">
                 <el-tooltip
@@ -236,6 +245,7 @@ export default {
     },
     // 进入项目详情
     goItemLists (item) {
+      this.$Storage.sessionSet('projectId', item.id)
       this.$router.push({
         name: 'ProjectListsDetails',
         params: {

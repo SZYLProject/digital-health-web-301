@@ -383,3 +383,9 @@ export function stringToArr (args, type) {
   }
   return args
 }
+// 两个整数之间的随机数
+export function getRandom (min, max) {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
