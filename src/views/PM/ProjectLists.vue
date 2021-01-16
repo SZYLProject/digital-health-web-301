@@ -299,7 +299,7 @@ export default {
           .left-t {
             font-size: 12px;
             color: #999999;
-            float: left;
+            // float: left;
             line-height: 20px;
             display: flex;
             .mo{
@@ -318,7 +318,9 @@ export default {
           .right-t {
             font-size: 12px;
             color: #0070f4;
-            float: right;
+            // float: right;
+            padding-top: 10px;
+            text-align: right;
             span {
               padding: 4px 12px;
               background: rgba(0, 112, 244, 0.1);
@@ -329,7 +331,7 @@ export default {
         }
 
         .item-middle {
-          padding: 50px 0px;
+          padding: 35px 0px;
           .title-item {
             font-size: 12px;
             color: #999999;

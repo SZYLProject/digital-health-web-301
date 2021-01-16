@@ -1,5 +1,5 @@
 module.exports = {
-  title: '专病科研平台',
+  title: '专病平台',
   copyright: '神州医疗科技股份有限公司',
 
   /**
