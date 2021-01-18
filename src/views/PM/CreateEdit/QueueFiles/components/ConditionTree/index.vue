@@ -1,6 +1,6 @@
 <!-- 条件树 -->
 <template>
-  <div class="condition-tree-search">
+  <div class="condition-tree-search" v-loading="treeLoading">
     <SvgTree :flatten-data="flattenData"
              :is-flatten="isFlatten"
              :horizontal="horizontal"
@@ -29,7 +29,7 @@ export default {
   },
   props: {},
   computed: {
-    ...mapGetters(['flattenData'])
+    ...mapGetters(['flattenData', 'treeLoading'])
   },
   watch: {
 

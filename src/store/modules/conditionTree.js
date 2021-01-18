@@ -1,8 +1,10 @@
 import { listConvertTree } from '@/utils/conditionTreeFn'
 import { treeSearch } from '@/api/projectsMangement'
-const FLATTEN_DATA = 'syncFlattenData' // 当页显示条数
-const GROUNP_DATA = 'syncgroupData' // 当页显示条数
+const FLATTEN_DATA = 'syncFlattenData' // 条件树数据
+const GROUNP_DATA = 'syncGroupData' // 条件树请求需要字段
+const TREE_LOADING = 'syncTreeLoading' // 条件树请求需要字段
 const state = {
+  treeLoading: false,
   groupData: null,
   flattenData: [
     {
@@ -17,6 +19,9 @@ const state = {
 }
 
 const mutations = {
+  [TREE_LOADING]: (state, treeLoading) => {
+    state.treeLoading = treeLoading
+  },
   [FLATTEN_DATA]: (state, flattenData) => {
     state.flattenData = flattenData
   },
@@ -28,6 +33,7 @@ const mutations = {
 const actions = {
   // 关键词搜索列表数据
   updateFlattenData ({ commit, state }, data) {
+    commit('syncTreeLoading', true)
     const treeData = listConvertTree(data, '', 'childList')
     const newData = {
       condition: treeData[0],
@@ -47,8 +53,10 @@ const actions = {
           item.num = obj.countList[item.id]
         })
         commit('syncFlattenData', updateNum)
+        commit('syncTreeLoading', false)
         resolve(obj)
       }).catch(error => {
+        commit('syncTreeLoading', false)
         reject(error)
       })
     })

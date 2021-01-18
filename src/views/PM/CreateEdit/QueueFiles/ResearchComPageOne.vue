@@ -231,7 +231,7 @@ export default {
   },
   destroyed () { },
   methods: {
-    ...mapMutations(['syncgroupData', 'syncFlattenData']),
+    ...mapMutations(['syncGroupData', 'syncFlattenData']),
     openDialog (val, type, data) {
       this.treeData.type = type
       if (val === 'tree') {
@@ -244,7 +244,7 @@ export default {
           this.syncFlattenData(newData)
         }
 
-        this.syncgroupData(this.treeData)
+        this.syncGroupData(this.treeData)
         this.treeDialogVisible = true
       } else if (val === 'accurate') {
         this.accurDialogVisible = true

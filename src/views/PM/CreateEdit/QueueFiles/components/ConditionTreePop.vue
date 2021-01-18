@@ -28,9 +28,10 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, createNamespacedHelpers } from 'vuex'
 import { } from '@/api/projectsMangement'
 import ConditionTree from './ConditionTree'
+const { mapMutations } = createNamespacedHelpers('conditionTree')
 // import { ConditionTrees, EventSearch } from './comChildren'
 
 export default {
@@ -55,9 +56,18 @@ export default {
   mounted () {
 
   },
-  destroyed () { },
+  destroyed () {
+    this.syncFlattenData([{
+      id: 'root',
+      name: 'root',
+      parentId: '',
+      edit: false,
+      value: '',
+      opt: 'AND'
+    }])
+  },
   methods: {
-    ...mapMutations(['']),
+    ...mapMutations(['syncFlattenData']),
     handleSubmit (val) {
       this.$emit('treeDialogEmit', false)
     },

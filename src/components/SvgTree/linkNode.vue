@@ -302,8 +302,18 @@ export default {
       this.syncFlattenData(this.flattenData)
     },
     deleteTree (id) {
-      this.flattenData.splice(this.flattenData.findIndex(item => item.id === id), 1)
+      this.checkCID(id)
+      console.log(this.flattenData)
       this.updateFlattenData(this.flattenData)
+    },
+    // 循子Id
+    checkCID (id) {
+      this.flattenData.splice(this.flattenData.findIndex(item => item.id === id), 1)
+      this.flattenData.forEach((item, index) => {
+        if (item.parentId === id) {
+          this.checkCID(item.id)
+        }
+      })
     },
     addTree (pid) {
       var timestamp = new Date().getTime()
@@ -390,18 +400,17 @@ export default {
         this.searchTitVisi = false
       }
     },
-
     // 循父Id
-    checkPID (id) {
-      this.flattenData.forEach(item => {
-        if (item.id === id) {
-          this.popArg.push(item.fieldId)
-          if (item.parent !== 'root') {
-            this.checkPID(item.parent)
-          }
-        }
-      })
-    },
+    // checkPID (id) {
+    //   this.flattenData.forEach(item => {
+    //     if (item.id === id) {
+    //       this.popArg.push(item.fieldId)
+    //       if (item.parentId !== 'root') {
+    //         this.checkPID(item.parentId)
+    //       }
+    //     }
+    //   })
+    // },
     // 点击+打开字典弹出层
     handleIconClick (node) {
       console.log(node)
@@ -412,8 +421,20 @@ export default {
       }
       this.popArguments = stringToArr(this.popArg, 'toString')
       this.searchTitVisi = true
+    },
+    // 循父Id
+    checkPID (id) {
+      this.flattenData.forEach(item => {
+        if (item.id === id) {
+          this.popArg.push(item.fieldId)
+          if (item.parentId !== 'root') {
+            this.checkPID(item.parentId)
+          }
+        }
+      })
     }
   }
+
 }
 </script>
 <style lang="scss" scoped>
