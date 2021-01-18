@@ -58,7 +58,7 @@ export const constantRoutes = [
     path: '/',
     component: BasicLayout,
     // redirect: '/index',
-    redirect: '/specialDisease/index',
+    redirect: 'specialDisease/index',
     children: [
       {
         path: 'specialDisease/index',
@@ -72,10 +72,10 @@ export const constantRoutes = [
     // path: '/',
     path: '/home',
     component: BasicLayout,
-    redirect: '/home',
+    redirect: '/',
     children: [
       {
-        path: 'home',
+        path: '/',
         component: () => import('@/views/Home'),
         name: 'Home'
       },
