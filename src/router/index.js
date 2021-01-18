@@ -52,9 +52,25 @@ export const constantRoutes = [
     component: () => import('@/views/ErrorPage/401'),
     hidden: true
   },
+  // 专病库首页
+  {
+    // path: '/specialDisease',
+    path: '/',
+    component: BasicLayout,
+    // redirect: '/index',
+    redirect: '/specialDisease/index',
+    children: [
+      {
+        path: 'specialDisease/index',
+        component: () => import('@/views/HomeSpecialDisease'),
+        name: 'HomeSpecialDisease'
+      }
+    ]
+  },
   // 病种首页
   {
-    path: '/',
+    // path: '/',
+    path: '/home',
     component: BasicLayout,
     redirect: '/home',
     children: [
@@ -68,19 +84,6 @@ export const constantRoutes = [
         path: 'patientCollect',
         component: () => import('@/views/PatientCollect'),
         name: 'PatientCollect'
-      }
-    ]
-  },
-  // 专病库首页
-  {
-    path: '/specialDisease',
-    component: BasicLayout,
-    redirect: '/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/HomeSpecialDisease'),
-        name: 'HomeSpecialDisease'
       }
     ]
   },

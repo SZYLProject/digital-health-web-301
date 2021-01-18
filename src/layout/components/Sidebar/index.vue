@@ -148,7 +148,8 @@ export default {
     //   return this.$router.options.routes
     // },
     activeMenu () {
-      return this.$route.path || '/home'
+      // return this.$route.path || '/home'
+      return this.$route.path || '/specialDisease/index'
     },
     variables () {
       return variables
