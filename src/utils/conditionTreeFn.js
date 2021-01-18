@@ -20,7 +20,6 @@ export function listConvertTree (list, pid, fieldName) { // 生成树结构
   return result
 }
 export function TreeConvertList (tree, pId, fieldName) { // 生成扁平数组
-  console.log(tree)
   const temp = [] // 设置临时数组，用来存放队列
   const result = [] // 设置输出数组，用来存放要输出的一维数组
   temp.push(tree)

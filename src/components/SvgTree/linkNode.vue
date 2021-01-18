@@ -413,7 +413,6 @@ export default {
     // },
     // 点击+打开字典弹出层
     handleIconClick (node) {
-      console.log(node)
       this.popArguments = []
       this.popArg = []
       if (node.parent.id !== 'root') {

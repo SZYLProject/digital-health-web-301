@@ -250,9 +250,7 @@ export default {
         if (data && data.treeSearch) {
           this.treeData.id = data.id
           const jsondata = JSON.parse(data.treeSearch)
-          console.log(jsondata)
           const newData = TreeConvertList(jsondata.condition, '', 'childList')
-          console.log(newData)
           this.syncFlattenData(newData)
         }
 
