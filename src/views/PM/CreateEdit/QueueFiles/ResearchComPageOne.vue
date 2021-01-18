@@ -167,10 +167,9 @@
                  style="width: 100%"
                  :disabled="(queueDatas && queueDatas.length > 0) ? false : true"
                  :loading="loading"
-                 @click.native="getSureInputDatas"
-                 >
-                 确认纳入
-                 <span class="n">{{totel}}</span>人
+                 @click.native="getSureInputDatas">
+        确认纳入
+        <span class="n">{{totel}}</span>人
       </el-button>
     </div>
     <!-- 弹窗组件 -- 条件树 -->
@@ -251,6 +250,9 @@ export default {
           this.treeData.id = data.id
           const jsondata = JSON.parse(data.treeSearch)
           const newData = TreeConvertList(jsondata.condition, '', 'childList')
+          newData.forEach(item => {
+            item.num = jsondata.countList[item.id]
+          })
           this.syncFlattenData(newData)
         }
 
