@@ -11,7 +11,7 @@
           <div class="grid-content white-bg">
             <p class="p1">全库患者数</p>
             <div class="d1">
-              <span class="sn1"> 10290 <sub>位</sub></span>
+              <span class="sn1"> 38808 <sub>位</sub></span>
             </div>
           </div>
         </el-col>

@@ -24,3 +24,15 @@ Vue.filter('timesTZ', val => {
   // const formatdatetime = d.getFullYear() + '-' + addDateZero(d.getMonth() + 1) + '-' + addDateZero(d.getDate()) + ' ' + addDateZero(d.getHours()) + ':' + addDateZero(d.getMinutes()) + ':' + addDateZero(d.getSeconds())
   return formatdatetime
 })
+
+Vue.filter('timesTZO', val => {
+  const addDateZero = (num) => {
+    return (num < 10 ? '0' + num : num)
+  }
+  const d = new Date(val)
+  // 返回年月日
+  // const formatdatetime = d.getFullYear() + '-' + addDateZero(d.getMonth() + 1) + '-' + addDateZero(d.getDate())
+  // 返回年月日 时分秒
+  const formatdatetime = d.getFullYear() + '-' + addDateZero(d.getMonth() + 1) + '-' + addDateZero(d.getDate()) + ' ' + addDateZero(d.getHours()) + ':' + addDateZero(d.getMinutes()) + ':' + addDateZero(d.getSeconds())
+  return formatdatetime
+})

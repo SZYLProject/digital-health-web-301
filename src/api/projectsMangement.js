@@ -196,3 +196,79 @@ export function getListByGroupId (groupId) {
     method: 'GET'
   })
 }
+// 确认纳入接口
+export function sureInputDatas (data) {
+  const { projectId, groupId } = data
+  return request({
+    url: `/crp-project/projectInEx/v1/bringQueue?projectId=${projectId}&groupId=${groupId}`,
+    method: 'POST',
+    // timeout: 20000 * 1000,
+    data
+  })
+}
+
+// 完成摘取数据
+export function getPullDatas (data) {
+  const { projectId } = data
+  return request({
+    url: `/crp-project/keyValueMapping/v1/extract/${projectId}`,
+    method: 'GET'
+  })
+}
+
+// 项目详情数据表格抽取数据
+export function getListDetaileForms (data) {
+  return request({
+    url: '/crp-project/keyValueMapping/v1/list',
+    method: 'GET',
+    params: data
+  })
+}
+
+// 项目导出动作记录
+export function exportRecordsDatas (data) {
+  return request({
+    url: '/crp-project/export/record/v1/list',
+    method: 'GET',
+    params: data
+  })
+}
+
+// 入组阶段数据导出
+export function exportRecordsInput (data) {
+  const { projectId } = data
+  return request({
+    url: `/crp-project/keyValueMapping/v1/export/${projectId}`,
+    method: 'GET',
+    params: data
+  })
+}
+// 导出记录里面的单个删除
+export function deleteSingleLists (data) {
+  const { recordId } = data
+  return request({
+    url: `/crp-project/export/record/v1/delete/${recordId}`,
+    method: 'GET',
+    params: data
+  })
+}
+// 导出记录全部清空
+export function deleteAllLists (data) {
+  const { projectId } = data
+  return request({
+    url: `/crp-project/export/record/v1/deletes/${projectId}`,
+    method: 'GET',
+    params: data
+  })
+}
+
+// 导出文件下载
+export function downLoadFiles (data) {
+  const { recordId } = data
+  return request({
+    url: `/crp-project/export/record/v1/download/${recordId}`,
+    method: 'GET',
+    params: {},
+    responseType: 'blob'
+  })
+}

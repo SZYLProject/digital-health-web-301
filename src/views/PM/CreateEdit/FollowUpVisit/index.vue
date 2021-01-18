@@ -9,6 +9,7 @@
           <el-button size="mini"
                      @click.native="goPrev">上一步</el-button>
           <el-button size="mini"
+                     @click.native="pullDatas"
                      type="primary">完成</el-button>
 
         </span>
@@ -24,8 +25,7 @@
 <script>
 // import edc from '@/components/EDC'
 import { mapGetters, mapMutations } from 'vuex'
-
-import { } from '@/api/caseSearch'
+import { getPullDatas } from '@/api/projectsMangement'
 export default {
   name: 'FollowUpVisit',
   data () {
@@ -46,6 +46,27 @@ export default {
     ...mapMutations(['']),
     goPrev () {
       this.$emit('next', 2)
+    },
+    // 点击完后抽取数据
+    pullDatas () {
+      const data = {
+        projectId: this.$Storage.sessionGet('projectId')
+      }
+      getPullDatas(data).then(res => {
+        if (res) {
+          this.$confirm('数据正在抽取中，请耐心等待...', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$router.push('/PM/ProjectLists')
+          }).catch(() => {
+
+          })
+        }
+      }).catch(() => {
+
+      })
     }
   }
 }

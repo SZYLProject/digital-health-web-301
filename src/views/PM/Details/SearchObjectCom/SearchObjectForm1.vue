@@ -14,7 +14,7 @@
             <el-checkbox-group v-model="checkList">
               <el-checkbox v-for="(item, index) in headerData"
                            :key="index"
-                           :label="item.key">{{item.val}}</el-checkbox>
+                           :label="item.detailKey">{{item.displayName}}</el-checkbox>
             </el-checkbox-group>
             <div class="dropdown-button">
               <el-button type="primary"
@@ -38,6 +38,7 @@
               header-cell-class-name="tableTH"
               @selection-change="handleSelectionChange">
       <template>
+        <!-- 勾选框 -->
         <el-table-column
           type="selection"
           header-align="center"
@@ -50,37 +51,37 @@
                         align="center"
                         v-if="operate">
           <template slot-scope="scope">
-            <router-link :to="{path:`/view360/${scope.row['person_id']}/0/?parentName=患者概览`}"
+            <router-link :to="{path:`/view360/${scope.row.personId}/0/?parentName=患者概览`}"
                         target="_blank">
               <el-button type="text">详情</el-button>
-
             </router-link>
           </template>
         </el-table-column>
         <!-- 其他列 -->
         <el-table-column v-for="item in defaultHeader"
-                         :key="item.key"
-                         :prop="item.key"
-                         :label="item.val"
+                         :key="item.detailKey"
+                         :prop="item.detailKey"
+                         :label="item.displayName"
                          align="center"
                          :show-overflow-tooltip="true">
-          <el-table-column
-                         :label="item.percentage"
+          <!-- <el-table-column
+                         :label="item.percent"
                          align="center">
             <template slot-scope="scope">
-              {{ scope.row.val }}
+              {{ scope.row.ky_data_index_person_p775 }}
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </el-table-column>
       </template>
     </el-table>
   </div>
 </template>
 <script>
+
 export default {
   data () {
     return {
-      checkList: [],
+      checkList: [], // 选准数据
       defaultHeader: [],
       search: ''
     }
@@ -104,7 +105,7 @@ export default {
       this.defaultHeader = val.slice(0, 8)
       this.defaultHeader.map(
         item => {
-          this.checkList.push(item.key)
+          this.checkList.push(item.detailKey)
         }
       )
     }
@@ -112,7 +113,7 @@ export default {
   mounted () {
     this.defaultHeader = this.headerData.slice(0, 8)
     this.defaultHeader.map(item => {
-      this.checkList.push(item.key)
+      this.checkList.push(item.detailKey)
     })
   },
 
@@ -123,7 +124,7 @@ export default {
     },
     okHandle () {
       this.defaultHeader = this.headerData.filter(item => {
-        return this.checkList.indexOf(item.key) > -1
+        return this.checkList.indexOf(item.detailKey) > -1
       })
       this.$refs.tableDrop.hide()
     },
@@ -131,6 +132,7 @@ export default {
     cancel () {
       this.$refs.tableDrop.hide()
     }
+
   }
 }
 </script>

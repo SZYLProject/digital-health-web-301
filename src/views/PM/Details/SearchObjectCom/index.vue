@@ -218,7 +218,6 @@
           </el-dropdown-menu>
         </el-dropdown>
       </div>
-
       <div style="float: right;">
         <!-- 导入研究数据 -->
         <el-button
@@ -278,7 +277,7 @@
         :page-size="query.pageSize"
         :pager-count="5"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
+        :total="query.total"
         background
       ></el-pagination>
     </div>
@@ -359,7 +358,7 @@
       <div class="export-lists">
         <!-- 导出患者范围 -->
         <div class="export-patient_range">
-          <h3>导出患者范围</h3>
+          <!-- <h3>导出患者范围</h3> -->
           <el-button
             class="export-patien_record"
             style="font-size: 16px"
@@ -367,11 +366,11 @@
             type="text"
             >查看导出记录</el-button
           >
-          <div class="export-patien-item">
+          <!-- <div class="export-patien-item">
             <h4>分组一</h4>
             <p>1家医院（南方医科大学南方医院）</p>
             <p>共 3462 位患者</p>
-          </div>
+          </div> -->
         </div>
 
         <!-- 导出指标范围 -->
@@ -398,9 +397,9 @@
                 <el-checkbox label="1" style="margin-bottom: 10px">
                   将多个表单数据，合在一个sheet页上导出（默认一个表单一个sheet页）
                 </el-checkbox>
-                <el-checkbox label="2">
+                <!-- <el-checkbox label="2">
                   组自增题目多行展示（默认将组自增题目平铺成一行）
-                </el-checkbox>
+                </el-checkbox> -->
               </el-checkbox-group>
             </p>
             <p>
@@ -413,7 +412,7 @@
       </div>
       <!--  -->
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" size="small" @click="exportDatas = false"
+        <el-button type="primary" size="small" @click="exportDatasFn"
           >确 定</el-button
         >
         <el-button size="small" @click="exportDatas = false">取 消</el-button>
@@ -426,74 +425,16 @@
 import { mapGetters, mapMutations } from 'vuex'
 import SearchObjectForm1 from './SearchObjectForm1'
 import SearchObjectForm2 from './SearchObjectForm2'
-import {} from '@/api/caseSearch'
+import { getListDetaileForms, exportRecordsInput } from '@/api/projectsMangement'
 export default {
   name: 'SearchObjectCom',
   data () {
     return {
+      // 表格一的数据
+      headerData: [],
+      tableData: [],
+
       // 表格数据
-      tableDatas: [
-        {
-          key: '1',
-          val: 'pT4a',
-          address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          key: '2',
-          val: 'pT4',
-          address: '上海市普陀区金沙江路 1517 弄'
-        },
-        {
-          key: '3',
-          val: 'pT4b',
-          address: '上海市普陀区金沙江路 1519 弄'
-        },
-        {
-          key: '4',
-          val: 'pT4a',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },
-        {
-          key: '5',
-          val: 'pT4b',
-          address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          key: '6',
-          val: 'pT4',
-          address: '上海市普陀区金沙江路 1517 弄'
-        },
-        {
-          key: '7',
-          val: 'pT4a',
-          address: '上海市普陀区金沙江路 1519 弄'
-        },
-        {
-          key: '8',
-          val: 'pT4b',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },
-        {
-          key: '9',
-          val: 'pT4a',
-          address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          key: '10',
-          val: 'pT4',
-          address: '上海市普陀区金沙江路 1517 弄'
-        },
-        {
-          key: '11',
-          val: 'pT4a',
-          address: '上海市普陀区金沙江路 1519 弄'
-        },
-        {
-          key: '12',
-          val: 'pT4b',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }
-      ],
       tableData0: [
         {
           key: '1',
@@ -542,79 +483,6 @@ export default {
         {
           key: '12',
           val: '待录入'
-        }
-      ],
-      headerDatas: [
-        {
-          key: '1',
-          val: 'PT1',
-          percentage: '85.1%'
-        },
-        {
-          key: '2',
-          val: 'PT2',
-          percentage: '25.1%',
-          address: '上海市普陀区金沙江路 1517 弄'
-        },
-        {
-          key: '3',
-          val: 'PT3',
-          percentage: '8.1%',
-          address: '上海市普陀区金沙江路 1519 弄'
-        },
-        {
-          key: '4',
-          val: 'PT4',
-          percentage: '45.21%',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },
-        {
-          key: '5',
-          val: 'PT5',
-          percentage: '8.21%',
-          address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          key: '6',
-          val: 'PT6',
-          percentage: '15.21%',
-          address: '上海市普陀区金沙江路 1517 弄'
-        },
-        {
-          key: '7',
-          val: 'PT7',
-          percentage: '25.10%',
-          address: '上海市普陀区金沙江路 1519 弄'
-        },
-        {
-          key: '8',
-          val: 'PT8',
-          percentage: '35.1%',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },
-        {
-          key: '9',
-          val: 'PT9',
-          percentage: '65.1%',
-          address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          key: '10',
-          val: 'PT10',
-          percentage: '5.1%',
-          address: '上海市普陀区金沙江路 1517 弄'
-        },
-        {
-          key: '11',
-          val: 'PT11',
-          percentage: '95.31%',
-          address: '上海市普陀区金沙江路 1519 弄'
-        },
-        {
-          key: '12',
-          val: 'PT12',
-          percentage: '76.22%',
-          address: '上海市普陀区金沙江路 1516 弄'
         }
       ],
       headerData0: [
@@ -677,11 +545,11 @@ export default {
       ],
 
       // 分页数据
-      total: 0,
       query: {
         categoryIds: '',
         pageNo: 1, // 页码
-        pageSize: 10 // 每页显示的数据条数
+        pageSize: 10, // 每页显示的数据条数
+        total: 0
       },
 
       // 分组
@@ -776,8 +644,9 @@ export default {
     switchTo (val) {
       if (val) {
         this.whichCom = 'SearchObjectForm1'
-        this.tableData = this.tableDatas
-        this.headerData = this.headerDatas
+        this.headerData = []
+        this.tableData = []
+        this.getListDetaileForms()
       } else {
         this.whichCom = 'SearchObjectForm2'
         this.tableData = this.tableData0
@@ -787,11 +656,9 @@ export default {
   },
   components: { SearchObjectForm1, SearchObjectForm2 },
   created () {
-    this.tableData = this.tableDatas
-    this.headerData = this.headerDatas
+    this.getListDetaileForms() // 获取表格一的数据
   },
   mounted () {
-    // console.log(this.$route.params)
     if (this.$route.params?.flag) {
       this.switchTo = false
     }
@@ -799,19 +666,45 @@ export default {
   destroyed () {},
   methods: {
     ...mapMutations(['']),
-    // 多选
-
+    // 获取表格数据
+    getListDetaileForms () {
+      const data = {
+        projectId: this.$Storage.sessionGet('projectId'),
+        pageNo: this.query.pageNo,
+        pageSize: this.query.pageSize
+      }
+      getListDetaileForms(data).then(res => {
+        if (res?.obj) {
+          this.headerData = res.obj.fieldDetailDTOS || []
+          this.tableData = res.obj.data || []
+          this.query.total = res.obj.total
+        }
+      })
+    },
+    // 入组阶段数据导出
+    exportDatasFn () {
+      const data = {
+        projectId: this.$Storage.sessionGet('projectId')
+      }
+      exportRecordsInput(data).then(res => {
+        if (res) {
+          this.$message({
+            message: '导出成功~',
+            type: 'success'
+          })
+          this.exportDatas = false
+        }
+      })
+    },
     // 分页
     handleSizeChange (val) {
       this.query.pageSize = val
-      this.getAllCollects()
+      this.getListDetaileForms() // 获取表格一的数据
     },
-
     handleCurrentChange (val) {
       this.query.pageNo = val
-      this.getAllCollects()
+      this.getListDetaileForms() // 获取表格一的数据
     },
-
     // 筛选
     reset (formName) {
       this.filterForm = {

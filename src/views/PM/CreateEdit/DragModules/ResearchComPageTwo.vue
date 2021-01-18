@@ -10,6 +10,7 @@
                      @click.native="goPrev">上一步</el-button>
           <el-button size="mini"
                      type="primary"
+                     @click.native="pullDatas"
                      v-if="projectType===1">完成</el-button>
           <el-button size="mini"
                      type="primary"
@@ -59,7 +60,7 @@
 import { mapGetters, mapMutations } from 'vuex'
 import PageTwoLeftLists from './components/PageTwoLeftLists' //
 import PageTwoRightDrag from './components/PageTwoRightDrag' //
-// import { } from '@/api/caseSearch'
+import { getPullDatas } from '@/api/projectsMangement'
 
 export default {
   name: 'ResearchComPageTwo',
@@ -106,6 +107,28 @@ export default {
       this.stepDatas.push({
         label: '阶段',
         name: 'step'
+      })
+    },
+
+    // 点击完后抽取数据
+    pullDatas () {
+      const data = {
+        projectId: this.$Storage.sessionGet('projectId')
+      }
+      getPullDatas(data).then(res => {
+        if (res) {
+          this.$confirm('数据正在抽取中，请耐心等待...', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$router.push('/PM/ProjectLists')
+          }).catch(() => {
+
+          })
+        }
+      }).catch(() => {
+
       })
     }
 
