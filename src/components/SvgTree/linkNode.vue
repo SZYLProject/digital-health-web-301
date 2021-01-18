@@ -377,7 +377,27 @@ export default {
       })
       this.updateFlattenData(summitData)
     },
-
+    // 点击+打开字典弹出层
+    handleIconClick (node) {
+      this.popArguments = []
+      this.popArg = []
+      if (node.parent.id !== 'root') {
+        this.checkPID(node.parent.id)
+      }
+      this.popArguments = stringToArr(this.popArg, 'toString')
+      this.searchTitVisi = true
+    },
+    // 循父Id
+    checkPID (id) {
+      this.flattenData.forEach(item => {
+        if (item.id === id) {
+          this.popArg.push(item.fieldId)
+          if (item.parentId !== 'root') {
+            this.checkPID(item.parentId)
+          }
+        }
+      })
+    },
     // 获取搜索主题
     dialogDatas (val) {
       if (val) {
@@ -399,38 +419,6 @@ export default {
         }
         this.searchTitVisi = false
       }
-    },
-    // 循父Id
-    // checkPID (id) {
-    //   this.flattenData.forEach(item => {
-    //     if (item.id === id) {
-    //       this.popArg.push(item.fieldId)
-    //       if (item.parentId !== 'root') {
-    //         this.checkPID(item.parentId)
-    //       }
-    //     }
-    //   })
-    // },
-    // 点击+打开字典弹出层
-    handleIconClick (node) {
-      this.popArguments = []
-      this.popArg = []
-      if (node.parent.id !== 'root') {
-        this.checkPID(node.parent.id)
-      }
-      this.popArguments = stringToArr(this.popArg, 'toString')
-      this.searchTitVisi = true
-    },
-    // 循父Id
-    checkPID (id) {
-      this.flattenData.forEach(item => {
-        if (item.id === id) {
-          this.popArg.push(item.fieldId)
-          if (item.parentId !== 'root') {
-            this.checkPID(item.parentId)
-          }
-        }
-      })
     }
   }
 

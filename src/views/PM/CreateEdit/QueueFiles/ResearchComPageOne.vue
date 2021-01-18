@@ -214,9 +214,9 @@ export default {
         groupId: 0,
         projectId: 0,
         id: null,
-        type: 1
+        type: 1,
+        groupName: ''
       },
-      treedata: null,
       // 分组id
       groupIds: null,
       loading: false
@@ -300,6 +300,7 @@ export default {
     checkQueue (data) {
       this.getListByGroup(data.id)
       this.treeData.groupId = data.id
+      this.treeData.groupName = data.groupName
       this.treeData.projectId = data.projectId
       this.groupIds = data.id
     },
@@ -330,6 +331,7 @@ export default {
           this.queueDatas = res?.obj ?? []
           if (this.queueDatas.length > 0) {
             this.treeData.groupId = this.queueDatas[0].id
+            this.treeData.groupName = this.queueDatas[0].groupName
             this.groupIds = this.queueDatas[0].id
             this.treeData.projectId = this.queueDatas[0].projectId
             this.getListByGroup(this.queueDatas[0].id)

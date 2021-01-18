@@ -33,6 +33,7 @@ const getters = {
   // 条件树
   flattenData: state => state.conditionTree.flattenData, // 扁平数据
   treeLoading: state => state.conditionTree.treeLoading,
+  groupData: state => state.conditionTree.groupData, // 项目必要信息
 
   // 项目管理数据
   dragData: state => state.projectsMangement.dragData, // 拖拽对象数据

@@ -10,8 +10,8 @@
         <div>
 
           <span>项目标题：<i>DCH202003184500</i> </span>
-          <span>入排标注：<i>纳入标准</i> </span>
-          <span>队列名称：<i>队列</i> </span>
+          <span>入排标注：<i>{{groupData&&groupData.type===2?'排除标准':'纳入标准'}}</i> </span>
+          <span>队列名称：<i>{{groupData&&groupData.groupName}}</i> </span>
         </div>
         <el-button type="primary"
                    size="medium"
@@ -46,7 +46,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['theme', 'userInfo'])
+    ...mapGetters(['groupData'])
   },
   watch: {},
   components: {
