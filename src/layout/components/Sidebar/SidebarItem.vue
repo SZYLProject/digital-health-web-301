@@ -65,10 +65,11 @@ export default {
       return path.resolve(this.basePath, routePath)
     },
     toIcon (routePath) { // knowledgeLibrary
+      console.log(routePath)
       const two = routePath.indexOf('/', routePath.indexOf('/') + 1)
       const twoStr = two !== -1 ? two : routePath.length
       const str = routePath.substring(routePath.indexOf('/') + 1, twoStr)
-      // console.log(str)
+      console.log(str)
       // if (str === 'specialDisease' || str === 'PM') {
       //   str = 'home'
       // }
