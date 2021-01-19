@@ -224,9 +224,16 @@ export default {
   },
   props: {},
   computed: {
-    ...mapGetters(['theme', 'userInfo'])
+    ...mapGetters(['userInfo', 'treeLoading'])
   },
-  watch: {},
+  watch: {
+    treeLoading (val) {
+      if (!val) {
+        this.getQueueDatas()
+        this.treeDialogVisible = false
+      }
+    }
+  },
   components: {
     ConditionTreePop,
     EventSearchPop,

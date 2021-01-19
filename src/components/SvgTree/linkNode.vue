@@ -104,7 +104,8 @@
           <el-select placeholder="关系"
                      size="small"
                      :disabled="!condition.name"
-                     v-model="condition.itselfOpt">
+                     v-model="condition.itselfOpt"
+                     @change="$forceUpdate()">
             <el-option v-for="option in getOption(condition.dataOptionType)"
                        :key="option"
                        :label="option"
@@ -237,7 +238,7 @@ import { mapGetters, createNamespacedHelpers } from 'vuex'
 import { getDataOption } from '@/api/caseSearch'
 import { getOption, getFormType } from '@/utils/searchRelation'
 import DataDictionaryPop from '@/components/DataDictionaryPop' // 引入弹窗
-import { stringToArr, deepClone } from '@/utils/index'
+import { stringToArr } from '@/utils/index' // deepClone
 const { mapMutations, mapActions } = createNamespacedHelpers('conditionTree')
 export default {
   name: 'linkNode',
@@ -299,12 +300,14 @@ export default {
           this.condition = item
         }
       })
+      console.log(this.flattenData)
       this.syncFlattenData(this.flattenData)
     },
     deleteTree (id) {
       this.checkCID(id)
       console.log(this.flattenData)
-      this.updateFlattenData(this.flattenData)
+      this.syncFlattenData(this.flattenData)
+      // this.updateFlattenData(this.flattenData)
     },
     // 循子Id
     checkCID (id) {
@@ -328,33 +331,40 @@ export default {
       this.syncFlattenData(this.flattenData)
     },
     confirm (data) {
-      Object.assign(data, this.condition)
+      console.log(data)
+      if (!this.edit) {
+        Object.assign(data, this.condition)
+      } else {
+        this.edit = false
+      }
       data.edit = false
-      const summitData = deepClone(this.flattenData)
-      summitData.map((item, index) => {
-        if (getFormType(item.dataOptionType) === 'date' &&
-          (item.type === '区间外' || item.type === '区间内')) {
-          item.value = [item.date1, item.date2]
-        } else {
-          item.value = stringToArr(item.value, 'toArray')
-        }
-        if (item.dataOptionType === 1 &&
-          (item.type === '区间外' || item.type === '区间内')) {
-          item.value = [item.date1, item.date2]
-        }
-      })
-      this.updateFlattenData(summitData)
+      // const summitData = deepClone(this.flattenData)
+      // summitData.map((item, index) => {
+      //   if (getFormType(item.dataOptionType) === 'date' &&
+      //     (item.type === '区间外' || item.type === '区间内')) {
+      //     item.value = [item.date1, item.date2]
+      //   } else {
+      //     item.value = stringToArr(item.value, 'toArray')
+      //   }
+      //   if (item.dataOptionType === 1 &&
+      //     (item.type === '区间外' || item.type === '区间内')) {
+      //     item.value = [item.date1, item.date2]
+      //   }
+      // })
+      // this.updateFlattenData(summitData)
+      this.syncFlattenData(this.flattenData)
     },
     cancel (data) {
       if (!this.edit) {
         this.flattenData.splice(this.flattenData.findIndex(item => item.id === data.id), 1)
-        this.syncFlattenData(this.flattenData)
       } else {
         this.edit = false
         data.edit = false
-        this.syncFlattenData(this.flattenData)
       }
+      this.syncFlattenData(this.flattenData)
+      console.log(this.flattenData)
     },
+    // 修改并或
     change (id, val) {
       this.condition.opt = val
       this.flattenData.forEach(item => {
@@ -362,20 +372,21 @@ export default {
           item.opt = val
         }
       })
-      const summitData = deepClone(this.flattenData)
-      summitData.map((item, index) => {
-        if (getFormType(item.dataOptionType) === 'date' &&
-          (item.type === '区间外' || item.type === '区间内')) {
-          item.value = [item.date1, item.date2]
-        } else {
-          item.value = stringToArr(item.value, 'toArray')
-        }
-        if (item.dataOptionType === 1 &&
-          (item.type === '区间外' || item.type === '区间内')) {
-          item.value = [item.date1, item.date2]
-        }
-      })
-      this.updateFlattenData(summitData)
+      // const summitData = deepClone(this.flattenData)
+      // summitData.map((item, index) => {
+      //   if (getFormType(item.dataOptionType) === 'date' &&
+      //     (item.type === '区间外' || item.type === '区间内')) {
+      //     item.value = [item.date1, item.date2]
+      //   } else {
+      //     item.value = stringToArr(item.value, 'toArray')
+      //   }
+      //   if (item.dataOptionType === 1 &&
+      //     (item.type === '区间外' || item.type === '区间内')) {
+      //     item.value = [item.date1, item.date2]
+      //   }
+      // })
+      // this.updateFlattenData(summitData)
+      this.syncFlattenData(this.flattenData)
     },
     // 点击+打开字典弹出层
     handleIconClick (node) {

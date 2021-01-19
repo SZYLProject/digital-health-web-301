@@ -31,8 +31,9 @@
 import { mapGetters, createNamespacedHelpers } from 'vuex'
 import { } from '@/api/projectsMangement'
 import ConditionTree from './ConditionTree'
-const { mapMutations } = createNamespacedHelpers('conditionTree')
-// import { ConditionTrees, EventSearch } from './comChildren'
+import { getFormType } from '@/utils/searchRelation'
+import { stringToArr, deepClone } from '@/utils/index'
+const { mapMutations, mapActions } = createNamespacedHelpers('conditionTree')
 
 export default {
   name: 'conditionTreePop',
@@ -46,7 +47,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['groupData'])
+    ...mapGetters(['groupData', 'flattenData'])
   },
   watch: {},
   components: {
@@ -68,8 +69,23 @@ export default {
   },
   methods: {
     ...mapMutations(['syncFlattenData']),
+    ...mapActions(['updateFlattenData']),
     handleSubmit (val) {
-      this.$emit('treeDialogEmit', false)
+      const summitData = deepClone(this.flattenData)
+      summitData.map((item, index) => {
+        if (getFormType(item.dataOptionType) === 'date' &&
+          (item.type === '区间外' || item.type === '区间内')) {
+          item.value = [item.date1, item.date2]
+        } else {
+          item.value = stringToArr(item.value, 'toArray')
+        }
+        if (item.dataOptionType === 1 &&
+          (item.type === '区间外' || item.type === '区间内')) {
+          item.value = [item.date1, item.date2]
+        }
+      })
+      this.updateFlattenData(summitData)
+      // this.$emit('treeDialogEmit', false)
     },
     handleClose (val) {
       this.$emit('treeDialogEmit', false)
