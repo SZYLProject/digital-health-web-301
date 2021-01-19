@@ -306,8 +306,9 @@ export default {
     deleteTree (id) {
       this.checkCID(id)
       console.log(this.flattenData)
+      const summitData = deepClone(this.flattenData)
       // this.syncFlattenData(this.flattenData)
-      this.updateFlattenData(this.flattenData)
+      this.updateFlattenData(summitData)
     },
     // 循子Id
     checkCID (id) {

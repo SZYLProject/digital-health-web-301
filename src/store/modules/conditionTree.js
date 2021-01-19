@@ -34,6 +34,7 @@ const actions = {
   // 关键词搜索列表数据
   updateFlattenData ({ commit, state }, data) {
     commit('syncTreeLoading', true)
+    console.log(data)
     const treeData = listConvertTree(data, '', 'childList')
     const newData = {
       condition: treeData[0],

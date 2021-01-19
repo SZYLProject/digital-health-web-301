@@ -40,7 +40,7 @@ export function TreeConvertList (tree, pId, fieldName) { // 生成扁平数组
         temp.push(children[i])
         const obj = deepCopy(children[i])
         obj.parentId = pid
-        delete obj.children
+        delete obj[fieldName]
         result.push(obj)
       }
     }
