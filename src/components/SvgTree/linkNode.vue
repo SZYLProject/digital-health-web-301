@@ -238,7 +238,7 @@ import { mapGetters, createNamespacedHelpers } from 'vuex'
 import { getDataOption } from '@/api/caseSearch'
 import { getOption, getFormType } from '@/utils/searchRelation'
 import DataDictionaryPop from '@/components/DataDictionaryPop' // 引入弹窗
-import { stringToArr } from '@/utils/index' // deepClone
+import { stringToArr, deepClone } from '@/utils/index'
 const { mapMutations, mapActions } = createNamespacedHelpers('conditionTree')
 export default {
   name: 'linkNode',
@@ -306,8 +306,8 @@ export default {
     deleteTree (id) {
       this.checkCID(id)
       console.log(this.flattenData)
-      this.syncFlattenData(this.flattenData)
-      // this.updateFlattenData(this.flattenData)
+      // this.syncFlattenData(this.flattenData)
+      this.updateFlattenData(this.flattenData)
     },
     // 循子Id
     checkCID (id) {
@@ -331,28 +331,28 @@ export default {
       this.syncFlattenData(this.flattenData)
     },
     confirm (data) {
-      console.log(data)
+      // console.log(data)
       if (!this.edit) {
         Object.assign(data, this.condition)
       } else {
         this.edit = false
       }
       data.edit = false
-      // const summitData = deepClone(this.flattenData)
-      // summitData.map((item, index) => {
-      //   if (getFormType(item.dataOptionType) === 'date' &&
-      //     (item.type === '区间外' || item.type === '区间内')) {
-      //     item.value = [item.date1, item.date2]
-      //   } else {
-      //     item.value = stringToArr(item.value, 'toArray')
-      //   }
-      //   if (item.dataOptionType === 1 &&
-      //     (item.type === '区间外' || item.type === '区间内')) {
-      //     item.value = [item.date1, item.date2]
-      //   }
-      // })
-      // this.updateFlattenData(summitData)
-      this.syncFlattenData(this.flattenData)
+      const summitData = deepClone(this.flattenData)
+      summitData.map((item, index) => {
+        if (getFormType(item.dataOptionType) === 'date' &&
+          (item.type === '区间外' || item.type === '区间内')) {
+          item.value = [item.date1, item.date2]
+        } else {
+          item.value = stringToArr(item.value, 'toArray')
+        }
+        if (item.dataOptionType === 1 &&
+          (item.type === '区间外' || item.type === '区间内')) {
+          item.value = [item.date1, item.date2]
+        }
+      })
+      this.updateFlattenData(summitData)
+      // this.syncFlattenData(this.flattenData)
     },
     cancel (data) {
       if (!this.edit) {
@@ -362,7 +362,7 @@ export default {
         data.edit = false
       }
       this.syncFlattenData(this.flattenData)
-      console.log(this.flattenData)
+      // console.log(this.flattenData)
     },
     // 修改并或
     change (id, val) {
@@ -372,21 +372,21 @@ export default {
           item.opt = val
         }
       })
-      // const summitData = deepClone(this.flattenData)
-      // summitData.map((item, index) => {
-      //   if (getFormType(item.dataOptionType) === 'date' &&
-      //     (item.type === '区间外' || item.type === '区间内')) {
-      //     item.value = [item.date1, item.date2]
-      //   } else {
-      //     item.value = stringToArr(item.value, 'toArray')
-      //   }
-      //   if (item.dataOptionType === 1 &&
-      //     (item.type === '区间外' || item.type === '区间内')) {
-      //     item.value = [item.date1, item.date2]
-      //   }
-      // })
-      // this.updateFlattenData(summitData)
-      this.syncFlattenData(this.flattenData)
+      const summitData = deepClone(this.flattenData)
+      summitData.map((item, index) => {
+        if (getFormType(item.dataOptionType) === 'date' &&
+          (item.type === '区间外' || item.type === '区间内')) {
+          item.value = [item.date1, item.date2]
+        } else {
+          item.value = stringToArr(item.value, 'toArray')
+        }
+        if (item.dataOptionType === 1 &&
+          (item.type === '区间外' || item.type === '区间内')) {
+          item.value = [item.date1, item.date2]
+        }
+      })
+      this.updateFlattenData(summitData)
+      // this.syncFlattenData(this.flattenData)
     },
     // 点击+打开字典弹出层
     handleIconClick (node) {

@@ -227,12 +227,12 @@ export default {
     ...mapGetters(['userInfo', 'treeLoading'])
   },
   watch: {
-    treeLoading (val) {
-      if (!val) {
-        this.getQueueDatas()
-        this.treeDialogVisible = false
-      }
-    }
+    // treeLoading (val) {
+    //   if (!val) {
+    //     this.getQueueDatas()
+    //     this.treeDialogVisible = false
+    //   }
+    // }
   },
   components: {
     ConditionTreePop,
