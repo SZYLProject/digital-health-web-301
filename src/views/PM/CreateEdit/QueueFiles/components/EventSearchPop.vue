@@ -7,7 +7,7 @@
                :before-close="handleClose"
                :visible.sync="eventDialogVisible">
       <p class="message-bar">
-        <span>项目标题：<i>DCH202003184500</i> </span>
+        <span>项目标题：<i>{{projectItemDatas.projectName}}</i> </span>
         <span>入排标注：<i>{{groupData&&groupData.type===2?'排除标准':'纳入标准'}}</i> </span>
         <span>队列名称：<i>{{groupData&&groupData.groupName}}</i> </span>
       </p>
@@ -28,7 +28,9 @@ import EventSearch from './EventSearch'
 export default {
   name: 'EventSearchPop',
   data () {
-    return {}
+    return {
+      projectItemDatas: this.$Storage.sessionGet('projectItemDatas')
+    }
   },
   props: ['data', 'eventDialogVisible'],
   computed: {

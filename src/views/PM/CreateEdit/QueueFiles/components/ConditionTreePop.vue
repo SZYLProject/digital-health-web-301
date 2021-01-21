@@ -8,8 +8,7 @@
                :visible.sync="treeDialogVisible">
       <div class="message-bar">
         <div>
-
-          <span>项目标题：<i>DCH202003184500</i> </span>
+          <span>项目标题：<i>{{projectItemDatas.projectName}}</i> </span>
           <span>入排标注：<i>{{groupData&&groupData.type===2?'排除标准':'纳入标准'}}</i> </span>
           <span>队列名称：<i>{{groupData&&groupData.groupName}}</i> </span>
         </div>
@@ -38,7 +37,9 @@ const { mapMutations, mapActions } = createNamespacedHelpers('queueSearch')
 export default {
   name: 'conditionTreePop',
   data () {
-    return {}
+    return {
+      projectItemDatas: this.$Storage.sessionGet('projectItemDatas')
+    }
   },
   props: {
     treeDialogVisible: {
