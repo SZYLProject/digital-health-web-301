@@ -291,9 +291,11 @@ export default {
       const data = Object.assign(datas, this.form)
       // console.log(data)
       createProjects(data).then((res) => {
-        if (res) {
-          this['projectsMangement/storeitemdata'](res.obj)
-          this.$Storage.sessionSet('projectId', res.obj) // 将项目 id 存储在本地 session
+        if (res?.obj) {
+          this.$Storage.sessionRemove('projectItemDatas') //
+          this['projectsMangement/storeitemdata'](res.obj.id)
+          this.$Storage.sessionSet('projectId', res.obj.id) // 将项目 id 存储在本地 session
+          this.$Storage.sessionSet('projectItemDatas', res.obj) //
           this.$emit('next', 1)
         }
         this.loading = false
@@ -311,10 +313,11 @@ export default {
       }
       const data = Object.assign(datas, this.form)
       correctProject(data).then((res) => {
-        if (res) {
-          console.log(res)
-          this['projectsMangement/storeitemdata'](res.obj)
-          this.$Storage.sessionSet('projectId', res.obj) // 将项目 id 存储在本地 session
+        if (res?.obj) {
+          this.$Storage.sessionRemove('projectItemDatas') //
+          this['projectsMangement/storeitemdata'](res.obj.id)
+          this.$Storage.sessionSet('projectId', res.obj.id) // 将项目 id 存储在本地 session
+          this.$Storage.sessionSet('projectItemDatas', res.obj) //
           this.$emit('next', 1)
         }
         this.loading = false
