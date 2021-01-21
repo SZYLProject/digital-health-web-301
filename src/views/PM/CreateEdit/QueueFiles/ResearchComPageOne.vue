@@ -179,11 +179,13 @@
     <!-- 事件搜索 -->
     <EventSearchPop v-if="eventDialogVisible"
                     :eventDialogVisible="eventDialogVisible"
-                    @eventDialogEmit="eventDialogEmit" />
+                    @eventDialogEmit="eventDialogEmit"
+                    :data="eventDatas" />
     <!-- 精确搜索 -->
     <AccurateSearchPop v-if="accurDialogVisible"
                        :accurDialogVisible="accurDialogVisible"
-                       @accurDialogEmit="accurDialogEmit" />
+                       @accurDialogEmit="accurDialogEmit"
+                       :data="accurateDatas" />
   </div>
 </template>
 
@@ -219,20 +221,31 @@ export default {
       },
       // 分组id
       groupIds: null,
-      loading: false
+      loading: false,
+      // 事件数据
+      eventDatas: [],
+      // 精确检索数据
+      accurateDatas: ''
     }
   },
   props: {},
   computed: {
-    ...mapGetters(['userInfo', 'treeLoading'])
+    ...mapGetters(['userInfo', 'seniorLoading', 'closeTreeDialog'])
   },
   watch: {
-    // treeLoading (val) {
-    //   if (!val) {
-    //     this.getQueueDatas()
-    //     this.treeDialogVisible = false
-    //   }
-    // }
+    seniorLoading (val) {
+      if (!val) {
+        this.getQueueDatas()
+        this.eventDialogVisible = false
+      }
+    },
+    closeTreeDialog (val) {
+      if (val) {
+        this.getQueueDatas()
+        this.treeDialogVisible = false
+        this.syncCloseDialog(false)
+      }
+    }
   },
   components: {
     ConditionTreePop,
@@ -249,12 +262,13 @@ export default {
     this.groupIds = null
   },
   methods: {
-    ...mapMutations(['syncGroupData', 'syncFlattenData']),
+    ...mapMutations(['syncGroupData', 'syncFlattenData', 'syncCloseDialog']),
     openDialog (val, type, data) {
       this.treeData.type = type
+      this.treeData.id = data ? data.id : null
+      this.syncGroupData(this.treeData)
       if (val === 'tree') {
         if (data && data.treeSearch) {
-          this.treeData.id = data.id
           const jsondata = JSON.parse(data.treeSearch)
           const newData = TreeConvertList(jsondata.condition, '', 'childList')
           newData.forEach(item => {
@@ -262,12 +276,17 @@ export default {
           })
           this.syncFlattenData(newData)
         }
-
-        this.syncGroupData(this.treeData)
         this.treeDialogVisible = true
       } else if (val === 'accurate') {
+        this.accurateDatas = (data && data.exactSearch) || ''
         this.accurDialogVisible = true
       } else if (val === 'event') {
+        if (data && data.eventSearch) {
+          const jsondata = JSON.parse(data.eventSearch)
+          this.eventDatas = jsondata.conditionList
+        } else {
+          this.eventDatas = []
+        }
         this.eventDialogVisible = true
       }
     },
@@ -279,6 +298,7 @@ export default {
       this.eventDialogVisible = false
     },
     accurDialogEmit (val) {
+      this.getQueueDatas()
       this.accurDialogVisible = false
     },
     goPrev () {

@@ -1,7 +1,7 @@
 <!-- 高级搜索组件 -->
 <template>
   <div class="advanced-search-com"
-       v-loading="syncSeniorLoading"
+       v-loading="seniorLoading"
        element-loading-text="数据加载中..."
        element-loading-spinner="el-icon-loading">
     <!-- 维度切换选择模块 -->
@@ -397,7 +397,7 @@
 
 <script>
 
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { advancedSearchHistoryDatas, getDataOption } from '@/api/caseSearch'
 import DataDictionaryPop from '@/components/DataDictionaryPop' // 引入弹窗
 import { getOption, getFormType } from '@/utils/searchRelation'
@@ -433,78 +433,58 @@ export default {
       isChild: false,
       restaurants: [], // 搜索主题历史数据
       popArguments: '', // 历史id
-      personNumber: 0, // 患者
-      visitNumber: 0, // 病例数
       adSearchLoading: false
     }
   },
-  props: {
-    childMianPage: {
-      type: String
-    },
-    PN: { // 当前页
-      type: Number,
-      default: 1
-    },
-    PS: { // 每页显示条数
-      type: Number,
-      default: 10
-    }
-  },
+  props: ['eventData'],
   computed: {
-    ...mapGetters(['userInfo', 'advanceSearchDatas', 'advanceSearchListDatas', 'syncSeniorLoading'])
+    ...mapGetters(['userInfo', 'seniorLoading'])
   },
   watch: {
-    conditionList: {
-      deep: true, // 深度监听设置为 true
-      handler (newV, oldV) {
-        this['advancedSearch/advancesearchmuta'](newV)
-      }
-    },
-    PS (val) { // 每页展示条数
-      if (val) {
-        this.searchHandle()
-      }
-    },
-    PN (val) { // 当前页
-      if (val) {
-        this.searchHandle()
-      }
-    }
   },
   components: { DataDictionaryPop },
   created () {
-    this.personNumber = this.advanceSearchListDatas ? this.advanceSearchListDatas.personNumber : 0 // 患者
-    this.visitNumber = this.advanceSearchListDatas ? this.advanceSearchListDatas.visitNumber : 0 // 病例数
   },
   mounted () {
-    if (this.childMianPage) {
-      const obj = JSON.parse(this.$Storage.localGet('searchJson')) && JSON.parse(this.$Storage.localGet('searchJson')).advanceSearchGroupDTOList
-      if (obj) {
-        obj.map((item, index) => {
-          item.serialNumber = index
-          if (getFormType(item.dataOptionType) === 'date' &&
-            (item.type === '区间外' || item.type === '区间内')) {
-            item.value = [item.date1, item.date2]
-          } else {
-            item.value = stringToArr(item.value, 'toString')
-          }
-          if (item.childList.length > 0) {
-            item.childList.map(child => {
-              if (getFormType(child.dataOptionType) === 'date' &&
-                (child.type === '区间外' || child.type === '区间内')) {
-                child.value = [child.date1, child.date2]
-              } else {
-                child.value = stringToArr(child.value, 'toString')
-              }
-            })
-          }
-        })
-        this.conditionList = obj
-        this.searchHandle()
-      } else {
-        this.conditionList = this.advanceSearchDatas
-      }
+    const obj = deepClone(this.eventData)
+    if (obj && obj.length > 0) {
+      obj.map((item, index) => {
+        item.serialNumber = index
+        if (getFormType(item.dataOptionType) === 'date' &&
+          (item.type === '区间外' || item.type === '区间内')) {
+          item.value = [item.date1, item.date2]
+        } else {
+          item.value = stringToArr(item.value, 'toString')
+        }
+        if (item.childList.length > 0) {
+          item.childList.map(child => {
+            if (getFormType(child.dataOptionType) === 'date' &&
+              (child.type === '区间外' || child.type === '区间内')) {
+              child.value = [child.date1, child.date2]
+            } else {
+              child.value = stringToArr(child.value, 'toString')
+            }
+          })
+        }
+      })
+      this.conditionList = obj
+    } else {
+      this.conditionList = [
+        {
+          childList: [],
+          opt: 'AND', // 并或关系
+          indexName: '', // 后台需要的tableName
+          name: '', // 前台回显的dataItemName
+          key: '', // 后台需要的fieldName
+          fieldId: '', // 排除历史搜索id
+          dataOptionType: 0, // 确定条件关系类型
+          type: '', // 条件关系
+          value: '', // 一个输入框
+          date1: '', // 两个输入框时回显
+          date2: '', // 两个输入框时回显
+          dataOption: [] // 下拉选项
+        }
+      ]
     }
   },
   destroyed () {
@@ -526,7 +506,6 @@ export default {
     ]
   },
   methods: {
-    ...mapMutations(['advancedSearch/advancesearchmuta']),
     ...mapActions(['queueSearch/fetchSeniorSearch']),
     getOption, // 根据类型展示不同选项
     getFormType, // 根据类型展示不同组件
@@ -537,8 +516,8 @@ export default {
     // 提交数据
     searchHandle () {
       const summitData = deepClone(this.conditionList)
-      this.personNumber = 0 // 患者
-      this.visitNumber = 0// 病例数
+      // this.personNumber = 0 // 患者
+      // this.visitNumber = 0// 病例数
       summitData.map((item, index) => {
         item.serialNumber = index
         if (getFormType(item.dataOptionType) === 'date' &&
@@ -786,26 +765,22 @@ export default {
 
     // 清空条件
     clearCondition () {
-      this.personNumber = 0 // 患者
-      this.visitNumber = 0// 病例数
+      // this.personNumber = 0 // 患者
+      // this.visitNumber = 0// 病例数
       this.conditionList = [
         {
           childList: [],
-          indexName: '',
-          opt: 'OR',
-          parentVariable: {
-            id: '',
-            name: '',
-            key: '',
-            type: '',
-            value: '',
-            date1: '',
-            date2: '',
-            dataOptionType: 0,
-            dataItemCode: '',
-            dataOption: []
-          },
-          serialNumber: 0
+          opt: 'AND', // 并或关系
+          indexName: '', // 后台需要的tableName
+          name: '', // 前台回显的dataItemName
+          key: '', // 后台需要的fieldName
+          fieldId: '', // 排除历史搜索id
+          dataOptionType: 0, // 确定条件关系类型
+          type: '', // 条件关系
+          value: '', // 一个输入框
+          date1: '', // 两个输入框时回显
+          date2: '', // 两个输入框时回显
+          dataOption: [] // 下拉选项
         }
       ]
     },

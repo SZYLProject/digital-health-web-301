@@ -31,8 +31,8 @@
 import { mapGetters, createNamespacedHelpers } from 'vuex'
 import { } from '@/api/projectsMangement'
 import ConditionTree from './ConditionTree'
-// import { getFormType } from '@/utils/searchRelation'
-// import { stringToArr, deepClone } from '@/utils/index'
+import { getFormType } from '@/utils/searchRelation'
+import { stringToArr, deepClone } from '@/utils/index'
 const { mapMutations, mapActions } = createNamespacedHelpers('queueSearch')
 
 export default {
@@ -71,21 +71,25 @@ export default {
     ...mapMutations(['syncFlattenData']),
     ...mapActions(['updateFlattenData']),
     handleSubmit (val) {
-      // const summitData = deepClone(this.flattenData)
-      // summitData.map((item, index) => {
-      //   if (getFormType(item.dataOptionType) === 'date' &&
-      //     (item.type === '区间外' || item.type === '区间内')) {
-      //     item.value = [item.date1, item.date2]
-      //   } else {
-      //     item.value = stringToArr(item.value, 'toArray')
-      //   }
-      //   if (item.dataOptionType === 1 &&
-      //     (item.type === '区间外' || item.type === '区间内')) {
-      //     item.value = [item.date1, item.date2]
-      //   }
-      // })
-      // this.updateFlattenData(summitData)
-      this.$emit('treeDialogEmit', false)
+      const summitData = deepClone(this.flattenData)
+      summitData.map((item, index) => {
+        if (getFormType(item.dataOptionType) === 'date' &&
+          (item.type === '区间外' || item.type === '区间内')) {
+          item.value = [item.date1, item.date2]
+        } else {
+          item.value = stringToArr(item.value, 'toArray')
+        }
+        if (item.dataOptionType === 1 &&
+          (item.type === '区间外' || item.type === '区间内')) {
+          item.value = [item.date1, item.date2]
+        }
+      })
+      const newData = {
+        type: 'all',
+        data: summitData
+      }
+      this.updateFlattenData(newData)
+      // this.$emit('treeDialogEmit', false)
     },
     handleClose (val) {
       this.$emit('treeDialogEmit', false)

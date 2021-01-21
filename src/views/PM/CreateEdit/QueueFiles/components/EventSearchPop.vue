@@ -1,6 +1,6 @@
 <!-- 事件检索弹窗 -->
 <template>
-<!-- 弹窗 -->
+  <!-- 弹窗 -->
   <div class="event-container">
     <el-dialog fullscreen
                title="事件检索"
@@ -8,11 +8,11 @@
                :visible.sync="eventDialogVisible">
       <p class="message-bar">
         <span>项目标题：<i>DCH202003184500</i> </span>
-        <span>入排标注：<i>纳入标准</i>  </span>
-        <span>队列名称：<i>队列</i> </span>
+        <span>入排标注：<i>{{groupData&&groupData.type===2?'排除标准':'纳入标准'}}</i> </span>
+        <span>队列名称：<i>{{groupData&&groupData.groupName}}</i> </span>
       </p>
       <div class="event-com">
-        <event-search/>
+        <event-search :eventData="data" />
       </div>
     </el-dialog>
   </div>
@@ -30,21 +30,16 @@ export default {
   data () {
     return {}
   },
-  props: {
-    eventDialogVisible: {
-      type: Boolean,
-      default: false
-    }
-  },
+  props: ['data', 'eventDialogVisible'],
   computed: {
-    ...mapGetters(['theme', 'userInfo'])
+    ...mapGetters(['groupData'])
   },
   watch: {},
   components: {
     EventSearch
   },
   created () { },
-  mounted () {},
+  mounted () { },
   destroyed () { },
   methods: {
     ...mapMutations(['']),
@@ -59,33 +54,32 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
 .event-container {
-  .message-bar{
+  .message-bar {
     margin-bottom: 20px;
-    span{
+    span {
       color: #666666;
       font-size: 14px;
       margin-right: 50px;
-      i{
+      i {
         color: #333333;
       }
     }
   }
-  .event-com{
+  .event-com {
     width: 100%;
     padding: 20px;
     // height: calc(100% - 15px);
-    background: rgba(0,112,244,0.05);
+    background: rgba(0, 112, 244, 0.05);
     border: 1px solid #e6e6e6;
   }
 }
 </style>
 <style lang="scss">
-
 .event-container {
-  .el-dialog__header{
+  .el-dialog__header {
     border: solid 1px #e6e6e6;
     padding: 10px;
-    .el-dialog__headerbtn{
+    .el-dialog__headerbtn {
       top: 15px;
     }
   }

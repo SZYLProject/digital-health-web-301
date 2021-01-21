@@ -300,15 +300,17 @@ export default {
           this.condition = item
         }
       })
-      console.log(this.flattenData)
       this.syncFlattenData(this.flattenData)
     },
     deleteTree (id) {
       this.checkCID(id)
-      console.log(this.flattenData)
       const summitData = deepClone(this.flattenData)
       // this.syncFlattenData(this.flattenData)
-      this.updateFlattenData(summitData)
+      const newData = {
+        type: '',
+        data: summitData
+      }
+      this.updateFlattenData(newData)
     },
     // 循子Id
     checkCID (id) {
@@ -352,7 +354,11 @@ export default {
           item.value = [item.date1, item.date2]
         }
       })
-      this.updateFlattenData(summitData)
+      const newData = {
+        type: '',
+        data: summitData
+      }
+      this.updateFlattenData(newData)
       // this.syncFlattenData(this.flattenData)
     },
     cancel (data) {
@@ -386,7 +392,11 @@ export default {
           item.value = [item.date1, item.date2]
         }
       })
-      this.updateFlattenData(summitData)
+      const newData = {
+        type: '',
+        data: summitData
+      }
+      this.updateFlattenData(newData)
       // this.syncFlattenData(this.flattenData)
     },
     // 点击+打开字典弹出层

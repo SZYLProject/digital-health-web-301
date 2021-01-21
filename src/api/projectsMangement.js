@@ -179,6 +179,15 @@ export function getDataOption (code) {
     method: 'GET'
   })
 }
+// 精确搜索
+export function preciseSearch (data) {
+  return request({
+    url: '/crp-project/projectInEx/v1/preciseSearch',
+    method: 'POST',
+    timeout: 20000 * 1000,
+    data
+  })
+}
 
 // 纳入事件搜索
 export function seniorSearch (data) {
@@ -193,6 +202,14 @@ export function seniorSearch (data) {
 export function treeSearch (data) {
   return request({
     url: '/crp-project/projectInEx/v1/treeSearch',
+    method: 'POST',
+    timeout: 20000 * 1000,
+    data
+  })
+}
+export function treeSearchAll (data) {
+  return request({
+    url: '/crp-project/projectInEx/v1/treeSearchAll',
     method: 'POST',
     timeout: 20000 * 1000,
     data

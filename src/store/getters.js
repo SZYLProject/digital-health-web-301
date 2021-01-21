@@ -35,7 +35,9 @@ const getters = {
   treeLoading: state => state.queueSearch.treeLoading,
   groupData: state => state.queueSearch.groupData, // 项目必要信息
   // 事件搜索
-  syncSeniorLoading: state => state.queueSearch.syncSeniorLoading,
+  seniorLoading: state => state.queueSearch.seniorLoading,
+  // 关闭条件树弹出层
+  closeTreeDialog: state => state.queueSearch.closeTreeDialog,
 
   // 项目管理数据
   dragData: state => state.projectsMangement.dragData, // 拖拽对象数据
