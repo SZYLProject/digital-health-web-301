@@ -33,7 +33,7 @@ import { } from '@/api/projectsMangement'
 import ConditionTree from './ConditionTree'
 // import { getFormType } from '@/utils/searchRelation'
 // import { stringToArr, deepClone } from '@/utils/index'
-const { mapMutations, mapActions } = createNamespacedHelpers('conditionTree')
+const { mapMutations, mapActions } = createNamespacedHelpers('queueSearch')
 
 export default {
   name: 'conditionTreePop',

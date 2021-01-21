@@ -181,6 +181,15 @@ export function getDataOption (code) {
 }
 
 // 纳入事件搜索
+export function seniorSearch (data) {
+  return request({
+    url: '/crp-project/projectInEx/v1/seniorSearch',
+    method: 'POST',
+    timeout: 20000 * 1000,
+    data
+  })
+}
+// 纳入条件树搜索
 export function treeSearch (data) {
   return request({
     url: '/crp-project/projectInEx/v1/treeSearch',

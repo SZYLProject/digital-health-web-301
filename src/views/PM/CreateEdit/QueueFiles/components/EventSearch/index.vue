@@ -1,7 +1,7 @@
 <!-- 高级搜索组件 -->
 <template>
   <div class="advanced-search-com"
-       v-loading="adSearchLoading"
+       v-loading="syncSeniorLoading"
        element-loading-text="数据加载中..."
        element-loading-spinner="el-icon-loading">
     <!-- 维度切换选择模块 -->
@@ -32,7 +32,7 @@
       <el-row :gutter="10"
               class="form-title">
         <el-col style="width:100px"
-                v-if="searchCondition && searchCondition.length > 1">搜索关系</el-col>
+                v-if="conditionList && conditionList.length > 1">搜索关系</el-col>
         <el-col style="width:150px">搜索主题</el-col>
         <el-col :span="4">搜索条件</el-col>
         <el-col :span="6">值域范围</el-col>
@@ -42,13 +42,13 @@
       </el-row>
 
       <!-- 列表项 -->
-      <div v-for="(item, index) in searchCondition"
+      <div v-for="(item, index) in conditionList"
            :key="index">
         <!-- 树形图 -->
         <el-row :gutter="10">
           <!-- 搜索关系 -->
           <el-col style="width:100px"
-                  v-if="searchCondition && searchCondition.length > 1">
+                  v-if="conditionList && conditionList.length > 1">
             <el-select v-if="index !== 0"
                        placeholder="请选择"
                        size="small"
@@ -65,7 +65,7 @@
           <!-- 搜索主题 -->
           <el-col style="width:150px">
             <el-autocomplete size="small"
-                             v-model="item.parentVariable.name"
+                             v-model="item.name"
                              placeholder="搜索项"
                              :fetch-suggestions="querySearch"
                              @focus="getHistoryDatas(index)"
@@ -81,9 +81,9 @@
           <el-col :span="4">
             <el-select placeholder="关系"
                        size="small"
-                       :disabled="!item.parentVariable.name"
-                       v-model="item.parentVariable.type">
-              <el-option v-for="option in getOption(item.parentVariable.dataOptionType)"
+                       :disabled="!item.name"
+                       v-model="item.type">
+              <el-option v-for="option in getOption(item.dataOptionType)"
                          :key="option"
                          :label="option"
                          :value="option"></el-option>
@@ -96,21 +96,21 @@
             <!--根据type显示不同的框-->
 
             <!--radio-->
-            <el-radio-group :disabled="!item.parentVariable.name"
-                            v-model="item.parentVariable.value"
+            <el-radio-group :disabled="!item.name"
+                            v-model="item.value"
                             size="small"
-                            v-if="getFormType(item.parentVariable.dataOptionType) === 'radio'">
+                            v-if="getFormType(item.dataOptionType) === 'radio'">
               <el-radio label="'是'">是</el-radio>
               <el-radio label="'否'">否</el-radio>
             </el-radio-group>
 
             <!--select-->
-            <el-select :disabled="!item.parentVariable.name"
-                       v-model="item.parentVariable.value"
+            <el-select :disabled="!item.name"
+                       v-model="item.value"
                        placeholder="请选择"
                        size="small"
-                       v-else-if="getFormType(item.parentVariable.dataOptionType) === 'select'">
-              <el-option v-for="(listItem,index) in item.parentVariable.dataOption"
+                       v-else-if="getFormType(item.dataOptionType) === 'select'">
+              <el-option v-for="(listItem,index) in item.dataOption"
                          :key="index"
                          :label="listItem"
                          :value="listItem">
@@ -119,23 +119,23 @@
 
             <!--date-->
             <!-- 非区间 -->
-            <el-date-picker :disabled="!item.parentVariable.name"
-                            v-model="item.parentVariable.value"
+            <el-date-picker :disabled="!item.name"
+                            v-model="item.value"
                             type="datetime"
                             placeholder="选择日期时间"
                             size="small"
                             value-format="yyyy-MM-dd HH:mm:ss"
                             style="width:100%"
-                            v-else-if="getFormType(item.parentVariable.dataOptionType ) === 'date' &&
-                            (item.parentVariable.type!=='区间外'&&item.parentVariable.type !== '区间内')">
+                            v-else-if="getFormType(item.dataOptionType ) === 'date' &&
+                            (item.type!=='区间外'&&item.type !== '区间内')">
             </el-date-picker>
             <!-- 区间内 -->
-            <el-row v-else-if="getFormType(item.parentVariable.dataOptionType) === 'date' &&
-                            (item.parentVariable.type==='区间外' || item.parentVariable.type === '区间内')"
+            <el-row v-else-if="getFormType(item.dataOptionType) === 'date' &&
+                            (item.type==='区间外' || item.type === '区间内')"
                     style="margin-bottom:0">
               <el-col :span="11">
-                <el-date-picker :disabled="!item.parentVariable.name"
-                                v-model="item.parentVariable.date1"
+                <el-date-picker :disabled="!item.name"
+                                v-model="item.date1"
                                 type="datetime"
                                 value-format="yyyy-MM-dd HH:mm:ss"
                                 placeholder="选择日期时间"
@@ -146,8 +146,8 @@
               <el-col class="line"
                       :span="2">-</el-col>
               <el-col :span="11">
-                <el-date-picker :disabled="!item.parentVariable.name"
-                                v-model="item.parentVariable.date2"
+                <el-date-picker :disabled="!item.name"
+                                v-model="item.date2"
                                 type="datetime"
                                 value-format="yyyy-MM-dd HH:mm:ss"
                                 placeholder="选择日期时间"
@@ -158,31 +158,31 @@
             </el-row>
             <!--input-->
             <!-- 区间内 -->
-            <el-row v-else-if="item.parentVariable.dataOptionType===1 &&
-                            (item.parentVariable.type==='区间外' || item.parentVariable.type === '区间内')"
+            <el-row v-else-if="item.dataOptionType===1 &&
+                            (item.type==='区间外' || item.type === '区间内')"
                     style="margin-bottom:0">
               <el-col :span="11">
                 <el-input size="small"
-                          :disabled="!item.parentVariable.name"
+                          :disabled="!item.name"
                           placeholder="最小值"
-                          v-model="item.parentVariable.date1">
+                          v-model="item.date1">
                 </el-input>
               </el-col>
               <el-col class="line"
                       :span="2">-</el-col>
               <el-col :span="11">
                 <el-input size="small"
-                          :disabled="!item.parentVariable.name"
+                          :disabled="!item.name"
                           placeholder="最大值"
-                          v-model="item.parentVariable.date2">
+                          v-model="item.date2">
                 </el-input>
               </el-col>
             </el-row>
             <!-- 非区间 -->
             <el-input size="small"
-                      :disabled="!item.parentVariable.name"
+                      :disabled="!item.name"
                       placeholder="对比值"
-                      v-model="item.parentVariable.value"
+                      v-model="item.value"
                       v-else>
             </el-input>
             <!--根据type显示不同的框-->
@@ -194,7 +194,7 @@
               <i class="iconfont icon-gengduo1"
                  style="color:#00a0e9;"
                  @click="addChildCondition(index)"
-                 v-if="item.parentVariable.name">
+                 v-if="item.name">
                 <!-- 过滤 -->
               </i>
               <i class="el-icon-circle-plus"
@@ -213,10 +213,10 @@
         </el-row>
 
         <!-- 子集 -->
-        <div v-if="item.advanceSearchVariableDTOList && item.advanceSearchVariableDTOList.length > 0">
+        <div v-if="item.childList && item.childList.length > 0">
           <el-row :class="i === 0 ? 'first-child' : 'child-row'"
                   :gutter="10"
-                  v-for="(child,i) in item.advanceSearchVariableDTOList"
+                  v-for="(child,i) in item.childList"
                   :key="i">
 
             <!-- 搜索项 -->
@@ -386,18 +386,19 @@
 
     <!-- 弹窗 -->
     <el-dialog width="50%"
-               :visible.sync="searchTitVisi" append-to-body>
+               :visible.sync="searchTitVisi"
+               append-to-body>
       <DataDictionaryPop @dialogDatas="dialogDatas"
-                      :openDialog="searchTitVisi"
-                      :popArguments='popArguments' />
+                         :openDialog="searchTitVisi"
+                         :popArguments='popArguments' />
     </el-dialog>
   </div>
 </template>
 
 <script>
 
-import { mapGetters, mapMutations } from 'vuex'
-import { advancedSearchHistoryDatas, getDataOption, advancedSearchCommit } from '@/api/caseSearch'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { advancedSearchHistoryDatas, getDataOption } from '@/api/caseSearch'
 import DataDictionaryPop from '@/components/DataDictionaryPop' // 引入弹窗
 import { getOption, getFormType } from '@/utils/searchRelation'
 import { stringToArr, deepClone } from '@/utils/index'
@@ -410,24 +411,20 @@ export default {
     return {
       model: '1',
       // 高级搜索条件
-      searchCondition: [
+      conditionList: [
         {
-          advanceSearchVariableDTOList: [],
-          indexName: '',
-          opt: 'OR',
-          parentVariable: {
-            id: '',
-            name: '',
-            key: '',
-            type: '',
-            value: '',
-            date1: '',
-            date2: '',
-            dataOptionType: 0,
-            dataItemCode: '',
-            dataOption: []
-          },
-          serialNumber: 0
+          childList: [],
+          opt: 'AND', // 并或关系
+          indexName: '', // 后台需要的tableName
+          name: '', // 前台回显的dataItemName
+          key: '', // 后台需要的fieldName
+          fieldId: '', // 排除历史搜索id
+          dataOptionType: 0, // 确定条件关系类型
+          type: '', // 条件关系
+          value: '', // 一个输入框
+          date1: '', // 两个输入框时回显
+          date2: '', // 两个输入框时回显
+          dataOption: [] // 下拉选项
         }
       ],
       searchTitVisi: false, // 是否显示搜索主题弹窗
@@ -455,10 +452,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userInfo', 'advanceSearchDatas', 'advanceSearchListDatas'])
+    ...mapGetters(['userInfo', 'advanceSearchDatas', 'advanceSearchListDatas', 'syncSeniorLoading'])
   },
   watch: {
-    searchCondition: {
+    conditionList: {
       deep: true, // 深度监听设置为 true
       handler (newV, oldV) {
         this['advancedSearch/advancesearchmuta'](newV)
@@ -486,14 +483,14 @@ export default {
       if (obj) {
         obj.map((item, index) => {
           item.serialNumber = index
-          if (getFormType(item.parentVariable.dataOptionType) === 'date' &&
-            (item.parentVariable.type === '区间外' || item.parentVariable.type === '区间内')) {
-            item.parentVariable.value = [item.parentVariable.date1, item.parentVariable.date2]
+          if (getFormType(item.dataOptionType) === 'date' &&
+            (item.type === '区间外' || item.type === '区间内')) {
+            item.value = [item.date1, item.date2]
           } else {
-            item.parentVariable.value = stringToArr(item.parentVariable.value, 'toString')
+            item.value = stringToArr(item.value, 'toString')
           }
-          if (item.advanceSearchVariableDTOList.length > 0) {
-            item.advanceSearchVariableDTOList.map(child => {
+          if (item.childList.length > 0) {
+            item.childList.map(child => {
               if (getFormType(child.dataOptionType) === 'date' &&
                 (child.type === '区间外' || child.type === '区间内')) {
                 child.value = [child.date1, child.date2]
@@ -503,37 +500,34 @@ export default {
             })
           }
         })
-        this.searchCondition = obj
+        this.conditionList = obj
         this.searchHandle()
       } else {
-        this.searchCondition = this.advanceSearchDatas
+        this.conditionList = this.advanceSearchDatas
       }
     }
   },
   destroyed () {
-    this.searchCondition = [
+    this.conditionList = [
       {
-        advanceSearchVariableDTOList: [],
-        indexName: '',
-        opt: 'OR',
-        parentVariable: {
-          id: '',
-          name: '',
-          key: '',
-          type: '',
-          value: '',
-          date1: '',
-          date2: '',
-          dataOptionType: 0,
-          dataItemCode: '',
-          dataOption: []
-        },
-        serialNumber: 0
+        childList: [],
+        opt: 'AND', // 并或关系
+        indexName: '', // 后台需要的tableName
+        name: '', // 前台回显的dataItemName
+        key: '', // 后台需要的fieldName
+        fieldId: '', // 排除历史搜索id
+        dataOptionType: 0, // 确定条件关系类型
+        type: '', // 条件关系
+        value: '', // 一个输入框
+        date1: '', // 两个输入框时回显
+        date2: '', // 两个输入框时回显
+        dataOption: [] // 下拉选项
       }
     ]
   },
   methods: {
-    ...mapMutations(['advancedSearch/advancesearchmuta', 'advancedSearch/advancesearchlistmup']),
+    ...mapMutations(['advancedSearch/advancesearchmuta']),
+    ...mapActions(['queueSearch/fetchSeniorSearch']),
     getOption, // 根据类型展示不同选项
     getFormType, // 根据类型展示不同组件
     radioChange (val) {
@@ -542,23 +536,23 @@ export default {
 
     // 提交数据
     searchHandle () {
-      const summitData = deepClone(this.searchCondition)
+      const summitData = deepClone(this.conditionList)
       this.personNumber = 0 // 患者
       this.visitNumber = 0// 病例数
       summitData.map((item, index) => {
         item.serialNumber = index
-        if (getFormType(item.parentVariable.dataOptionType) === 'date' &&
-          (item.parentVariable.type === '区间外' || item.parentVariable.type === '区间内')) {
-          item.parentVariable.value = [item.parentVariable.date1, item.parentVariable.date2]
+        if (getFormType(item.dataOptionType) === 'date' &&
+          (item.type === '区间外' || item.type === '区间内')) {
+          item.value = [item.date1, item.date2]
         } else {
-          item.parentVariable.value = stringToArr(item.parentVariable.value, 'toArray')
+          item.value = stringToArr(item.value, 'toArray')
         }
-        if (item.parentVariable.dataOptionType === 1 &&
-          (item.parentVariable.type === '区间外' || item.parentVariable.type === '区间内')) {
-          item.parentVariable.value = [item.parentVariable.date1, item.parentVariable.date2]
+        if (item.dataOptionType === 1 &&
+          (item.type === '区间外' || item.type === '区间内')) {
+          item.value = [item.date1, item.date2]
         }
-        if (item.advanceSearchVariableDTOList.length > 0) {
-          item.advanceSearchVariableDTOList.map(child => {
+        if (item.childList.length > 0) {
+          item.childList.map(child => {
             if (getFormType(child.dataOptionType) === 'date' &&
               (child.type === '区间外' || child.type === '区间内')) {
               child.value = [child.date1, child.date2]
@@ -574,7 +568,7 @@ export default {
       })
       // console.log(summitData)
       const status = summitData.map(item => {
-        if (item.parentVariable.name === '' || item.parentVariable.type === '' || item.parentVariable.value.length === 0) {
+        if (item.name === '' || item.type === '' || item.value.length === 0) {
           return false
         } else {
           return true
@@ -582,32 +576,7 @@ export default {
       })
       const flag = !(status.toString().search('false') !== -1)
       if (flag) {
-        this.adSearchLoading = true
-        const data = {
-          advanceSearchGroupDTOList: summitData,
-          model: this.model,
-          pageNo: this.PN,
-          pageSize: this.PS
-        }
-        advancedSearchCommit(data).then(res => {
-          // console.log(res)
-          const obj = res.obj
-          if (obj) {
-            this['advancedSearch/advancesearchlistmup'](obj)
-            this.personNumber = obj.personNumber // 患者
-            this.visitNumber = obj.visitNumber // 病例数
-            // 路由跳转
-            if (this.$route.path !== '/CasesOfSearch/AdvancedSearch') {
-              this.$router.push('AdvancedSearch') // 跳转高级搜索页面
-            }
-          } else {
-            this.personNumber = 0 // 患者
-            this.visitNumber = 0// 病例数
-          }
-          this.adSearchLoading = false
-        }).catch(() => {
-          this.adSearchLoading = false
-        })
+        this['queueSearch/fetchSeniorSearch'](summitData)
       } else {
         this.$message({
           message: '请完善您的搜索条件~',
@@ -620,9 +589,9 @@ export default {
     // 获得搜索历史数据
     getHistoryDatas (index, cIndex) {
       const popArg = []
-      popArg.push(this.searchCondition[index].parentVariable.id)
-      if (this.searchCondition[index].advanceSearchVariableDTOList.length > 0) {
-        this.searchCondition[index].advanceSearchVariableDTOList.map(childItem => {
+      popArg.push(this.conditionList[index].id)
+      if (this.conditionList[index].childList.length > 0) {
+        this.conditionList[index].childList.map(childItem => {
           popArg.push(childItem.id)
         })
       }
@@ -655,11 +624,11 @@ export default {
     // 主题选项
     handleSelect (item) {
       if (this.isChild) {
-        this.searchCondition[this.nowIndex].advanceSearchVariableDTOList[this.childIndex].id = item.id
-        this.searchCondition[this.nowIndex].advanceSearchVariableDTOList[this.childIndex].name = item.dataItemName
-        this.searchCondition[this.nowIndex].advanceSearchVariableDTOList[this.childIndex].key = item.fieldName
-        this.searchCondition[this.nowIndex].advanceSearchVariableDTOList[this.childIndex].dataOptionType = item.dataOptionType
-        this.searchCondition[this.nowIndex].advanceSearchVariableDTOList[this.childIndex].dataItemCode = item.dataItemCode
+        this.conditionList[this.nowIndex].childList[this.childIndex].id = item.id
+        this.conditionList[this.nowIndex].childList[this.childIndex].name = item.dataItemName
+        this.conditionList[this.nowIndex].childList[this.childIndex].key = item.fieldName
+        this.conditionList[this.nowIndex].childList[this.childIndex].dataOptionType = item.dataOptionType
+        this.conditionList[this.nowIndex].childList[this.childIndex].dataItemCode = item.dataItemCode
         // if 类型是4 需要接口获取option
         if (item.dataOptionType === 4) {
           getDataOption(item.dataItemCode).then(res => {
@@ -667,16 +636,16 @@ export default {
             res.obj.map(v => {
               list.push(v.dataOptionValue)
             })
-            this.searchCondition[this.nowIndex].advanceSearchVariableDTOList[this.childIndex].dataOption = list
+            this.conditionList[this.nowIndex].childList[this.childIndex].dataOption = list
           })
         }
       } else {
-        this.searchCondition[this.nowIndex].indexName = item.tableName
-        this.searchCondition[this.nowIndex].parentVariable.id = item.id
-        this.searchCondition[this.nowIndex].parentVariable.name = item.dataItemName
-        this.searchCondition[this.nowIndex].parentVariable.key = item.fieldName
-        this.searchCondition[this.nowIndex].parentVariable.dataOptionType = item.dataOptionType
-        this.searchCondition[this.nowIndex].parentVariable.dataItemCode = item.dataItemCode
+        this.conditionList[this.nowIndex].indexName = item.tableName
+        this.conditionList[this.nowIndex].id = item.id
+        this.conditionList[this.nowIndex].name = item.dataItemName
+        this.conditionList[this.nowIndex].key = item.fieldName
+        this.conditionList[this.nowIndex].dataOptionType = item.dataOptionType
+        this.conditionList[this.nowIndex].dataItemCode = item.dataItemCode
         // if 类型是4 需要接口获取option
         if (item.dataOptionType === 4) {
           getDataOption(item.dataItemCode).then(res => {
@@ -684,7 +653,7 @@ export default {
             res.obj.map(v => {
               list.push(v.dataOptionValue)
             })
-            this.searchCondition[this.nowIndex].parentVariable.dataOption = list
+            this.conditionList[this.nowIndex].dataOption = list
           })
         }
       }
@@ -695,11 +664,11 @@ export default {
       if (val) {
         this.$set(val, 'value', val.dataItemName)
         if (this.isChild) {
-          this.searchCondition[this.nowIndex].advanceSearchVariableDTOList[this.childIndex].id = val.id
-          this.searchCondition[this.nowIndex].advanceSearchVariableDTOList[this.childIndex].name = val.dataItemName
-          this.searchCondition[this.nowIndex].advanceSearchVariableDTOList[this.childIndex].key = val.fieldName
-          this.searchCondition[this.nowIndex].advanceSearchVariableDTOList[this.childIndex].dataOptionType = val.dataOptionType
-          this.searchCondition[this.nowIndex].advanceSearchVariableDTOList[this.childIndex].dataItemCode = val.dataItemCode
+          this.conditionList[this.nowIndex].childList[this.childIndex].id = val.id
+          this.conditionList[this.nowIndex].childList[this.childIndex].name = val.dataItemName
+          this.conditionList[this.nowIndex].childList[this.childIndex].key = val.fieldName
+          this.conditionList[this.nowIndex].childList[this.childIndex].dataOptionType = val.dataOptionType
+          this.conditionList[this.nowIndex].childList[this.childIndex].dataItemCode = val.dataItemCode
           // if 类型是4 需要接口获取option
           if (val.dataOptionType === 4) {
             getDataOption(val.dataItemCode).then(res => {
@@ -707,16 +676,16 @@ export default {
               res.obj.map(v => {
                 list.push(v.dataOptionValue)
               })
-              this.searchCondition[this.nowIndex].advanceSearchVariableDTOList[this.childIndex].dataOption = list
+              this.conditionList[this.nowIndex].childList[this.childIndex].dataOption = list
             })
           }
         } else {
-          this.searchCondition[this.nowIndex].indexName = val.tableName
-          this.searchCondition[this.nowIndex].parentVariable.id = val.id
-          this.searchCondition[this.nowIndex].parentVariable.name = val.dataItemName
-          this.searchCondition[this.nowIndex].parentVariable.key = val.fieldName
-          this.searchCondition[this.nowIndex].parentVariable.dataOptionType = val.dataOptionType
-          this.searchCondition[this.nowIndex].parentVariable.dataItemCode = val.dataItemCode
+          this.conditionList[this.nowIndex].indexName = val.tableName
+          this.conditionList[this.nowIndex].id = val.id
+          this.conditionList[this.nowIndex].name = val.dataItemName
+          this.conditionList[this.nowIndex].key = val.fieldName
+          this.conditionList[this.nowIndex].dataOptionType = val.dataOptionType
+          this.conditionList[this.nowIndex].dataItemCode = val.dataItemCode
           // if 类型是4 需要接口获取option
           if (val.dataOptionType === 4) {
             getDataOption(val.dataItemCode).then(res => {
@@ -724,7 +693,7 @@ export default {
               res.obj.map(v => {
                 list.push(v.dataOptionValue)
               })
-              this.searchCondition[this.nowIndex].parentVariable.dataOption = list
+              this.conditionList[this.nowIndex].dataOption = list
             })
           }
         }
@@ -743,9 +712,9 @@ export default {
       this.nowIndex = index
       this.popArguments = []
       const popArg = []
-      popArg.push(this.searchCondition[index].parentVariable.id)
-      if (this.searchCondition[index].advanceSearchVariableDTOList.length > 0) {
-        this.searchCondition[index].advanceSearchVariableDTOList.map(childItem => {
+      popArg.push(this.conditionList[index].id)
+      if (this.conditionList[index].childList.length > 0) {
+        this.conditionList[index].childList.map(childItem => {
           popArg.push(childItem.id)
         })
       }
@@ -765,9 +734,9 @@ export default {
 
     // 增加条件
     addCondition () {
-      this.searchCondition.push(
+      this.conditionList.push(
         {
-          advanceSearchVariableDTOList: [],
+          childList: [],
           indexName: '',
           opt: 'OR',
           parentVariable: {
@@ -789,7 +758,7 @@ export default {
 
     // 增加子条件
     addChildCondition (index) {
-      this.searchCondition[index].advanceSearchVariableDTOList.push(
+      this.conditionList[index].childList.push(
         {
           id: '',
           name: '',
@@ -807,21 +776,21 @@ export default {
 
     // 删除条件
     deleteCondition (index) {
-      this.searchCondition.splice(index, 1)
+      this.conditionList.splice(index, 1)
     },
 
     // 删除子条件
     deleteChildCondition (index, pIndex) {
-      this.searchCondition[pIndex].advanceSearchVariableDTOList.splice(index, 1)
+      this.conditionList[pIndex].childList.splice(index, 1)
     },
 
     // 清空条件
     clearCondition () {
       this.personNumber = 0 // 患者
       this.visitNumber = 0// 病例数
-      this.searchCondition = [
+      this.conditionList = [
         {
-          advanceSearchVariableDTOList: [],
+          childList: [],
           indexName: '',
           opt: 'OR',
           parentVariable: {

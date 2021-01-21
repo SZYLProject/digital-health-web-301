@@ -239,7 +239,7 @@ import { getDataOption } from '@/api/caseSearch'
 import { getOption, getFormType } from '@/utils/searchRelation'
 import DataDictionaryPop from '@/components/DataDictionaryPop' // 引入弹窗
 import { stringToArr, deepClone } from '@/utils/index'
-const { mapMutations, mapActions } = createNamespacedHelpers('conditionTree')
+const { mapMutations, mapActions } = createNamespacedHelpers('queueSearch')
 export default {
   name: 'linkNode',
   components: { DataDictionaryPop },

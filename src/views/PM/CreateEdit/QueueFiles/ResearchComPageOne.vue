@@ -192,7 +192,7 @@ import { mapGetters, createNamespacedHelpers } from 'vuex'
 import { getQueueDatas, addNewQueue, deleteQueue, correctQueue, getListByGroupId, sureInputDatas } from '@/api/projectsMangement'
 import { ConditionTreePop, EventSearchPop, AccurateSearchPop } from './components'
 import { TreeConvertList } from '@/utils/conditionTreeFn'
-const { mapMutations } = createNamespacedHelpers('conditionTree')
+const { mapMutations } = createNamespacedHelpers('queueSearch')
 export default {
   name: 'ResearchComPageOne',
   data () {

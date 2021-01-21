@@ -31,9 +31,11 @@ const getters = {
   viewId: state => state.view360.viewId, // 视图id名字等信息
 
   // 条件树
-  flattenData: state => state.conditionTree.flattenData, // 扁平数据
-  treeLoading: state => state.conditionTree.treeLoading,
-  groupData: state => state.conditionTree.groupData, // 项目必要信息
+  flattenData: state => state.queueSearch.flattenData, // 扁平数据
+  treeLoading: state => state.queueSearch.treeLoading,
+  groupData: state => state.queueSearch.groupData, // 项目必要信息
+  // 事件搜索
+  syncSeniorLoading: state => state.queueSearch.syncSeniorLoading,
 
   // 项目管理数据
   dragData: state => state.projectsMangement.dragData, // 拖拽对象数据

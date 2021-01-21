@@ -1,9 +1,10 @@
 import { listConvertTree } from '@/utils/conditionTreeFn'
-import { treeSearch } from '@/api/projectsMangement'
+import { treeSearch, seniorSearch } from '@/api/projectsMangement'
 const FLATTEN_DATA = 'syncFlattenData' // 条件树数据
 const GROUNP_DATA = 'syncGroupData' // 条件树请求需要字段
 const TREE_LOADING = 'syncTreeLoading' // 条件树请求需要字段
 const state = {
+  syncSeniorLoading: false,
   treeLoading: false,
   groupData: null,
   flattenData: [
@@ -31,7 +32,7 @@ const mutations = {
 }
 
 const actions = {
-  // 关键词搜索列表数据
+  // 提交条件树搜索
   updateFlattenData ({ commit, state }, data) {
     commit('syncTreeLoading', true)
     console.log(data)
@@ -58,6 +59,29 @@ const actions = {
         resolve(obj)
       }).catch(error => {
         commit('syncTreeLoading', false)
+        reject(error)
+      })
+    })
+  },
+  // 提交事件搜索
+  fetchSeniorSearch ({ commit, state }, data) {
+    commit('syncSeniorLoading', true)
+    const newData = {
+      conditionList: data,
+      groupId: state.groupData.groupId,
+      id: state.groupData.id,
+      projectId: state.groupData.projectId,
+      totalCount: 0,
+      type: state.groupData.type
+    }
+    return new Promise((resolve, reject) => {
+      seniorSearch(newData).then(res => {
+        const obj = res.obj
+        console.log(res)
+        commit('syncSeniorLoading', false)
+        resolve(obj)
+      }).catch(error => {
+        commit('syncSeniorLoading', false)
         reject(error)
       })
     })
