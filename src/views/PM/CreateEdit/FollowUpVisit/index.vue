@@ -31,6 +31,7 @@ export default {
   data () {
     return { //
       url: 'http://10.131.101.5:8099/#/visit?title=的方法范德萨发大发'
+      // url: 'http://172.16.115.227:8080/#/visit?title=的方法范德萨发大发'
     }
   },
   props: {},

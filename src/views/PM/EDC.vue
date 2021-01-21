@@ -22,6 +22,7 @@ export default {
   data () {
     return {
       url: 'http://10.131.101.5:8099/#/FormInput'
+      // url: 'http://172.16.115.227:8080/#/FormInput'
     }
   },
   props: {},
@@ -36,6 +37,7 @@ export default {
   },
   created () {},
   mounted () {
+    // alert(222)
     // console.log(this.$route.params.id)
   },
   destroyed () {},
