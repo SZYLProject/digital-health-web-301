@@ -9,7 +9,7 @@
                  @click="addTree(node.id)"
                  size="medium"
                  plain></el-button>
-      <el-button v-if="node.children&&node.children.length>1&&condition.opt==='AND'"
+      <el-button v-if="node.children&&node.children.length>1&&(node.data.opt==='AND')"
                  type="primary"
                  :disabled="disable"
                  @click="change(node.id,'OR')"
@@ -17,7 +17,7 @@
       <el-button type="success"
                  :disabled="disable"
                  @click="change(node.id,'AND')"
-                 v-if="node.children&&node.children.length>1&&condition.opt==='OR'"
+                 v-if="node.children&&node.children.length>1&&(node.data.opt==='OR')"
                  size="small">或</el-button>
     </div>
 
@@ -64,12 +64,12 @@
         <el-button type="primary"
                    :disabled="disable"
                    @click="change(node.id,'OR')"
-                   v-if="condition.opt==='AND'"
+                   v-if="node.data.opt==='AND'"
                    size="small">并</el-button>
         <el-button type="success"
                    :disabled="disable"
                    @click="change(node.id,'AND')"
-                   v-if="condition.opt==='OR'"
+                   v-if="node.data.opt==='OR'"
                    size="small">或</el-button>
       </div>
       <div class="addIcon">

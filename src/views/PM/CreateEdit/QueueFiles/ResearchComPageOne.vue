@@ -274,6 +274,7 @@ export default {
           newData.forEach(item => {
             item.num = jsondata.countList[item.id]
           })
+          console.log(newData)
           this.syncFlattenData(newData)
         }
         this.treeDialogVisible = true
