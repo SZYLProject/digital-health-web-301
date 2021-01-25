@@ -59,6 +59,15 @@ export function correctProject (data) {
     data: data
   })
 }
+// 删除列表接口
+export function deleteLists (data) {
+  const { id } = data
+  return request({
+    url: `/crp-project/project/v1/deleteProject/${id}`,
+    method: 'get',
+    params: {}
+  })
+}
 
 // 一级字典接口
 export function oneDictionaryDatas (data) {

@@ -51,12 +51,21 @@
                   {{ item.projectName || "无" }}
                 </el-button>
               </h1>
-              <span class="right pointer" @click="goSearchObj(item)">
+              <span class="right pointer">
                 <el-tooltip
-                  effect="dark"
-                  content="修改"
+                  effect="light"
                   placement="top-start"
                 >
+                  <div slot="content">
+                    <el-button type="text"
+                               style="padding:0;"
+                               @click.native="goSearchObj(item)"
+                               size="mini">修改</el-button>
+                    <el-button type="text"
+                               style="padding:0;"
+                               @click.native="deleteList(item)"
+                               size="mini">删除</el-button>
+                  </div>
                   <i class="el-icon-more"></i>
                 </el-tooltip>
               </span>
@@ -181,7 +190,7 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import { projectLists } from '@/api/projectsMangement'
+import { projectLists, deleteLists } from '@/api/projectsMangement' //
 export default {
   name: 'ProjectLists',
   data () {
@@ -267,6 +276,23 @@ export default {
           obj: item
         }
       })
+    },
+    // 删除项目
+    deleteList (item) {
+      console.log(item)
+      const data = {
+        id: item.id
+      }
+      deleteLists(data).then(res => {
+        console.log(res)
+        if (res) {
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
+          this.getProjectLists()
+        }
+      }).catch(() => {})
     },
     // 创建新项目
     createButton () {
