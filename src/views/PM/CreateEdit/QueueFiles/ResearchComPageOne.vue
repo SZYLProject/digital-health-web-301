@@ -476,7 +476,7 @@ export default {
   }
   .actives {
     // border: 1px solid #0070f4!important;
-    box-shadow: 0px 0px 10px 5px rgba(0, 112, 244, 0.2);
+    box-shadow: 0px 0px 10px 5px rgba(0, 112, 244, 0.5);
   }
   .queue-content {
     width: 100%;
