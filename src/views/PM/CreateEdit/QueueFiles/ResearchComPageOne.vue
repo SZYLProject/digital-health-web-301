@@ -51,7 +51,7 @@
               </div>
             </li>
             <li>
-              <el-button @click="addQueue"
+              <el-button @click.native="addQueue"
                          :loading="addLoading"
                          class="el-icon-plus add-button">新增分组</el-button>
             </li>
@@ -396,6 +396,8 @@ export default {
             message: '删除成功!'
           })
           this.queueDatas.splice(index, 1)
+          this.num = 0
+          this.getQueueDatas() // 重新拉取数据
         }
       }).catch(() => { })
     },
@@ -412,7 +414,7 @@ export default {
       }
       addNewQueue(data).then((res) => {
         if (res?.obj) {
-          this.queueDatas.unshift(res.obj)
+          this.queueDatas.push(res.obj)
           this.$message({
             type: 'success',
             message: '新增成功!'

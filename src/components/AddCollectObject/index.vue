@@ -136,7 +136,7 @@ export default {
       const newV = this.checkListDatas
       const newVal = newV.map(item => {
         const newItem = item.categoryName.search(this.input2) !== -1 ||
-                        PinyinMatch.match(item.categoryName, this.input2)
+                        PinyinMatch.default.match(item.categoryName, this.input2)
         if (newItem) return item
       }).filter(item => item)
       this.checkChild = newVal

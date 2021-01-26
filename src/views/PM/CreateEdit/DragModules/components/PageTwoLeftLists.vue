@@ -4,6 +4,13 @@
     <div class="patients">
       <h3 class="title">
         {{ dataSourceValue.sourceName || "选择病种" }} <span>（全部指标）</span>
+        <el-input v-model="threeDic"
+                  style="width:190px;margin-left:10px;"
+                  size="mini"
+                  clearable
+                  prefix-icon="el-icon-search"
+                  @input="conditionFilter"
+                  placeholder="请输入三级搜索字段"></el-input>
       </h3>
     </div>
     <div class="dic-lists">
@@ -44,7 +51,7 @@
               <transition-group type="transition">
                 <el-button plain
                            size="mini"
-                           v-for="(item, index) in distionaChildDatas"
+                           v-for="(item, index) in distionaChild"
                            :key="index"
                            :disabled="item.disable"
                            :id="item.id">{{ item.dataItemName }}</el-button>
@@ -61,6 +68,7 @@
 import { mapGetters, mapMutations } from 'vuex'
 import { oneDictionaryDatas, datasDictionariesTitle, getThreeDictionaries } from '@/api/projectsMangement'
 import draggable from 'vuedraggable'
+const PinyinMatch = require('pinyin-match') //
 // import dataing from '../../dic'
 export default {
   name: 'PageTwoRightLists',
@@ -72,11 +80,13 @@ export default {
         label: 'label'
       },
       distionaryDatas: [],
-      distionaChildDatas: [],
+      distionaChildDatas: [], // 三级字典数据
+      distionaChild: [], // 三级字典渲染
       secondName: '',
       num: 0,
       parentLabel: null, // 一级字典的标题
-      fieldsStatus: null // 一级字典的 直接映射 or others
+      fieldsStatus: null, // 一级字典的 直接映射 or others
+      threeDic: '' // 三级字典快速搜索
     }
   },
   props: {},
@@ -128,6 +138,7 @@ export default {
       getThreeDictionaries(datas).then(res => {
         if (res?.obj) {
           this.distionaChildDatas = res.obj
+          this.distionaChild = res.obj
           this.secondName = name
           this.num = this.distionaChildDatas?.length ?? 0
         }
@@ -136,11 +147,23 @@ export default {
         this.loading = false
       })
     },
+    // 根据输入值过滤分类列表
+    conditionFilter () {
+      const newV = this.distionaChildDatas
+      const newVal = newV.map(item => {
+        const newItem = item.dataItemName.search(this.threeDic) !== -1 ||
+                        PinyinMatch.default.match(item.dataItemName, this.threeDic)
+        if (newItem) return item
+      }).filter(item => item)
+      this.distionaChild = newVal
+    },
 
     // 点击二级字典
     handleNodeClick (data) {
       if (data.parentCode !== 0) {
         this.distionaChildDatas = [] // 清空三级字典
+        this.distionaChild = []
+        this.threeDic = ''
         this.loading = true
         const datas = {
           id: data.id
@@ -148,6 +171,7 @@ export default {
         getThreeDictionaries(datas).then(res => {
           if (res?.obj) {
             this.distionaChildDatas = res.obj
+            this.distionaChild = res.obj
             this.secondName = data.dataItemName
             this.num = this.distionaChildDatas?.length ?? 0
           }
