@@ -69,7 +69,6 @@ export default {
   watch: {},
   components: {},
   created () {
-    console.log(this.projectItemDatas)
   },
   mounted () {
     this.searchs = this.data
