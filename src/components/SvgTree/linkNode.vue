@@ -85,7 +85,7 @@
          class="tree-form-block">
       <el-row :gutter="10">
         <!-- 搜索主题 -->
-        <el-col style="width:150px">
+        <el-col style="width:140px">
           <el-input placeholder="搜索项"
                     v-model="condition.name"
                     size="small"
@@ -115,7 +115,7 @@
         </el-col>
 
         <!-- 值域范围 -->
-        <el-col :span="6">
+        <el-col :span="8">
           <!--根据type显示不同的框-->
 
           <!--radio-->
