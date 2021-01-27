@@ -279,12 +279,25 @@ export default {
     },
     // 删除项目
     deleteList (item) {
-      console.log(item)
+      this.$confirm('此操作将永久删除该项目, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleteFn(item) // 调用删除函数
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    // 删除接口
+    deleteFn (item) {
       const data = {
         id: item.id
       }
       deleteLists(data).then(res => {
-        console.log(res)
         if (res) {
           this.$message({
             message: '删除成功',

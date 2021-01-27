@@ -60,3 +60,4 @@
 [0119/091750.107:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\user\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\80a9e1d8-363b-47e4-a067-b16117336ad7: 系统找不到指定的路径。 (0x3)
 [0122/090631.639:ERROR:directory_reader_win.cc(43)] FindFirstFile: 系统找不到指定的路径。 (0x3)
 [0125/091432.178:ERROR:directory_reader_win.cc(43)] FindFirstFile: 系统找不到指定的路径。 (0x3)
+[0127/095013.936:ERROR:directory_reader_win.cc(43)] FindFirstFile: 系统找不到指定的路径。 (0x3)

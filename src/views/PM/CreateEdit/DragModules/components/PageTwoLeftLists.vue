@@ -156,6 +156,7 @@ export default {
         if (newItem) return item
       }).filter(item => item)
       this.distionaChild = newVal
+      this.num = newVal?.length ?? 0
     },
 
     // 点击二级字典
