@@ -47,40 +47,43 @@ const mutations = {
 const actions = {
   // 提交条件树搜索
   updateFlattenData ({ commit, state }, data) {
-    commit('syncTreeLoading', true)
-    console.log(data)
-    const treeData = listConvertTree(data.data, '', 'childList')
-    const newData = {
-      condition: treeData[0],
-      groupId: state.groupData.groupId,
-      id: state.groupData.id,
-      projectId: state.groupData.projectId,
-      totalCount: 0,
-      type: state.groupData.type
-    }
-    console.log(treeData)
-    const fetchName = data.type === 'all' ? treeSearchAll : treeSearch
-    return new Promise((resolve, reject) => {
-      fetchName(newData).then(res => {
-        const obj = res.obj
-        console.log(res)
-        const updateNum = data.data
-        if (data.type !== 'all') {
-          updateNum.forEach(item => {
-            item.num = obj.countList[item.id]
-          })
-        }
-        commit('syncFlattenData', updateNum)
-        commit('syncTreeLoading', false)
-        if (data.type === 'all') {
-          commit('syncCloseDialog', true)
-        }
-        resolve(obj)
-      }).catch(error => {
-        commit('syncTreeLoading', false)
-        reject(error)
+    if (data.type === 'cancel') {
+      commit('syncFlattenData', data.data)
+    } else {
+      commit('syncTreeLoading', true)
+      const treeData = listConvertTree(data.data, '', 'childList')
+      const newData = {
+        condition: treeData[0],
+        groupId: state.groupData.groupId,
+        id: state.groupData.id,
+        projectId: state.groupData.projectId,
+        totalCount: 0,
+        type: state.groupData.type
+      }
+      console.log(treeData)
+      const fetchName = data.type === 'all' ? treeSearchAll : treeSearch
+      return new Promise((resolve, reject) => {
+        fetchName(newData).then(res => {
+          const obj = res.obj
+          console.log(res)
+          const updateNum = data.data
+          if (data.type !== 'all') {
+            updateNum.forEach(item => {
+              item.num = obj.countList[item.id]
+            })
+          }
+          commit('syncFlattenData', updateNum)
+          commit('syncTreeLoading', false)
+          if (data.type === 'all') {
+            commit('syncCloseDialog', true)
+          }
+          resolve(obj)
+        }).catch(error => {
+          commit('syncTreeLoading', false)
+          reject(error)
+        })
       })
-    })
+    }
   },
   // 提交事件搜索
   fetchSeniorSearch ({ commit, state }, data) {

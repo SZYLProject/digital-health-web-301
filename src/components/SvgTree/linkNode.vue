@@ -255,6 +255,16 @@ export default {
       type: Number
     }
   },
+  watch: {
+    node: {
+      deep: true,
+      handler (val) {
+        console.log(this.node)
+        // this.setOptions(val)
+      }
+    }
+
+  },
   computed: {
     ...mapGetters(['flattenData']),
     disable () {
@@ -365,12 +375,17 @@ export default {
     cancel (data) {
       if (!this.edit) {
         this.flattenData.splice(this.flattenData.findIndex(item => item.id === data.id), 1)
+        this.syncFlattenData(this.flattenData)
       } else {
         this.edit = false
         data.edit = false
+        const summitData = deepClone(this.flattenData)
+        const newData = {
+          type: 'cancel',
+          data: summitData
+        }
+        this.updateFlattenData(newData)
       }
-      this.syncFlattenData(this.flattenData)
-      // console.log(this.flattenData)
     },
     // 修改并或
     change (id, val) {
