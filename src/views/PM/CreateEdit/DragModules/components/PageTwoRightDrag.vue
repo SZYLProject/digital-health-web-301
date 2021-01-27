@@ -722,6 +722,21 @@ export default {
     },
     // 单个删除
     delButton (itm, index, idx) {
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleSigle(itm, index, idx)
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    // 单个输出接口
+    deleSigle (itm, index, idx) {
       const data = [itm.id]
       delStoreDatas(data)
         .then((res) => {
@@ -742,8 +757,24 @@ export default {
         })
         .catch(() => {})
     },
+
     // 整体删除
     delAll (item, index) {
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleAllDatas(item, index)
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    // 整体删除接口
+    deleAllDatas (item, index) {
       const data = []
       item.child.map((n) => {
         data.push(n.id)
@@ -764,6 +795,7 @@ export default {
         })
         .catch(() => {})
     },
+
     // 取首次点击显示弹窗函数
     getButton (itm, index, idx) {
       // console.log(itm)
