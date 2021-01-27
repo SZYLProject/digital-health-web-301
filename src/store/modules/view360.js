@@ -6,7 +6,6 @@ const mutations = {
   SAVE_VIEWID: (state, viewId) => {
     state.viewId = viewId
   }
-
 }
 
 const actions = {

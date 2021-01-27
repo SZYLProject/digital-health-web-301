@@ -25,6 +25,7 @@
          class="con-text">
       <el-popover placement="top"
                   trigger="hover"
+                  :disabled="disable"
                   style="min-width:100px!important">
         <!-- 编辑 删除 -->
         <div>

@@ -398,7 +398,8 @@
 
 import { mapGetters, mapMutations } from 'vuex'
 import { advancedSearchHistoryDatas, getDataOption, advancedSearchCommit } from '@/api/caseSearch'
-import SearchPopCom from './SearchPopCom' // 引入弹窗
+import SearchPopCom from '@/components/DataDictionaryPop' // 引入弹窗
+// import SearchPopCom from './SearchPopCom' // 引入弹窗
 import { getOption, getFormType } from '@/utils/searchRelation'
 import { stringToArr, deepClone } from '@/utils/index'
 
