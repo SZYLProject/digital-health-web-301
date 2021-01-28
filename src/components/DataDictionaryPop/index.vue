@@ -300,7 +300,7 @@ export default {
         except: this.popArguments
       }
       advancedSearchPopDatas(data).then(res => {
-        console.log(res)
+        // console.log(res)
         const obj = res.obj
         if (obj?.data?.length > 0) {
           this.fieldAll = obj.total

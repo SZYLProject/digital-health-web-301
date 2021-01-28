@@ -110,7 +110,7 @@
         <div class="module-container">
           <div class="title">
             <h2>我收藏的患者</h2>
-            <router-link :to="{ path: '/PatientCollect' }"
+            <router-link :to="{ path: '/home/PatientCollect' }"
                          class="right pointer"
                          :style="{'color': theme}">{{patientTotol}}<i class="el-icon-arrow-right"></i></router-link>
           </div>

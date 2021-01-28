@@ -439,7 +439,10 @@ export default {
       popArguments: '', // 历史id
       personNumber: 0, // 患者
       visitNumber: 0, // 病例数
-      adSearchLoading: false
+      adSearchLoading: false,
+      flag: false,
+      timeout: null,
+      interval: null
     }
   },
   props: {
@@ -621,6 +624,7 @@ export default {
     // 获得搜索历史数据
     getHistoryDatas (index, cIndex) {
       const popArg = []
+      this.restaurants = []
       popArg.push(this.searchCondition[index].parentVariable.id)
       if (this.searchCondition[index].advanceSearchVariableDTOList.length > 0) {
         this.searchCondition[index].advanceSearchVariableDTOList.map(childItem => {
@@ -643,14 +647,20 @@ export default {
       // console.log(data)
       advancedSearchHistoryDatas(data).then(res => {
         if (res.obj && res.obj.length > 0) {
-          this.restaurants = res.obj.map(item => {
+          this.restaurants = res.obj.filter(item => {
             this.$set(item, 'value', item.dataItemName)
-            return item
+            return item.clickon
           })
+          setTimeout(() => {
+            this.restaurants?.length > 0 ? this.flag = false : this.flag = true
+          }, 100)
         } else {
           this.restaurants = []
+          this.flag = true
         }
-      }).catch(() => { })
+      }).catch(() => {
+        this.flag = true
+      })
     },
 
     // 主题选项
@@ -755,13 +765,22 @@ export default {
       this.searchTitVisi = true
     },
     querySearch (queryString, cb) {
-      var restaurants = this.restaurants
-      var results = queryString ? restaurants.filter((item) => {
-        const newItem = item.value.search(queryString) !== -1 ||
+      this.interval = setInterval(() => {
+        var restaurants = this.restaurants
+        if (restaurants?.length > 0) {
+          clearInterval(this.interval)
+          var results = queryString ? restaurants.filter((item) => {
+            const newItem = item.value.search(queryString) !== -1 ||
           PinyinMatch.default.match(item.value, queryString)
-        if (newItem) return item
-      }) : restaurants
-      cb(results)
+            if (newItem) return item
+          }) : restaurants
+          cb(results)
+        } else if (this.flag) {
+          clearInterval(this.interval)
+          const a = []
+          cb(a)
+        }
+      }, 100)
     },
 
     // 增加条件
@@ -844,7 +863,7 @@ export default {
 
     // 跳转条件树
     goTree () {
-      alert('跳转树形检索模式')
+      // alert('跳转树形检索模式')
     }
   }
 }
