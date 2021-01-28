@@ -34,10 +34,9 @@
 
     <!-- 数据展示区 -->
     <div class="search-body"
-        v-loading="isShowLoading"
-        element-loading-text="数据加载中..."
-        element-loading-spinner="el-icon-loading"
-    >
+         v-loading="isShowLoading"
+         element-loading-text="数据加载中..."
+         element-loading-spinner="el-icon-loading">
       <el-row :gutter="20">
         <!-- left -->
         <el-col :span="5">
@@ -90,17 +89,17 @@
                     </p>
                   </div>
                   <el-button type="text"
+                             :disabled="!item.clickon"
                              @click.native="listsButton(item)">
-                             {{ item.dataItemName }}
+                    {{ item.dataItemName }}
                   </el-button>
                 </el-tooltip>
 
                 <!-- 清空搜索历史 -->
                 <p class="clear-history">
-                  <el-button
-                    type="text"
-                    @click.native="clearHistory"
-                    style="color:rgba(43, 43, 43, 0.5);">
+                  <el-button type="text"
+                             @click.native="clearHistory"
+                             style="color:rgba(43, 43, 43, 0.5);">
                     清空搜索历史
                   </el-button>
                 </p>
@@ -113,20 +112,18 @@
                    class="acontent">
                 <h4 style="margin-top:10px;">{{ item.dataItemName }}</h4>
                 <div class=""
-                    v-for="(itemS,idx1) in item && item.dataItemEntityList
+                     v-for="(itemS,idx1) in item && item.dataItemEntityList
                         ? item.dataItemEntityList : []"
-                    :key="idx1"
-                    >
-                  <p
-                    style="font-size:14px;color:#787878;margin:5px 0px;">
-                      {{ itemS.dataItemName }}
+                     :key="idx1">
+                  <p style="font-size:14px;color:#787878;margin:5px 0px;">
+                    {{ itemS.dataItemName }}
                   </p>
                   <el-tooltip class="item"
-                            effect="dark"
-                            v-for="(itemT,idx2) in itemS && itemS.dataItemEntityList
+                              effect="dark"
+                              v-for="(itemT,idx2) in itemS && itemS.dataItemEntityList
                                 ? itemS.dataItemEntityList:[]"
-                            :key="idx2"
-                            placement="top-start">
+                              :key="idx2"
+                              placement="top-start">
                     <div slot="content">
                       <p>名称：{{ itemT.dataItemName }}</p>
                       <p style="max-width:150px;">
@@ -139,6 +136,7 @@
                       </p>
                     </div>
                     <el-button type="text"
+                               :disabled="!itemT.clickon"
                                @click.native="listsButton(itemT)">{{ itemT.dataItemName }}</el-button>
                   </el-tooltip>
                 </div>
@@ -223,7 +221,7 @@ export default {
     }
   },
   components: {},
-  created () {},
+  created () { },
   mounted () {
 
   },
@@ -406,14 +404,14 @@ export default {
   .search-body {
     padding-bottom: 20px;
   }
-  .dashed-line{
+  .dashed-line {
     border-bottom: dashed 1px #0070f4;
     margin: 5px -20px;
     width: 100%;
   }
-  .history-record{
+  .history-record {
     position: relative;
-    .clear-history{
+    .clear-history {
       position: absolute;
       right: 15px;
       top: 10px;
@@ -429,13 +427,13 @@ export default {
   .el-scrollbar__wrap {
     overflow-x: hidden !important;
   }
-  .search-body{
-    .left-menu{
-      li{
+  .search-body {
+    .left-menu {
+      li {
         padding-left: 0px !important;
       }
     }
-    .el-button+.el-button {
+    .el-button + .el-button {
       margin-left: 0px;
     }
     .el-button {
