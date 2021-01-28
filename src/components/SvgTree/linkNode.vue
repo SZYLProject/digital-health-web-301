@@ -355,13 +355,13 @@ export default {
       const summitData = deepClone(this.flattenData)
       summitData.map((item, index) => {
         if (getFormType(item.dataOptionType) === 'date' &&
-          (item.type === '区间外' || item.type === '区间内')) {
+          (item.itselfOpt === '区间外' || item.itselfOpt === '区间内')) {
           item.value = [item.date1, item.date2]
         } else {
           item.value = stringToArr(item.value, 'toArray')
         }
         if (item.dataOptionType === 1 &&
-          (item.type === '区间外' || item.type === '区间内')) {
+          (item.itselfOpt === '区间外' || item.itselfOpt === '区间内')) {
           item.value = [item.date1, item.date2]
         }
       })
@@ -398,13 +398,13 @@ export default {
       const summitData = deepClone(this.flattenData)
       summitData.map((item, index) => {
         if (getFormType(item.dataOptionType) === 'date' &&
-          (item.type === '区间外' || item.type === '区间内')) {
+          (item.itselfOpt === '区间外' || item.itselfOpt === '区间内')) {
           item.value = [item.date1, item.date2]
         } else {
           item.value = stringToArr(item.value, 'toArray')
         }
         if (item.dataOptionType === 1 &&
-          (item.type === '区间外' || item.type === '区间内')) {
+          (item.itselfOpt === '区间外' || item.itselfOpt === '区间内')) {
           item.value = [item.date1, item.date2]
         }
       })
@@ -455,6 +455,10 @@ export default {
             this.condition.dataOption = list
           })
         }
+        this.condition.itselfOpt = ''
+        this.condition.value = ''
+        this.condition.date1 = ''
+        this.condition.date2 = ''
         this.searchTitVisi = false
       }
     }
