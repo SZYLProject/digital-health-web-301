@@ -11,11 +11,19 @@
           <div class="dropdown-checkbox"
                style="width:480px">
             <p class="title">设置表格显示列</p>
-            <el-checkbox-group v-model="checkList">
-              <el-checkbox v-for="(item, index) in headerData"
-                           :key="index"
-                           :label="item.detailKey">{{item.displayName}}</el-checkbox>
-            </el-checkbox-group>
+            <el-scrollbar style="height: 100%"
+                          ref="scroll">
+              <div style="max-height:320px;">
+                <el-checkbox-group
+                    v-model="checkList"
+                    style="padding-bottom:30px;"
+                >
+                  <el-checkbox v-for="(item, index) in headerData"
+                              :key="index"
+                              :label="item.detailKey">{{item.displayName}}</el-checkbox>
+                </el-checkbox-group>
+              </div>
+            </el-scrollbar>
             <div class="dropdown-button">
               <el-button type="primary"
                          size="small"
