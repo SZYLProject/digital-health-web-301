@@ -60,12 +60,12 @@ const actions = {
         totalCount: 0,
         type: state.groupData.type
       }
-      console.log(treeData)
+      // console.log(treeData)
       const fetchName = data.type === 'all' ? treeSearchAll : treeSearch
       return new Promise((resolve, reject) => {
         fetchName(newData).then(res => {
           const obj = res.obj
-          console.log(res)
+          // console.log(res)
           const updateNum = data.data
           if (data.type !== 'all') {
             updateNum.forEach(item => {

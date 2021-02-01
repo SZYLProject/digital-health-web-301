@@ -85,7 +85,7 @@
               <!-- 事件 -->
               <el-row class="left-col">
                 <el-col :span="6"><span>事件检索</span></el-col>
-                <el-col :span="12"><span>{{(leftDatas && leftDatas.eventSearchResult)||0}} 人</span></el-col>
+                <el-col :span="12"><span>{{(leftDatas && leftDatas.eventSearchResult) || 0}} 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text"
                              @click="openDialog('event',1,leftDatas)">编辑</el-button>
@@ -134,7 +134,7 @@
               <!-- 事件 -->
               <el-row class="left-col">
                 <el-col :span="6"><span>事件检索</span></el-col>
-                <el-col :span="12"><span>{{(rightDatas&&rightDatas.eventSearchResult)||0}} 人</span></el-col>
+                <el-col :span="12"><span>{{(rightDatas && rightDatas.eventSearchResult) || 0}} 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text"
                              @click="openDialog('event',2,rightDatas)">编辑</el-button>
@@ -143,7 +143,7 @@
               <!-- 精确搜索 -->
               <el-row class="left-col">
                 <el-col :span="6"><span>精确检索</span></el-col>
-                <el-col :span="12"><span>{{(rightDatas&&rightDatas.exactSearchResult)||0}} 人</span></el-col>
+                <el-col :span="12"><span>{{(rightDatas && rightDatas.exactSearchResult)||0}} 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text"
                              @click="openDialog('accurate',2,rightDatas)">编辑</el-button>
@@ -256,7 +256,7 @@ export default {
 
   },
   mounted () {
-    this.getQueueDatas()
+    this.getQueueDatas(true)
   },
   destroyed () {
     this.groupIds = null
@@ -311,7 +311,7 @@ export default {
     getListByGroup (id) {
       getListByGroupId(id).then((res) => {
         this.totel = res.obj.count || 0
-        if (res.obj && res.obj.exInfoyList && res.obj.exInfoyList.length > 0) {
+        if (res.obj?.exInfoyList?.length > 0) {
           const left = res.obj.exInfoyList.filter(item => item.type === 1)
           const right = res.obj.exInfoyList.filter(item => item.type === 2)
           this.leftDatas = left.length > 0 ? left[0] : null
@@ -324,6 +324,7 @@ export default {
 
       })
     },
+    // 队列点击查询数据
     checkQueue (data) {
       this.getListByGroup(data.id)
       this.treeData.groupId = data.id
@@ -342,6 +343,10 @@ export default {
         if (res?.obj) {
           this.totel = res.obj
           this.getQueueDatas()
+          this.$message({
+            type: 'success',
+            message: '纳入成功!'
+          })
         }
         this.loading = false
       }).catch(() => {
@@ -349,19 +354,21 @@ export default {
       })
     },
     // 获取队列数据
-    getQueueDatas () {
+    getQueueDatas (n) {
       const data = {
         projectId: this.$Storage.sessionGet('projectId')
       }
       getQueueDatas(data).then((res) => {
         if (res) {
           this.queueDatas = res?.obj ?? []
-          if (this.queueDatas.length > 0) {
+          if (this.queueDatas.length > 0 && n) {
             this.treeData.groupId = this.queueDatas[0].id
             this.treeData.groupName = this.queueDatas[0].groupName
             this.groupIds = this.queueDatas[0].id
             this.treeData.projectId = this.queueDatas[0].projectId
             this.getListByGroup(this.queueDatas[0].id)
+          } else if (this.queueDatas.length > 0 && !n) {
+            this.getListByGroup(this.groupIds)
           }
         }
       }).catch(() => {

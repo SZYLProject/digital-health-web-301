@@ -53,7 +53,7 @@ export default {
     },
     bodyHeight () {
       const height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-      console.log(height)
+      // console.log(height)
       this.height = height - 170
     }
   }
