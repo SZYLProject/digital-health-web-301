@@ -599,7 +599,8 @@ export default {
           dataRule: JSON.stringify({
             // 映射来源对象
             indexId: v.indexId,
-            indexName: v.indexName
+            indexName: v.indexName,
+            times: v.rayingStatus
           })
         }
         // 拖拽单个数据提交接口调用
@@ -632,7 +633,8 @@ export default {
           list: v.list, // 弹窗下拉列表，
           dataRule: {
             indexId: v.indexId,
-            indexName: v.indexName
+            indexName: v.indexName,
+            times: v.rayingStatus
           },
           edits: true
         })
@@ -656,7 +658,8 @@ export default {
           list: v.list, // 弹窗下拉列表，
           dataRule: {
             indexId: v.indexId,
-            indexName: v.indexName
+            indexName: v.indexName,
+            times: v.rayingStatus
           },
           edits: true
         })
