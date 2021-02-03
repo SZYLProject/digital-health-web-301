@@ -8,13 +8,12 @@
         <div class="details-top">
           <span>患者360视图 / </span>
           <span class="title"
-                :style="{'color': theme}">{{nowTitle}}</span>
+                :style="{'color': theme}">{{ nowTitle }}</span>
           <div class="right">
             <!-- 结果分析 -->
             <div class="inlineBlock">
               <el-button type="text"
                          disabled>查看患者原始病历(0份)</el-button>
-
             </div>
             <div class="space inlineBlock">
               <el-button type="primary"
@@ -36,10 +35,10 @@
         </div>
         <div class="patient-info">
           <span>患者信息</span>
-          <span :style="{'color': theme}">{{personInfo.name}}</span>
-          <span>{{personInfo.gender}} </span>
-          <span>出生日期：{{personInfo.date_of_birth | timeFormat}}</span>
-          <span>住院号：{{personInfo.tpat_no}}</span>
+          <span :style="{'color': theme}">{{ personInfo.name }}</span>
+          <span>{{ personInfo.gender }} </span>
+          <span>出生日期：{{ personInfo.date_of_birth | timeFormat }}</span>
+          <span>住院号：{{ personInfo.tpat_no }}</span>
         </div>
 
       </div>

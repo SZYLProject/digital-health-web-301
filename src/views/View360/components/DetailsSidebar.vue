@@ -15,23 +15,23 @@
         </p> -->
         <el-menu :default-active="hoverIndex">
           <el-menu-item index="0">
-            <div @click="clickLists(0,'患者概览')">
+            <div @click="clickLists(0, '患者概览')">
               <i class="iconfont icon-xiangmu" />
               <span>患者概览</span>
             </div>
           </el-menu-item>
-          <el-submenu v-for="(item,index) in list"
+          <el-submenu v-for="(item, index) in list"
                       :key="index"
                       :index="String(item.id)"
                       popper-append-to-body>
             <template slot="title">
               <i class="iconfont icon-xiangmu" />{{ item.dataName }}
             </template>
-            <template v-if="item.dataConfigurationEntityList.length>0">
-              <el-menu-item v-for="(child,i) in item.dataConfigurationEntityList"
+            <template v-if="item.dataConfigurationEntityList.length > 0">
+              <el-menu-item v-for="(child, i) in item.dataConfigurationEntityList"
                             :key="i"
                             :index="String(child.id)">
-                <div @click="clickLists(child.id,child.dataName)">
+                <div @click="clickLists(child.id, child.dataName)">
                   <span>{{ child.dataName }}</span>
                 </div>
               </el-menu-item>
@@ -58,9 +58,11 @@
 </template>
 
 <script>
+
 import logo from '@/assets/logo.png'
 import { mapGetters } from 'vuex'
 import { getViewMenu } from '@/api/view360'
+
 export default {
   name: 'DetailsSidebar',
   computed: {
@@ -75,6 +77,7 @@ export default {
   },
   created () {
     this.getDictionariesFirst()
+    // 初始化调用 从路由参数获取参数值
     this.clickLists(Number(this.$route.params.parentId), this.$route.query.parentName)
   },
   methods: {
