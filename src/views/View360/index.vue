@@ -48,12 +48,13 @@
                  :baseData="baseData"
                  :menu="menu"></component>
       <!-- 左右结构表格 -->
-      <OtherInfoTwo v-if="whichCom==='OtherInfoTwo'" />
+      <OtherInfoTwo v-if="whichCom === 'OtherInfoTwo'" />
     </div>
   </div>
 </template>
 
 <script>
+
 import './sidebar-360.scss'
 import DetailsSidebar from './components/DetailsSidebar'
 import OtherInfoTwo from './components/OtherInfoTwo'
@@ -63,6 +64,7 @@ import Overview from './components/Overview' // 概览
 import AddCollectObject from '@/components/AddCollectObject'
 import { getViewInfo, getPersonBaseInfo } from '@/api/view360'
 import { mapGetters } from 'vuex'
+
 export default {
   name: 'View360',
   computed: {
@@ -125,6 +127,7 @@ export default {
         dataItemCode: ''
       }
       getViewInfo(data).then(res => {
+        // console.log(res)
         if (res.obj.menu && res.obj.menu.length > 0) {
           this.baseData = null
           this.menu = res.obj.menu
