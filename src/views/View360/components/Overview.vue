@@ -72,11 +72,13 @@
 </template>
 
 <script>
+
 import { getPersonOverViewInfo, getTimeAxisPartOneInfo, getTimeAxisPartTwoInfo } from '@/api/view360'
 import Linkage from '@/components/Charts/Linkage'
 import TimeAxis from '@/components/Charts/TimeAxis'
 import moment from 'moment'
 import { mapGetters } from 'vuex'
+
 export default {
   name: 'Overview',
   computed: {
