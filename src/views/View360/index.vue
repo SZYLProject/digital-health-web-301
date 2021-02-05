@@ -36,9 +36,9 @@
         <div class="patient-info">
           <span>患者信息</span>
           <span :style="{'color': theme}">{{ personInfo.name }}</span>
-          <span>{{ personInfo.gender }} </span>
-          <span>出生日期：{{ personInfo.date_of_birth | timeFormat }}</span>
-          <span>住院号：{{ personInfo.tpat_no }}</span>
+          <span>{{ personInfo.sex }} </span>
+          <span>出生日期：{{ personInfo.date_of_birth }}</span>
+          <span>住院号：{{ personInfo.visit_id }}</span>
         </div>
 
       </div>
@@ -155,7 +155,7 @@ export default {
     // 获得患者信息
     getPersonInfo () {
       getPersonBaseInfo(this.personId).then(res => {
-        this.personInfo = JSON.parse(res.obj[0])
+        this.personInfo = JSON.parse(JSON.parse(res.obj[0]))
       }).catch(() => { })
     }
   }
