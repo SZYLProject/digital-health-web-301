@@ -366,11 +366,11 @@
           <span style="color: #f9a157;"> {{ personNumber }}</span>
           病历数
           <span style="color: #f9a157;">{{ visitNumber }}</span>
-          <i class="iconfont icon-dengpao1"
+          <!-- <i class="iconfont icon-dengpao1"
              style="color: #f9a157;"></i>
           可切换<i class="pointer"
              style="color: #0070f4;"
-             @click="goTree">树形检索模式</i>查看搜索逻辑
+             @click="goTree">树形检索模式</i>查看搜索逻辑 -->
         </el-col>
         <el-col :span="12"
                 style="text-align:right">
