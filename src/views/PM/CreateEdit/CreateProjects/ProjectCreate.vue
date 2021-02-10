@@ -74,33 +74,66 @@
             </div>
           </el-col>
         </el-row>
-      </div>
-      <!-- 其他信息 -->
-      <div class="other-message con-content">
-        <h2 class="title-2">其他信息</h2>
-        <!-- 资金来源(必填项) -->
-        <el-row>
+        <!-- 创建结束时间 -->
+        <el-row style="margin-bottom: 25px">
           <el-col :span="24">
-            <div class="ot-ms">
-              <div class="ot-ms-t">资金来源（必填项）：</div>
-              <div class="ot-ms-c">
-                <el-radio-group v-model="form.financeSource">
-                  <el-radio :label="1">国家（省，市）自然科学基金</el-radio>
-                  <el-radio :label="2">国家（省，市）科技重大专项</el-radio>
-                  <el-radio :label="3">国家（省，市）重点研发计划</el-radio>
-                  <el-radio :label="4">国家（省，市）技术创新引导专项（基金）</el-radio>
-                  <el-radio :label="5">其他</el-radio>
-                </el-radio-group>
+            <div class="item-put">
+              <!-- 创建结束时间 -->
+              <div class="ms"
+                   style="width: 100%">
+                <span class="ms-t"
+                      style="margin-right: 38px">创建/结束时间：</span>
+                <span style="">
+                  <el-date-picker
+                    v-model="form.time"
+                    style="width: 100%"
+                    size="small"
+                    type="daterange"
+                    range-separator="至"
+                    start-placeholder="创建日期"
+                    end-placeholder="结束日期">
+                  </el-date-picker>
+                </span>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+        <!-- 项目成员 -->
+        <el-row style="margin-bottom: 10px">
+          <el-col :span="24">
+            <div class="item-put">
+              <!-- 项目成员 -->
+              <div class="ms"
+                   style="width: 100%">
+                <span class="ms-t"
+                      style="margin-right: 38px">项目成员：</span>
+                <span style="">
+                  <el-select
+                    v-model="form.itemMemember"
+                    size="small"
+                    multiple
+                    collapse-tags
+                    style="margin-left: 30px;"
+                    placeholder="请选择">
+                    <el-option
+                      v-for="item in options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+
+                </span>
               </div>
             </div>
           </el-col>
         </el-row>
 
-        <!-- 项目类型(必填项) -->
-        <el-row>
+         <!-- 项目类型(必填项) -->
+        <el-row class="other-message">
           <el-col :span="24">
             <div class="ot-ms">
-              <div class="ot-ms-t">项目类型（必填项）：</div>
+              <div class="ot-ms-t" >项目类型（必填项）：</div>
               <div class="ot-ms-c">
                 <el-radio-group v-model="form.projectType" @change="changeRadio">
                   <el-radio :label="1">回顾性研究</el-radio>
@@ -112,10 +145,10 @@
         </el-row>
 
         <!-- 研究类型(必填项) -->
-        <el-row>
+        <el-row class="other-message">
           <el-col :span="24">
             <div class="ot-ms">
-              <div class="ot-ms-t">研究类型（必填项）：</div>
+              <div class="ot-ms-t" >研究类型（必填项）：</div>
               <div class="ot-ms-c">
                 <el-radio-group v-model="form.researchType">
                   <el-radio :label="1">随机对照研究</el-radio>
@@ -130,57 +163,95 @@
             </div>
           </el-col>
         </el-row>
-        <!-- 项目说明（可选 -->
-        <el-row>
-          <el-col :span="24">
-            <div class="ot-ms">
-              <div class="ot-ms-t">项目说明（可选）：</div>
-              <div class="ot-ms-c">
-                <el-input type="textarea"
-                          style="width: 60%"
-                          size="small"
-                          v-model.trim="form.description"
-                          placeholder="请输入项目说明"
-                          clearable></el-input>
-              </div>
-            </div>
-          </el-col>
-        </el-row>
-
-        <!-- 项目附件 -->
-        <el-row style="margin: 10px 0px 20px">
-          <el-col :span="24">
-            <div class="ot-ms">
-              <div class="ot-ms-t">项目附件：</div>
-              <div class="ot-ms-c ms-f">
-                <div class="ms-f-e">
-                  <el-upload class="upload-demo"
-                             ref="my-upload"
-                             action=""
-                             name="files"
-                             :limit="5"
-                             :http-request="httpRequest"
-                             :before-upload="beforeUpload"
-                             :on-remove="onRemove"
-                             :show-file-list="true"
-                             :on-exceed="onExceed"
-                             :file-list="form.fileList"
-                             multiple>
-                    <el-button size="small">
-                      <i class="el-icon-upload el-icon--left"></i>
-                      上传文件
-                    </el-button>
-                  </el-upload>
-                </div>
-                <div class="ms-f-s">
-                  请上传审批材料，支持格式:
-                  word/excel/pdf/txt/jpg/png/gif/rar/dcm
-                </div>
-              </div>
-            </div>
-          </el-col>
-        </el-row>
       </div>
+      <div class="more-message con-content">
+        <span class="right-abs pointer"
+              @click="isShow = !isShow">
+              <el-button type="text">
+                显示更多
+                <i class="el-icon-arrow-up"
+                   style="margin-top:8px"
+                   :class="{ 'arrowTransform': !isShow, 'arrowTransformReturn': isShow}"></i>
+              </el-button>
+        </span>
+      </div>
+
+      <!-- 其他信息 -->
+      <el-collapse-transition>
+        <div class="other-message con-content"
+             style="margin-top: 25px"
+             v-show="isShow">
+          <h2 class="title-2">其他信息</h2>
+          <!-- 资金来源(必填项) -->
+          <el-row>
+            <el-col :span="24">
+              <div class="ot-ms">
+                <div class="ot-ms-t">资金来源（必填项）：</div>
+                <div class="ot-ms-c">
+                  <el-radio-group v-model="form.financeSource">
+                    <el-radio :label="1">国家（省，市）自然科学基金</el-radio>
+                    <el-radio :label="2">国家（省，市）科技重大专项</el-radio>
+                    <el-radio :label="3">国家（省，市）重点研发计划</el-radio>
+                    <el-radio :label="4">国家（省，市）技术创新引导专项（基金）</el-radio>
+                    <el-radio :label="5">其他</el-radio>
+                  </el-radio-group>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+
+          <!-- 项目说明（可选 -->
+          <el-row>
+            <el-col :span="24">
+              <div class="ot-ms">
+                <div class="ot-ms-t">项目说明（可选）：</div>
+                <div class="ot-ms-c">
+                  <el-input type="textarea"
+                            style="width: 60%"
+                            size="small"
+                            v-model.trim="form.description"
+                            placeholder="请输入项目说明"
+                            clearable></el-input>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+
+          <!-- 项目附件 -->
+          <el-row style="margin: 10px 0px 20px">
+            <el-col :span="24">
+              <div class="ot-ms">
+                <div class="ot-ms-t">项目附件：</div>
+                <div class="ot-ms-c ms-f">
+                  <div class="ms-f-e">
+                    <el-upload class="upload-demo"
+                              ref="my-upload"
+                              action=""
+                              name="files"
+                              :limit="5"
+                              :http-request="httpRequest"
+                              :before-upload="beforeUpload"
+                              :on-remove="onRemove"
+                              :show-file-list="true"
+                              :on-exceed="onExceed"
+                              :file-list="form.fileList"
+                              multiple>
+                      <el-button size="small">
+                        <i class="el-icon-upload el-icon--left"></i>
+                        上传文件
+                      </el-button>
+                    </el-upload>
+                  </div>
+                  <div class="ms-f-s">
+                    请上传审批材料，支持格式:
+                    word/excel/pdf/txt/jpg/png/gif/rar/dcm
+                  </div>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </el-collapse-transition>
     </div>
   </div>
 </template>
@@ -206,6 +277,8 @@ export default {
         leader: '', // 项目牵头人
         planNum: '', // 拟收集患者数：
         purpose: '', // 研究目的/方案
+        time: '', // 创建与结束时间
+        itemMemember: '', // 项目成员
         financeSource: '', // 资金来源(必填项)
         projectType: '', // 项目类型
         researchType: '', // 研究类型
@@ -214,7 +287,24 @@ export default {
       },
       loading: false,
       // fileList: [],
-      listObj: null // 存储回显数据
+      listObj: null, // 存储回显数据
+      isShow: false,
+      options: [{
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }]
     }
   },
   props: {
@@ -456,6 +546,7 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
 .project-create {
+  padding-bottom: 50px;
   .right-button {
     top: 9px;
   }
@@ -491,7 +582,7 @@ export default {
         margin-top: 10px;
         margin-bottom: 10px;
         .ot-ms-t {
-          color: #999999;
+          color: #666666;
           margin-bottom: 15px;
         }
         .ot-ms-c {
@@ -512,6 +603,24 @@ export default {
         }
       }
     }
+    .more-message{
+      position: relative;
+      .right-abs{
+        position: absolute;
+        right: 10px;
+        top: 0px;
+      }
+    }
+  }
+  .arrowTransform {
+    transition: 0.2s;
+    transform-origin: center;
+    transform: rotateZ(180deg);
+  }
+  .arrowTransformReturn {
+    transition: 0.2s;
+    transform-origin: center;
+    transform: rotateZ(0deg);
   }
 }
 </style>
