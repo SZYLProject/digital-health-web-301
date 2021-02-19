@@ -62,6 +62,7 @@
 
     <!-- 纳入标准 排除标准 -->
     <el-row :gutter="15">
+      <!-- 纳入标准 -->
       <el-col :span="12">
         <div class="module-container-two">
           <div class="title">
@@ -75,29 +76,42 @@
                     class="table-left">
               <!-- 条件树 -->
               <el-row class="left-col">
-                <el-col :span="6"><span>树形检索</span></el-col>
-                <el-col :span="12"><span>{{(leftDatas && leftDatas.treeSearchResult) || 0}} 人</span></el-col>
+                <el-col :span="10">
+                  <div class="change-radio">
+                    <el-radio v-model="leftRadio" label="1">树形检索</el-radio>
+                    <span style="vertical-align: 3%;">|</span>
+                    <el-radio v-model="leftRadio" label="2">高级检索</el-radio>
+                  </div>
+                </el-col>
+                <el-col :span="8">
+                  <span>
+                    {{
+                      leftDatas && (leftDatas.treeStatus === 1) ? (leftDatas && leftDatas.treeSearchResult):
+                      leftDatas && (leftDatas.highStatus === 1) ? (leftDatas && leftDatas.highSearchResult): 0
+                    }} 人
+                  </span>
+                </el-col>
                 <el-col :span="6">
                   <el-button type="text"
-                             @click="openDialog('tree',1,leftDatas)">编辑</el-button>
+                             @click.native="openDialog('tree', 1, leftDatas)">编辑</el-button>
                 </el-col>
               </el-row>
               <!-- 事件 -->
               <el-row class="left-col">
-                <el-col :span="6"><span>事件检索</span></el-col>
-                <el-col :span="12"><span>{{(leftDatas && leftDatas.eventSearchResult) || 0}} 人</span></el-col>
+                <el-col :span="10"><span>事件检索</span></el-col>
+                <el-col :span="8"><span>{{(leftDatas && leftDatas.eventSearchResult) || 0}} 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text"
-                             @click="openDialog('event',1,leftDatas)">编辑</el-button>
+                             @click.native="openDialog('event', 1, leftDatas)">编辑</el-button>
                 </el-col>
               </el-row>
               <!-- 精确搜索 -->
               <el-row class="left-col">
-                <el-col :span="6"><span>精确检索</span></el-col>
-                <el-col :span="12"><span>{{ (leftDatas && leftDatas.exactSearchResult) || 0 }} 人</span></el-col>
+                <el-col :span="10"><span>精确检索</span></el-col>
+                <el-col :span="8"><span>{{ (leftDatas && leftDatas.exactSearchResult) || 0 }} 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text"
-                             @click="openDialog('accurate',1,leftDatas)">编辑</el-button>
+                             @click.native="openDialog('accurate', 1, leftDatas)">编辑</el-button>
                 </el-col>
               </el-row>
             </el-col>
@@ -111,6 +125,8 @@
           </el-row>
         </div>
       </el-col>
+
+      <!-- 排除标准 -->
       <el-col :span="12">
         <div class="module-container-two">
           <div class="title">
@@ -124,29 +140,42 @@
                     class="table-left">
               <!-- 条件树 -->
               <el-row class="left-col">
-                <el-col :span="6"><span>树形检索</span></el-col>
-                <el-col :span="12"><span>{{(rightDatas && rightDatas.treeSearchResult) || 0}} 人</span></el-col>
+                <el-col :span="10">
+                  <div class="change-radio">
+                    <el-radio v-model="rightRadio" label="1">树形检索</el-radio>
+                    <span style="vertical-align: 3%;">|</span>
+                    <el-radio v-model="rightRadio" label="2">高级检索</el-radio>
+                  </div>
+                </el-col>
+                <el-col :span="8">
+                  <span>
+                    {{
+                      rightDatas && (rightDatas.treeStatus === 1) ? (rightDatas && rightDatas.treeSearchResult):
+                      rightDatas && (rightDatas.highStatus === 1) ? (rightDatas && rightDatas.highSearchResult): 0
+                    }} 人
+                  </span>
+                </el-col>
                 <el-col :span="6">
                   <el-button type="text"
-                             @click="openDialog('tree', 2, rightDatas)">编辑</el-button>
+                             @click.native="openDialog('tree', 2, rightDatas)">编辑</el-button>
                 </el-col>
               </el-row>
               <!-- 事件 -->
               <el-row class="left-col">
-                <el-col :span="6"><span>事件检索</span></el-col>
-                <el-col :span="12"><span>{{(rightDatas && rightDatas.eventSearchResult) || 0}} 人</span></el-col>
+                <el-col :span="10"><span>事件检索</span></el-col>
+                <el-col :span="8"><span>{{(rightDatas && rightDatas.eventSearchResult) || 0}} 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text"
-                             @click="openDialog('event',2,rightDatas)">编辑</el-button>
+                             @click.native="openDialog('event', 2, rightDatas)">编辑</el-button>
                 </el-col>
               </el-row>
               <!-- 精确搜索 -->
               <el-row class="left-col">
-                <el-col :span="6"><span>精确检索</span></el-col>
-                <el-col :span="12"><span>{{(rightDatas && rightDatas.exactSearchResult)||0}} 人</span></el-col>
+                <el-col :span="10"><span>精确检索</span></el-col>
+                <el-col :span="8"><span>{{(rightDatas && rightDatas.exactSearchResult) || 0}} 人</span></el-col>
                 <el-col :span="6">
                   <el-button type="text"
-                             @click="openDialog('accurate',2,rightDatas)">编辑</el-button>
+                             @click.native="openDialog('accurate', 2, rightDatas)">编辑</el-button>
                 </el-col>
               </el-row>
             </el-col>
@@ -176,6 +205,11 @@
     <ConditionTreePop v-if="treeDialogVisible"
                       :treeDialogVisible="treeDialogVisible"
                       @treeDialogEmit="treeDialogEmit" />
+    <!-- 高级搜索 -->
+    <AdvencedSearchPop v-if="advencedDialogVisible"
+                       :advencedDialogVisible="advencedDialogVisible"
+                       :data="advancedDatas"
+                       @advencedDialogEmit="advencedDialogEmit"/>
     <!-- 事件搜索 -->
     <EventSearchPop v-if="eventDialogVisible"
                     :eventDialogVisible="eventDialogVisible"
@@ -192,7 +226,7 @@
 <script>
 import { mapGetters, createNamespacedHelpers } from 'vuex'
 import { getQueueDatas, addNewQueue, deleteQueue, correctQueue, getListByGroupId, sureInputDatas } from '@/api/projectsMangement'
-import { ConditionTreePop, EventSearchPop, AccurateSearchPop } from './components'
+import { ConditionTreePop, AdvencedSearchPop, EventSearchPop, AccurateSearchPop } from './components'
 import { TreeConvertList } from '@/utils/conditionTreeFn'
 const { mapMutations } = createNamespacedHelpers('queueSearch')
 export default {
@@ -205,9 +239,13 @@ export default {
       oldMsg: null,
       queueDatas: [],
       addLoading: false,
-      treeDialogVisible: false, // 是否条件树
+      treeDialogVisible: false, // 条件树
+      advencedDialogVisible: false, // 高级搜索
       eventDialogVisible: false, // 事件搜索
       accurDialogVisible: false, // 精确搜索
+      //
+      leftRadio: '1',
+      rightRadio: '1',
       // 纳排标准
       leftDatas: null,
       rightDatas: null,
@@ -217,13 +255,16 @@ export default {
         projectId: 0,
         id: null,
         type: 1,
-        groupName: ''
+        groupName: '',
+        searchType: null // 判断高级搜索还是条件搜索
       },
       // 分组id
       groupIds: null,
       loading: false,
       // 事件数据
       eventDatas: [],
+      // 高级搜索数据
+      advancedDatas: [],
       // 精确检索数据
       accurateDatas: ''
     }
@@ -237,6 +278,7 @@ export default {
       if (!val) {
         this.getQueueDatas()
         this.eventDialogVisible = false
+        this.advencedDialogVisible = false
       }
     },
     closeTreeDialog (val) {
@@ -249,6 +291,7 @@ export default {
   },
   components: {
     ConditionTreePop,
+    AdvencedSearchPop,
     EventSearchPop,
     AccurateSearchPop
   },
@@ -263,11 +306,15 @@ export default {
   },
   methods: {
     ...mapMutations(['syncGroupData', 'syncFlattenData', 'syncCloseDialog']),
+
     openDialog (val, type, data) {
+      console.log(data)
       this.treeData.type = type
       this.treeData.id = data ? data.id : null
+      this.treeData.searchType = (val === 'tree') ? 2 : (val === 'event') ? 1 : null
       this.syncGroupData(this.treeData)
-      if (val === 'tree') {
+
+      if (val === 'tree') { // 树
         if (data && data.treeSearch) {
           const jsondata = JSON.parse(data.treeSearch)
           const newData = TreeConvertList(jsondata.condition, '', 'childList')
@@ -276,11 +323,21 @@ export default {
           })
           this.syncFlattenData(newData)
         }
-        this.treeDialogVisible = true
-      } else if (val === 'accurate') {
+        if ((this.leftRadio === '1' && type === 1) || (this.rightRadio === '1' && type === 2)) {
+          this.treeDialogVisible = true
+        } else {
+          if (data && data.eventSearch) {
+            const jsondata = JSON.parse(data.eventSearch)
+            this.advancedDatas = jsondata.conditionList
+          } else {
+            this.advancedDatas = []
+          }
+          this.advencedDialogVisible = true
+        }
+      } else if (val === 'accurate') { // 精确
         this.accurateDatas = (data && data.exactSearch) || ''
         this.accurDialogVisible = true
-      } else if (val === 'event') {
+      } else if (val === 'event') { // 事件
         if (data && data.eventSearch) {
           const jsondata = JSON.parse(data.eventSearch)
           this.eventDatas = jsondata.conditionList
@@ -293,6 +350,10 @@ export default {
     treeDialogEmit (val) {
       this.getQueueDatas()
       this.treeDialogVisible = false
+    },
+    // 高级搜索
+    advencedDialogEmit () {
+      this.advencedDialogVisible = false
     },
     eventDialogEmit (val) {
       this.eventDialogVisible = false
@@ -631,6 +692,15 @@ export default {
   }
   .el-scrollbar .el-scrollbar__wrap .el-scrollbar__view {
     white-space: nowrap;
+  }
+  .change-radio {
+    .el-radio {
+      margin-right: 10px;
+      margin-left: 0px;
+    }
+    .el-radio__input {
+      display: none;
+    }
   }
   // .el-scrollbar__wrap {
   //   overflow-x: hidden;

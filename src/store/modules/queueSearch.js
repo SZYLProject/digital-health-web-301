@@ -94,6 +94,7 @@ const actions = {
       id: state.groupData.id,
       projectId: state.groupData.projectId,
       totalCount: 0,
+      searchType: state.groupData.searchType,
       type: state.groupData.type
     }
     return new Promise((resolve, reject) => {

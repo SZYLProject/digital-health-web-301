@@ -328,7 +328,7 @@ export default {
   components: {},
   created () {
     this.$Storage.sessionRemove('projectId')
-    console.log(this.$route.params.obj)
+    // console.log(this.$route.params.obj)
     if (this.$route.params?.obj) {
       this.itemName = this.$route.params.obj?.projectName
     } else {
