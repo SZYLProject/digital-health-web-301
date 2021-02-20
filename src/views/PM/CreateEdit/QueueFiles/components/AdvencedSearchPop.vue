@@ -40,7 +40,9 @@ export default {
   components: {
     AdvancedSearch
   },
-  created () { },
+  created () {
+
+  },
   mounted () { },
   destroyed () { },
   methods: {

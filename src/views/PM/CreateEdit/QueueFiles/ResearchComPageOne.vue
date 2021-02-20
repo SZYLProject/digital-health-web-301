@@ -308,7 +308,7 @@ export default {
     ...mapMutations(['syncGroupData', 'syncFlattenData', 'syncCloseDialog']),
 
     openDialog (val, type, data) {
-      console.log(data)
+      console.log(val, type, data)
       this.treeData.type = type
       this.treeData.id = data ? data.id : null
       this.treeData.searchType = (val === 'tree') ? 2 : (val === 'event') ? 1 : null
@@ -323,11 +323,12 @@ export default {
           })
           this.syncFlattenData(newData)
         }
+
         if ((this.leftRadio === '1' && type === 1) || (this.rightRadio === '1' && type === 2)) {
           this.treeDialogVisible = true
         } else {
-          if (data && data.eventSearch) {
-            const jsondata = JSON.parse(data.eventSearch)
+          if (data && data.highSearch) {
+            const jsondata = JSON.parse(data.highSearch)
             this.advancedDatas = jsondata.conditionList
           } else {
             this.advancedDatas = []
@@ -377,6 +378,22 @@ export default {
           const right = res.obj.exInfoyList.filter(item => item.type === 2)
           this.leftDatas = left.length > 0 ? left[0] : null
           this.rightDatas = right.length > 0 ? right[0] : null
+          // 纳入标准
+          if (this.leftDatas?.treeStatus === 1) {
+            this.leftRadio = '1'
+          } else if (this.leftDatas?.highStatus === 1) {
+            this.leftRadio = '2'
+          } else {
+            this.leftRadio = '1'
+          }
+          // 排除标准
+          if (this.rightDatas?.treeStatus === 1) {
+            this.rightRadio = '1'
+          } else if (this.rightDatas?.highStatus === 1) {
+            this.rightRadio = '2'
+          } else {
+            this.rightRadio = '1'
+          }
         } else {
           this.leftDatas = null
           this.rightDatas = null
@@ -466,6 +483,7 @@ export default {
           this.queueDatas.splice(index, 1)
           this.num = 0
           this.getQueueDatas() // 重新拉取数据
+          // this.getListByGroup(id)
         }
       }).catch(() => { })
     },

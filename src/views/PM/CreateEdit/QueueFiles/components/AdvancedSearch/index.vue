@@ -447,6 +447,7 @@ export default {
   },
   mounted () {
     const obj = deepClone(this.advancedData)
+    console.log(obj)
     if (obj && obj.length > 0) {
       obj.map((item, index) => {
         item.serialNumber = index
