@@ -198,7 +198,7 @@
                  :loading="loading"
                  @click.native="getSureInputDatas">
         确认纳入
-        <span class="n">{{totel}}</span>人
+        <span class="n">{{ totel }}</span>人
       </el-button>
     </div>
     <!-- 弹窗组件 -- 条件树 -->
