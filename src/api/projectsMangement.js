@@ -307,3 +307,22 @@ export function downLoadFiles (data) {
     responseType: 'blob'
   })
 }
+
+// 项目成员
+export function getItemMember (data) {
+  return request({
+    url: '/acl/api/dataItem/selectAllUser',
+    method: 'GET',
+    params: {}
+  })
+}
+
+// 回显项目成员
+export function getBackItemMember (data) {
+  const { id } = data
+  return request({
+    url: `/crp-project/project/v1/getMember/${id}`,
+    method: 'GET',
+    params: data
+  })
+}

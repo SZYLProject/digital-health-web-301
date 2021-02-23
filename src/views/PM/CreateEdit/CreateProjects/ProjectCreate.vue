@@ -109,17 +109,18 @@
                       style="margin-right: 38px">项目成员：</span>
                 <span style="">
                   <el-select
-                    v-model="form.itemMemember"
+                    v-model="form.itemMember"
                     size="small"
                     multiple
                     collapse-tags
                     style="margin-left: 30px;"
                     placeholder="请选择">
                     <el-option
-                      v-for="item in options"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
+                      v-for="(item,index) in options"
+                      :key="index"
+                      :disabled="(item.affiliation && item.affiliation === 1) ? true : false"
+                      :label="item.userName"
+                      :value="item.pkId">
                     </el-option>
                   </el-select>
 
@@ -182,11 +183,11 @@
              style="margin-top: 25px"
              v-show="isShow">
           <h2 class="title-2">其他信息</h2>
-          <!-- 资金来源(必填项) -->
+          <!-- 资金来源 -->
           <el-row>
             <el-col :span="24">
               <div class="ot-ms">
-                <div class="ot-ms-t">资金来源（必填项）：</div>
+                <div class="ot-ms-t">资金来源：</div>
                 <div class="ot-ms-c">
                   <el-radio-group v-model="form.financeSource">
                     <el-radio :label="1">国家（省，市）自然科学基金</el-radio>
@@ -263,9 +264,11 @@ import {
   fileUploading,
   deleteUploadFiles,
   comeUploadFiles,
-  correctProject
+  correctProject,
+  getItemMember,
+  getBackItemMember
 } from '@/api/projectsMangement'
-
+import moment from 'moment'
 export default {
   name: '',
   data () {
@@ -278,7 +281,10 @@ export default {
         planNum: '', // 拟收集患者数：
         purpose: '', // 研究目的/方案
         time: '', // 创建与结束时间
-        itemMemember: '', // 项目成员
+        startTime: '',
+        endTime: '',
+        userEntities: [], // 项目成员
+        itemMember: [],
         financeSource: '', // 资金来源(必填项)
         projectType: '', // 项目类型
         researchType: '', // 研究类型
@@ -289,22 +295,7 @@ export default {
       // fileList: [],
       listObj: null, // 存储回显数据
       isShow: false,
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
-      }]
+      options: []
     }
   },
   props: {
@@ -317,7 +308,6 @@ export default {
     listObj: {
       handler (newName, oldName) {
         if (newName) {
-          // console.log(newName)
           this.form = newName
         }
       },
@@ -327,8 +317,8 @@ export default {
   },
   components: {},
   created () {
+    this.getItemMember() // 获取项目成员
     this.$Storage.sessionRemove('projectId')
-    // console.log(this.$route.params.obj)
     if (this.$route.params?.obj) {
       this.itemName = this.$route.params.obj?.projectName
     } else {
@@ -339,8 +329,11 @@ export default {
     this.listObj = this.$route.params?.obj ?? null
     if (this.$route.params?.obj) {
       // 回显修改
+      const { id } = this.$route.params.obj
       this.listObj = this.$route.params.obj
-      this.comeUploadFiles()
+      this.listObj.time = JSON.parse(this.listObj.time)
+      this.comeUploadFiles() // 回显文件
+      this.getBackItemMember(id) // 回显
     }
   },
   destroyed () { },
@@ -351,7 +344,6 @@ export default {
     nextStep () {
       if (
         this.form.projectName === '' ||
-        this.form.financeSource === '' ||
         this.form.projectType === '' ||
         this.form.researchType === ''
       ) {
@@ -361,9 +353,33 @@ export default {
         })
       } else {
         if (this.$route.params.obj) { // 修改
-          this.correctProject()
+          // console.log(this.form)
+          this.$set(this.listObj, 'userEntities', [])
+          this.listObj.itemMember.map(item => {
+            this.listObj.userEntities.push({
+              userId: item
+            })
+          })
+          setTimeout(() => {
+            this.form.startTime = moment(this.form.time[0]).format('YYYY-MM-DD')
+            this.form.endTime = moment(this.form.time[1]).format('YYYY-MM-DD')
+            this.form.time = JSON.stringify(this.form.time)
+            this.form.itemMember = JSON.stringify(this.form.itemMember)
+            this.correctProject()
+          }, 500)
         } else { // 新建
-          this.putCreateProjects()
+          this.form.itemMember.map(item => {
+            this.form.userEntities.push({
+              userId: item
+            })
+          })
+          setTimeout(() => {
+            this.form.startTime = moment(this.form.time[0]).format('YYYY-MM-DD')
+            this.form.endTime = moment(this.form.time[1]).format('YYYY-MM-DD')
+            this.form.time = JSON.stringify(this.form.time)
+            this.form.itemMember = JSON.stringify(this.form.itemMember)
+            this.putCreateProjects()
+          }, 500)
         }
       }
     },
@@ -379,7 +395,6 @@ export default {
         dataSourceId: this.dataSourceValue?.id
       }
       const data = Object.assign(datas, this.form)
-      // console.log(data)
       createProjects(data).then((res) => {
         if (res?.obj) {
           this.$Storage.sessionRemove('projectItemDatas') //
@@ -538,6 +553,31 @@ export default {
       // this['projectsMangement/projecttype'](val)
       // this.$Storage.sessionSet('projectType', val)
       this.resetSetItem('projectType', val) // 存储到本地
+    },
+
+    // 获取项目成员
+    async getItemMember () {
+      // const { id } = this.$route.params.obj
+      const data = {}
+      await getItemMember(data).then(res => {
+        if (res?.obj) {
+          this.options = res.obj || []
+        } else {
+          this.options = []
+        }
+      })
+      // await this.getBackItemMember(id)
+    },
+    // 回显项目成员
+    getBackItemMember (id) {
+      // this.
+      const data = { id }
+      getBackItemMember(data).then(res => {
+        if (res?.obj) {
+          this.$set(this.listObj, 'itemMember', [])
+          this.listObj.itemMember = res.obj
+        }
+      })
     }
   }
 }
