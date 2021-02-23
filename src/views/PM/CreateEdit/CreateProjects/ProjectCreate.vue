@@ -111,14 +111,14 @@
                   <el-select
                     v-model="form.itemMember"
                     size="small"
+                    :disabled="(form.affiliation && form.affiliation === 1) ? false :
+                               (form.affiliation && form.affiliation === 2) ? true : false "
                     multiple
-                    collapse-tags
                     style="margin-left: 30px;"
                     placeholder="请选择">
                     <el-option
                       v-for="(item,index) in options"
                       :key="index"
-                      :disabled="(item.affiliation && item.affiliation === 1) ? true : false"
                       :label="item.userName"
                       :value="item.pkId">
                     </el-option>
