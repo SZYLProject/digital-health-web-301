@@ -107,7 +107,7 @@ export default {
   methods: {
     ...mapMutations(['caseSearch/keywordlists']),
     jumpView (item) {
-      const newPage = this.$router.resolve({ path: `/view360/${item.personId}/0/?parentName=患者概览` })
+      const newPage = this.$router.resolve({ path: `/view360/${item.person_id}/0/?parentName=患者概览` })
       window.open(newPage.href, '_blank')
     },
     correctBg (val, index) {

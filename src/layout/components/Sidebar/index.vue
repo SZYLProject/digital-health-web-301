@@ -148,8 +148,10 @@ export default {
     //   return this.$router.options.routes
     // },
     activeMenu () {
+      // console.log(this.$route.path)
       // return this.$route.path || '/home'
-      return this.$route.path || '/specialDisease/index'
+      // return this.$route.path || '/specialDisease/index'
+      return this.$route.path || '/CasesOfSearch/CaseSearchHome'
     },
     variables () {
       return variables

@@ -55,7 +55,7 @@ export const constantRoutes = [
   // 专病库首页
   {
     // path: '/specialDisease',
-    path: '/',
+    path: '/specialDisease',
     component: BasicLayout,
     // redirect: '/index',
     redirect: 'specialDisease/index',
@@ -103,31 +103,32 @@ export const constantRoutes = [
   },
   // 病例搜索模块
   {
-    path: '/CasesOfSearch',
+    // path: '/CasesOfSearch',
+    path: '/',
     component: BasicLayout,
-    redirect: '/CaseSearchHome',
+    redirect: 'CasesOfSearch/CaseSearchHome',
     name: 'CasesOfSearch',
     children: [
       {
-        path: 'CaseSearchHome',
+        path: 'CasesOfSearch/CaseSearchHome',
         component: () => import('@/views/CasesOfSearch/CaseSearchHome'),
         name: 'CaseSearchHome'
       },
       // 关键字搜索
       {
-        path: 'KeywordsSearch',
+        path: 'CasesOfSearch/KeywordsSearch',
         component: () => import('@/views/CasesOfSearch/KeywordsSearch'),
         name: 'CasesOfSearch'
       },
       // 高级搜索
       {
-        path: 'AdvancedSearch',
+        path: 'CasesOfSearch/AdvancedSearch',
         component: () => import('@/views/CasesOfSearch/AdvancedSearch'),
         name: 'AdvancedSearch'
       },
       // 条件树
       {
-        path: 'ConditionTreeSearch',
+        path: 'CasesOfSearch/ConditionTreeSearch',
         component: () => import('@/views/CasesOfSearch/ConditionTreeSearch'),
         name: 'ConditionTreeSearch'
       }

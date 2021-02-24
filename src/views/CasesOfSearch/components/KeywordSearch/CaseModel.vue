@@ -33,20 +33,17 @@
               v-for="(itm,idx) in item.visit_record"
               :key="'itm0' + idx">
               {{ itm.visit_start_date | timestamp }}
-              <!-- {{itm.length > 1 ? ',': ''}} -->
           </span>; &nbsp;
           就诊科室:
           <span v-for="(itm,idx) in item.visit_record"
                 :key="'itm1' + idx">
                 {{ itm.dept_admission_to ? itm.dept_admission_to : '无' }}
-                <!-- {{idx !== (itm.length) ? ',': ''}} -->
           </span>; &nbsp;
 
           现病史:
           <span v-for="(itm, idx) in item.visit_record"
                 :key="'itm2' + idx">
                 {{ itm.hy_present ? itm.hy_present : '无' }}
-                <!-- {{idx !== (itm.length) ? ',': ''}} -->
           </span>;&nbsp;&nbsp;
           性别: {{ item.sex ? item.sex : '无'}} ;&nbsp;
           出生年月: {{ item.date_of_birth ? (item.date_of_birth.slice(0,10)) : '无'}} ;&nbsp;
@@ -54,7 +51,6 @@
           <span v-for="(itm,idx) in item.visit_record"
                 :key="'itm3' + idx">
             {{ itm.visit_age ? itm.visit_age : '无' }}
-            <!-- {{idx !== (itm.length) ? ',': ''}} -->
           </span>
         </p>
       </li>
@@ -108,7 +104,7 @@ export default {
     ...mapMutations(['caseSearch/keywordlists']),
     // 跳转患者全景
     jumpView (item) {
-      const newPage = this.$router.resolve({ path: `/view360/${item.personId}/0/?parentName=患者概览` })
+      const newPage = this.$router.resolve({ path: `/view360/${item.person_id}/0/?parentName=患者概览` })
       window.open(newPage.href, '_blank')
     },
 
