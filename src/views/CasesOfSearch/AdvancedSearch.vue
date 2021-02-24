@@ -73,9 +73,9 @@
                   :style="{'background-color': item.check ? 'rgba(43,134,178,0.2)':'#ffffff'}"
                   @click="correctBg(item, index)">
                 <h4>
-                  *** ;&nbsp;
-                  性别: {{ item.gender ? item.gender : '无'}} ;&nbsp;
-                  出生年月: {{ item.birth ? item.birth + '***' : '无'}}
+                  {{ item.name }} ;&nbsp;
+                  性别: {{ item.sex ? item.sex : '无'}} ;&nbsp;
+                  出生年月: {{ item.date_of_birth ? item.date_of_birth.slice(0, 10) : '无'}}
                 </h4>
                 <p class="p-b">
                   <el-button type="text"
@@ -83,15 +83,38 @@
                   </el-button>
                 </p>
                 <p style="margin:10px 0px;">
-                  <span class="p-k">
-                    {{ item.visitType }}
+                  <span class="p-k"
+                        v-for="(itm,idx) in item.visit_record"
+                        :key="'itm' + idx">
+                        {{ itm.visit_source_value }}
                   </span>
                 </p>
                 <p>
-                  就诊日期: {{ item.visitStartDate | timestamp }} ; &nbsp;
-                  就诊科室: {{ item.departmentName ? item.departmentName : '无' }} ;&nbsp;
-                  现病史: {{ item.presentIllness ? item.presentIllness : '无' }} ;&nbsp;
-                  就诊年龄: {{ item.visitAge ? item.visitAge : '无' }};&nbsp;
+                  就诊日期:
+                  <span
+                      v-for="(itm,idx) in item.visit_record"
+                      :key="'itm0' + idx">
+                      {{ itm.visit_start_date | timestamp }}
+                      {{idx !== (itm.length) ? ',': ''}}
+                  </span>; &nbsp;
+                  就诊科室:
+                  <span v-for="(itm,idx) in item.visit_record"
+                        :key="'itm1' + idx">
+                        {{ itm.dept_admission_to ? itm.dept_admission_to : '无' }}
+                        {{idx !== (itm.length) ? ',': ''}}
+                  </span>; &nbsp;
+                  现病史:
+                  <span v-for="(itm, idx) in item.visit_record"
+                        :key="'itm2' + idx">
+                        {{ itm.hy_present ? itm.hy_present : '' }}
+                        {{idx !== (itm.length) ? ',': ''}}
+                  </span>;&nbsp;&nbsp;
+                  就诊年龄:
+                  <span v-for="(itm,idx) in item.visit_record"
+                        :key="'itm3' + idx">
+                    {{ itm.visit_age ? itm.visit_age : '无' }}
+                    {{idx !== (itm.length) ? ',': ''}}
+                  </span>
                 </p>
               </li>
             </ul>
@@ -150,11 +173,14 @@ export default {
 
   watch: {
     advanceSearchListDatas (newV) {
+      // console.log(newV)
       this.patients = newV.personNumber ? newV.personNumber : 0
       this.caseHistory = newV.visitNumber ? newV.visitNumber : 0
       this.total = newV.total
-      this.listsVisit = newV.visit.map(item => {
+      this.listsVisit = newV.personList.map(item => {
         this.$set(item, 'check', false)
+        const res = new Map()
+        item.visit_record = item.visit_record.filter((a) => !res.has(a.visit_source_value) && res.set(a.visit_source_value, 1))
         return item
       })
       this.advancedLoading = false
@@ -171,6 +197,8 @@ export default {
       this.total = newV.total
       this.listsVisit = newV.visit.map(item => {
         this.$set(item, 'check', false)
+        // const res = new Map()
+        // item.visit_record = item.visit_record.filter((a) => !res.has(a.visit_source_value) && res.set(a.visit_source_value, 1))
         return item
       })
       this.advancedLoading = false
@@ -315,6 +343,9 @@ export default {
         border: solid #00a0e9 1px;
         color: #00a0e9;
         border-radius: 3px;
+        margin-right:10px;
+        margin-bottom:5px;
+        display: inline-block;
       }
       h4 {
         color: #2b2b2b;

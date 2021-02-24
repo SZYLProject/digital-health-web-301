@@ -91,6 +91,7 @@
                           <el-input style="width:122px;"
                                     :maxlength="3"
                                     placeholder="0"
+                                    size="mini"
                                     v-model="ruleForm.startAge">
                             <el-select v-model.number="ruleForm.startUnit"
                                        slot="append"
@@ -105,12 +106,16 @@
                           </el-input>
                         </el-form-item>
 
-                        <el-form-item>至</el-form-item>
+                        <!-- <el-form-item style="margin-top:-20px;">
+                          <span>至</span>
+                        </el-form-item> -->
+                        <span style="vertical-align:-25% ;margin-right:10px;">至</span>
 
                         <!-- 结束年龄 -->
                         <el-form-item prop="endAge">
                           <el-input style="width:122px;"
                                     :maxlength="3"
+                                    size="mini"
                                     placeholder="119"
                                     v-model.number="ruleForm.endAge">
                             <el-select v-model="ruleForm.endUnit"

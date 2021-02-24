@@ -4,7 +4,7 @@
     <ul class="case-lists">
       <li
         class="pointer"
-        v-for="(item,index) in listsVisit"
+        v-for="(item, index) in listsVisit"
         :key="index"
         style="padding-right:90px;"
         :style="{'background-color': item.check ? 'rgba(43,134,178,0.2)':'#ffffff'}"
@@ -21,18 +21,41 @@
           </el-button>
         </p>
         <p style="margin:10px 0px;">
-          <span class="p-k" >
-            {{ item.visitType }}
+          <span class="p-k"
+                v-for="(itm,idx) in item.visit_record"
+                :key="'itm' + idx">
+            {{ itm.visit_source_value }}
           </span>
         </p>
         <p>
-          就诊日期: {{ item.visitStartDate | timestamp }} ; &nbsp;
-          就诊科室: {{ item.departmentName ? item.departmentName : '无' }} ;&nbsp;
-          现病史: {{ item.presentIllness ? item.presentIllness : '无' }} ;&nbsp;
-          ***  ;&nbsp;
-          性别: {{ item.gender ? item.gender : '无'}} ;&nbsp;
-          出生年月: {{ item.birth ? item.birth + '***' : '无'}} ;&nbsp;
-          就诊年龄: {{ item.visitAge ? item.visitAge : '无' }}
+          就诊日期:
+          <span
+              v-for="(itm,idx) in item.visit_record"
+              :key="'itm0' + idx">
+              {{ itm.visit_start_date | timestamp }}
+              <!-- {{itm.length > 1 ? ',': ''}} -->
+          </span>; &nbsp;
+          就诊科室:
+          <span v-for="(itm,idx) in item.visit_record"
+                :key="'itm1' + idx">
+                {{ itm.dept_admission_to ? itm.dept_admission_to : '无' }}
+                <!-- {{idx !== (itm.length) ? ',': ''}} -->
+          </span>; &nbsp;
+
+          现病史:
+          <span v-for="(itm, idx) in item.visit_record"
+                :key="'itm2' + idx">
+                {{ itm.hy_present ? itm.hy_present : '无' }}
+                <!-- {{idx !== (itm.length) ? ',': ''}} -->
+          </span>;&nbsp;&nbsp;
+          性别: {{ item.sex ? item.sex : '无'}} ;&nbsp;
+          出生年月: {{ item.date_of_birth ? (item.date_of_birth.slice(0,10)) : '无'}} ;&nbsp;
+          就诊年龄:
+          <span v-for="(itm,idx) in item.visit_record"
+                :key="'itm3' + idx">
+            {{ itm.visit_age ? itm.visit_age : '无' }}
+            <!-- {{idx !== (itm.length) ? ',': ''}} -->
+          </span>
         </p>
       </li>
     </ul>
@@ -61,7 +84,7 @@ export default {
     keyWordListsDatas (val) {
       if (val) {
         this.listsData = val
-        this.listsVisit = val.visit.map(item => {
+        this.listsVisit = val.personList.map(item => {
           this.$set(item, 'check', false)
           const arr1 = Object.entries(item.title)
           const arr2 = arr1.map(itemChild => {
