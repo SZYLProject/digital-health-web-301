@@ -331,7 +331,7 @@ export default {
       // 回显修改
       const { id } = this.$route.params.obj
       this.listObj = this.$route.params.obj
-      this.listObj.time = JSON.parse(this.listObj.time)
+      this.listObj.time = this.listObj?.time ? JSON.parse(this.listObj.time) : ''
       this.comeUploadFiles() // 回显文件
       this.getBackItemMember(id) // 回显
     }
@@ -353,17 +353,23 @@ export default {
         })
       } else {
         if (this.$route.params.obj) { // 修改
-          // console.log(this.form)
           this.$set(this.listObj, 'userEntities', [])
-          this.listObj.itemMember.map(item => {
-            this.listObj.userEntities.push({
-              userId: item
+          if (this.listObj?.itemMember instanceof Array) {
+            this.listObj.itemMember.map(item => {
+              this.listObj.userEntities.push({
+                userId: item
+              })
             })
-          })
+          }
+          // this.listObj.itemMember.map(item => {
+          //   this.listObj.userEntities.push({
+          //     userId: item
+          //   })
+          // })
           setTimeout(() => {
             this.form.startTime = moment(this.form.time[0]).format('YYYY-MM-DD')
             this.form.endTime = moment(this.form.time[1]).format('YYYY-MM-DD')
-            this.form.time = JSON.stringify(this.form.time)
+            this.listObj.time = this.listObj?.time ? JSON.stringify(this.form.time) : ''
             this.form.itemMember = JSON.stringify(this.form.itemMember)
             this.correctProject()
           }, 500)
@@ -570,12 +576,11 @@ export default {
     },
     // 回显项目成员
     getBackItemMember (id) {
-      // this.
       const data = { id }
       getBackItemMember(data).then(res => {
         if (res?.obj) {
           this.$set(this.listObj, 'itemMember', [])
-          this.listObj.itemMember = res.obj
+          this.listObj.itemMember = res.obj || []
         }
       })
     }
