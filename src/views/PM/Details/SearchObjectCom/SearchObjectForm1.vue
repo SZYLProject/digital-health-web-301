@@ -1,7 +1,7 @@
 <template>
   <div class="dynamic-tables">
     <!-- 设置列 -->
-    <div class="table-setting">
+    <div class="table-setting" style="padding: 0px 13px;">
       <el-dropdown trigger="click"
                    ref="tableDrop">
         <span class="el-dropdown-link">
