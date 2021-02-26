@@ -84,7 +84,7 @@
                 <span class="ms-t"
                       style="margin-right: 38px">创建/结束时间：</span>
                 <span style="">
-                  <el-date-picker
+                  <!-- <el-date-picker
                     v-model="form.time"
                     style="width: 100%"
                     size="small"
@@ -93,7 +93,13 @@
                     @change="onChange"
                     start-placeholder="创建日期"
                     end-placeholder="结束日期">
-                  </el-date-picker>
+                  </el-date-picker> -->
+                  <a-range-picker
+                    @change="onChange"
+                    :value="form.time"
+                    separator="至"
+                    :placeholder="['  ', '结束日期']"
+                    :locale="locale" />
                 </span>
               </div>
             </div>
@@ -261,7 +267,10 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-
+import moment from 'moment'
+import locale from 'ant-design-vue/lib/locale-provider/zh_CN'
+// import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
+import 'moment/locale/zh-cn'
 import {
   createProjects,
   fileUploading,
@@ -271,12 +280,13 @@ import {
   getItemMember,
   getBackItemMember
 } from '@/api/projectsMangement'
-import moment from 'moment'
-
+moment.locale('zh-cn')
+// import moment from 'moment'
 export default {
   name: '',
   data () {
     return {
+      locale,
       txt: '',
       itemName: '新建项目',
       form: {
@@ -284,7 +294,7 @@ export default {
         leader: '', // 项目牵头人
         planNum: '', // 拟收集患者数：
         purpose: '', // 研究目的/方案
-        time: [], // 创建与结束时间
+        time: [moment('2020-02-02', 'YYYY-MM-DD'), moment('2020-02-02', 'YYYY-MM-DD')], // 创建与结束时间
         startTime: '',
         endTime: '',
         userEntities: [], // 项目成员
@@ -575,8 +585,11 @@ export default {
     },
     // 时间控件
     onChange (date, dateString) {
-      this.form.startTime = moment(date[0]).format('YYYY-MM-DD')
-      this.form.endTime = moment(date[1]).format('YYYY-MM-DD')
+      console.log(dateString)
+      // this.form.startTime = moment(date[0]).format('YYYY-MM-DD')
+      // this.form.endTime = moment(date[1]).format('YYYY-MM-DD')
+      this.form.startTime = dateString[0]
+      this.form.endTime = dateString[1]
     },
     optionChange (val) {
       // console.log(val)
