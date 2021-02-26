@@ -90,6 +90,7 @@
                     size="small"
                     type="daterange"
                     range-separator="至"
+                    @change="onChange"
                     start-placeholder="创建日期"
                     end-placeholder="结束日期">
                   </el-date-picker>
@@ -113,6 +114,7 @@
                     size="small"
                     :disabled="(form.affiliation && form.affiliation === 1) ? false :
                                (form.affiliation && form.affiliation === 2) ? true : false "
+                               @change="optionChange"
                     multiple
                     style="margin-left: 30px;"
                     placeholder="请选择">
@@ -259,6 +261,7 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
+
 import {
   createProjects,
   fileUploading,
@@ -269,6 +272,7 @@ import {
   getBackItemMember
 } from '@/api/projectsMangement'
 import moment from 'moment'
+
 export default {
   name: '',
   data () {
@@ -280,7 +284,7 @@ export default {
         leader: '', // 项目牵头人
         planNum: '', // 拟收集患者数：
         purpose: '', // 研究目的/方案
-        time: '', // 创建与结束时间
+        time: [], // 创建与结束时间
         startTime: '',
         endTime: '',
         userEntities: [], // 项目成员
@@ -298,9 +302,7 @@ export default {
       options: []
     }
   },
-  props: {
-
-  },
+  props: {},
   computed: {
     ...mapGetters(['userInfo', 'dataSourceValue'])
   },
@@ -315,7 +317,7 @@ export default {
       deep: true
     }
   },
-  components: {},
+  components: { },
   created () {
     this.getItemMember() // 获取项目成员
     this.$Storage.sessionRemove('projectId')
@@ -331,7 +333,7 @@ export default {
       // 回显修改
       const { id } = this.$route.params.obj
       this.listObj = this.$route.params.obj
-      this.listObj.time = this.listObj?.time ? JSON.parse(this.listObj.time) : ''
+      this.listObj.time = [this.listObj.startTime, this.listObj.endTime]
       this.comeUploadFiles() // 回显文件
       this.getBackItemMember(id) // 回显
     }
@@ -361,31 +363,18 @@ export default {
               })
             })
           }
-          // this.listObj.itemMember.map(item => {
-          //   this.listObj.userEntities.push({
-          //     userId: item
-          //   })
-          // })
-          setTimeout(() => {
-            this.form.startTime = moment(this.form.time[0]).format('YYYY-MM-DD')
-            this.form.endTime = moment(this.form.time[1]).format('YYYY-MM-DD')
-            this.listObj.time = this.listObj?.time ? JSON.stringify(this.form.time) : ''
-            this.form.itemMember = JSON.stringify(this.form.itemMember)
-            this.correctProject()
-          }, 500)
+          this.listObj.time = this.listObj?.time ? JSON.stringify(this.form.time) : ''
+          this.form.itemMember = JSON.stringify(this.form.itemMember)
+          this.correctProject()
         } else { // 新建
           this.form.itemMember.map(item => {
             this.form.userEntities.push({
               userId: item
             })
           })
-          setTimeout(() => {
-            this.form.startTime = moment(this.form.time[0]).format('YYYY-MM-DD')
-            this.form.endTime = moment(this.form.time[1]).format('YYYY-MM-DD')
-            this.form.time = JSON.stringify(this.form.time)
-            this.form.itemMember = JSON.stringify(this.form.itemMember)
-            this.putCreateProjects()
-          }, 500)
+          this.form.itemMember = JSON.stringify(this.form.itemMember)
+          this.form.time = JSON.stringify(this.form.time)
+          this.putCreateProjects()
         }
       }
     },
@@ -583,6 +572,14 @@ export default {
           this.listObj.itemMember = res.obj || []
         }
       })
+    },
+    // 时间控件
+    onChange (date, dateString) {
+      this.form.startTime = moment(date[0]).format('YYYY-MM-DD')
+      this.form.endTime = moment(date[1]).format('YYYY-MM-DD')
+    },
+    optionChange (val) {
+      // console.log(val)
     }
   }
 }
