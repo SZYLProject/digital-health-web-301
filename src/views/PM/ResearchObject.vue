@@ -86,7 +86,7 @@ export default {
       immediate: true,
       deep: true,
       handler: function (newValue, oldValue) {
-        this.stepList[3].show = newValue === 2
+        // this.stepList[3].show = newValue === 2 // 判断回顾性研究与前瞻性研究
       }
     }
   },

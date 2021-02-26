@@ -8,14 +8,18 @@
         <span class="right right-button">
           <el-button size="mini"
                      @click.native="goPrev">上一步</el-button>
-          <el-button size="mini"
+                     <el-button size="mini"
+                     type="primary"
+                     @click.native="pullDatas"
+                     >完成</el-button>
+          <!-- <el-button size="mini"
                      type="primary"
                      @click.native="pullDatas"
                      v-if="projectType===1">完成</el-button>
           <el-button size="mini"
                      type="primary"
                      v-else
-                     @click.native="nextStep">下一步</el-button>
+                     @click.native="nextStep">下一步</el-button> -->
 
         </span>
       </div>

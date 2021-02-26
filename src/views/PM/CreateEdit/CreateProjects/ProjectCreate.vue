@@ -558,7 +558,7 @@ export default {
     changeRadio (val) {
       // this['projectsMangement/projecttype'](val)
       // this.$Storage.sessionSet('projectType', val)
-      this.resetSetItem('projectType', val) // 存储到本地
+      // this.resetSetItem('projectType', val) // 存储到本地
     },
 
     // 获取项目成员

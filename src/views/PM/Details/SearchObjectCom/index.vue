@@ -250,10 +250,10 @@
           导出记录</el-button
         >
         <!-- 模式切换 -->
-        <span class="switch-to"
+        <!-- <span class="switch-to"
               @click="switchTo = !switchTo">
           <i class="iconfont icon-zhanshi"></i>
-        </span>
+        </span> -->
 
       </div>
     </div>
