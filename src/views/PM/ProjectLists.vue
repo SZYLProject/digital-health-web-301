@@ -22,7 +22,9 @@
     <div class="container-wraps">
       <!-- No Data -->
       <div class="no-data-module"
+           style="height:500px;"
            v-if="listObj.length <= 0">
+
         <p class="iconfont icon-no_datas p1"></p>
         <p class="p2">暂时没有项目，请新建...</p>
       </div>
@@ -429,8 +431,8 @@ export default {
       }
     }
     .grid-content-last {
-      // height: 402;
-      padding: 129px 0px;
+      height: 403px;
+      // padding: 129px 0px;
     }
   }
 }

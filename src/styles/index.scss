@@ -517,7 +517,11 @@ div:focus {
   font-size: 20px;
   background-color: #ffffff;
   text-align: center;
-  padding: 200px 0px;
+  // padding: 200px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   margin-bottom: 20px;
 
   .p1 {
