@@ -95,10 +95,10 @@
                     end-placeholder="结束日期">
                   </el-date-picker> -->
                   <a-range-picker
-                    @change="onChange"
-                    :value="form.time"
                     separator="至"
-                    :placeholder="['  ', '结束日期']"
+                    @change="onChange"
+                    :value="time"
+                    :placeholder="['创建日期', '结束日期']"
                     :locale="locale" />
                 </span>
               </div>
@@ -116,7 +116,7 @@
                       style="margin-right: 38px">项目成员：</span>
                 <span style="">
                   <el-select
-                    v-model="form.itemMember"
+                    v-model="itemMember"
                     size="small"
                     :disabled="(form.affiliation && form.affiliation === 1) ? false :
                                (form.affiliation && form.affiliation === 2) ? true : false "
@@ -289,16 +289,16 @@ export default {
       locale,
       txt: '',
       itemName: '新建项目',
+      time: [], // 创建与结束时间
+      itemMember: [],
       form: {
         projectName: '', // 项目名称
         leader: '', // 项目牵头人
         planNum: '', // 拟收集患者数：
         purpose: '', // 研究目的/方案
-        time: [moment('2020-02-02', 'YYYY-MM-DD'), moment('2020-02-02', 'YYYY-MM-DD')], // 创建与结束时间
         startTime: '',
         endTime: '',
         userEntities: [], // 项目成员
-        itemMember: [],
         financeSource: '', // 资金来源(必填项)
         projectType: '', // 项目类型
         researchType: '', // 研究类型
@@ -339,11 +339,12 @@ export default {
   },
   mounted () {
     this.listObj = this.$route.params?.obj ?? null
+    // console.log(this.listObj)
     if (this.$route.params?.obj) {
       // 回显修改
       const { id } = this.$route.params.obj
       this.listObj = this.$route.params.obj
-      this.listObj.time = [this.listObj.startTime, this.listObj.endTime]
+      this.time = [moment(this.listObj.startTime, 'YYYY-MM-DD'), moment(this.listObj.endTime, 'YYYY-MM-DD')]
       this.comeUploadFiles() // 回显文件
       this.getBackItemMember(id) // 回显
     }
@@ -366,24 +367,18 @@ export default {
       } else {
         if (this.$route.params.obj) { // 修改
           this.$set(this.listObj, 'userEntities', [])
-          if (this.listObj?.itemMember instanceof Array) {
-            this.listObj.itemMember.map(item => {
-              this.listObj.userEntities.push({
-                userId: item
-              })
+          this.itemMember.map(item => {
+            this.listObj.userEntities.push({
+              userId: item
             })
-          }
-          this.listObj.time = this.listObj?.time ? JSON.stringify(this.form.time) : ''
-          this.form.itemMember = JSON.stringify(this.form.itemMember)
+          })
           this.correctProject()
         } else { // 新建
-          this.form.itemMember.map(item => {
+          this.itemMember.map(item => {
             this.form.userEntities.push({
               userId: item
             })
           })
-          this.form.itemMember = JSON.stringify(this.form.itemMember)
-          this.form.time = JSON.stringify(this.form.time)
           this.putCreateProjects()
         }
       }
@@ -577,19 +572,20 @@ export default {
     getBackItemMember (id) {
       const data = { id }
       getBackItemMember(data).then(res => {
+        // console.log(res?.obj)
         if (res?.obj) {
-          this.$set(this.listObj, 'itemMember', [])
-          this.listObj.itemMember = res.obj || []
+          this.itemMember = res?.obj || []
         }
       })
     },
     // 时间控件
     onChange (date, dateString) {
-      console.log(dateString)
+      // console.log(date, dateString)
       // this.form.startTime = moment(date[0]).format('YYYY-MM-DD')
       // this.form.endTime = moment(date[1]).format('YYYY-MM-DD')
       this.form.startTime = dateString[0]
       this.form.endTime = dateString[1]
+      this.time = date
     },
     optionChange (val) {
       // console.log(val)
