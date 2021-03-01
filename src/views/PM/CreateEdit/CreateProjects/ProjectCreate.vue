@@ -94,12 +94,16 @@
                     start-placeholder="创建日期"
                     end-placeholder="结束日期">
                   </el-date-picker> -->
-                  <a-range-picker
-                    separator="至"
-                    @change="onChange"
-                    :value="time"
-                    :placeholder="['创建日期', '结束日期']"
-                    :locale="locale" />
+                  <a-config-provider :locale="zhCN">
+                    <a-range-picker
+                      separator="至"
+                      @change="onChange"
+                      format="YYYY-MM-DD"
+                      :value="time"
+                      :placeholder="['创建日期', '结束日期']"
+                    />
+                  </a-config-provider>
+
                 </span>
               </div>
             </div>
@@ -266,11 +270,12 @@
 </template>
 
 <script>
+
 import { mapGetters, mapMutations } from 'vuex'
+import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
 import moment from 'moment'
-import locale from 'ant-design-vue/lib/locale-provider/zh_CN'
-// import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
 import 'moment/locale/zh-cn'
+
 import {
   createProjects,
   fileUploading,
@@ -286,7 +291,7 @@ export default {
   name: '',
   data () {
     return {
-      locale,
+      zhCN,
       txt: '',
       itemName: '新建项目',
       time: [], // 创建与结束时间

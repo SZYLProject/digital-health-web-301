@@ -13,11 +13,12 @@ import '@/filters' // 引入全局过滤
 import '@/directives' // 全局自定义指令
 import '@/utils/myselfStorage' // vue 自定义监听本地存储
 import Storage from '@/utils/storage'
-import { DatePicker } from 'ant-design-vue'
+import { DatePicker, ConfigProvider } from 'ant-design-vue'
 
 import * as d3 from 'd3'
 
 Vue.use(DatePicker)
+Vue.use(ConfigProvider)
 Vue.prototype.$Storage = Storage
 Vue.config.productionTip = false
 Vue.prototype.$d3 = d3
