@@ -68,7 +68,15 @@ export function deleteLists (data) {
     params: {}
   })
 }
-
+// 完成列表接口
+export function finishedAlreadys (data) {
+  const { id } = data
+  return request({
+    url: `/crp-project/project/v1/finishProject/${id}`,
+    method: 'get',
+    params: {}
+  })
+}
 // 一级字典接口
 export function oneDictionaryDatas (data) {
   // const { userId, dataItemName, isCommon, except } = data

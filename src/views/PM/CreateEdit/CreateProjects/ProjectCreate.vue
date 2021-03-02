@@ -94,7 +94,7 @@
                     start-placeholder="创建日期"
                     end-placeholder="结束日期">
                   </el-date-picker> -->
-                  <a-config-provider :locale="zhCN">
+                  <!-- <a-config-provider :locale="zhCN">
                     <a-range-picker
                       separator="至"
                       @change="onChange"
@@ -102,7 +102,16 @@
                       :value="time"
                       :placeholder="['创建日期', '结束日期']"
                     />
-                  </a-config-provider>
+                  </a-config-provider> -->
+                  <ConfigProvider :locale="zhCN">
+                    <DatePicker
+                      separator="至"
+                      @change="onChange"
+                      format="YYYY-MM-DD"
+                      :value="time"
+                      :placeholder="['创建日期', '结束日期']"
+                    />
+                  </ConfigProvider>
 
                 </span>
               </div>
@@ -272,10 +281,11 @@
 <script>
 
 import { mapGetters, mapMutations } from 'vuex'
+import { DatePicker, ConfigProvider } from 'ant-design-vue'
 import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
+import 'ant-design-vue/dist/antd.css'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
-
 import {
   createProjects,
   fileUploading,
@@ -285,8 +295,12 @@ import {
   getItemMember,
   getBackItemMember
 } from '@/api/projectsMangement'
+import Vue from 'vue'
+
+Vue.use(DatePicker)
+Vue.use(ConfigProvider)
 moment.locale('zh-cn')
-// import moment from 'moment'
+
 export default {
   name: '',
   data () {
@@ -332,7 +346,7 @@ export default {
       deep: true
     }
   },
-  components: { },
+  components: { MyDatePicker, MyConfigProvider },
   created () {
     this.getItemMember() // 获取项目成员
     this.$Storage.sessionRemove('projectId')

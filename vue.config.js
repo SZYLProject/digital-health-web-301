@@ -7,7 +7,7 @@ module.exports = {
   publicPath: process.env.NODE_ENV === 'production'
     ? '/'
     : '/',
-  productionSourceMap: false,
+  productionSourceMap: true,
   devServer: {
     open: true, // 配置自动启动浏览器
     proxy: {

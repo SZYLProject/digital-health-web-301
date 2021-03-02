@@ -10,7 +10,29 @@
         <el-breadcrumb-item>项目管理</el-breadcrumb-item>
         <el-breadcrumb-item class="active-breadcrumb">项目列表</el-breadcrumb-item>
       </el-breadcrumb>
-      <p class="right">
+      <p class="right rg-bar">
+        <span class="check-radio">
+          <el-radio-group v-model="checkRadio" size="small" @change="checkRadios">
+            <el-radio :label="0">全部状态</el-radio>
+            <el-radio :label="1">进行中</el-radio>
+            <el-radio :label="2">已结束</el-radio>
+          </el-radio-group>
+        </span>
+        <span class="sn-input">
+          <el-input
+            placeholder="请输入项目名称进行搜索"
+            v-model="projectName"
+            size="small"
+            @keyup.enter.native="handleIconClick"
+            clearable
+            >
+            <i
+              class="el-icon-search el-input__icon pointer"
+              slot="suffix"
+              @click="handleIconClick">
+            </i>
+          </el-input>
+        </span>
         <el-button type="primary"
                    size="mini"
                    @click.native="createButton"
@@ -61,6 +83,10 @@
                   <div slot="content">
                     <el-button type="text"
                                style="padding:0;"
+                               @click.native="finishedAlreadys(item)"
+                               size="mini">完成</el-button>
+                    <el-button type="text"
+                               style="padding:0;"
                                @click.native="goSearchObj(item)"
                                size="mini">修改</el-button>
                     <el-button type="text"
@@ -106,11 +132,9 @@
                   <span>
                     {{
                       item.pStatus === 1
-                        ? "创建中"
-                        : item.pStatus === 2
                         ? "进行中"
-                        : item.pStatus === 3
-                        ? "已锁定"
+                        : item.pStatus === 2
+                        ? "已结束"
                         : "未知"
                     }}
                   </span>
@@ -192,12 +216,14 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import { projectLists, deleteLists } from '@/api/projectsMangement' //
+import { projectLists, deleteLists, finishedAlreadys } from '@/api/projectsMangement' //
 export default {
   name: 'ProjectLists',
   data () {
     return {
       loading: false,
+      checkRadio: 0,
+      projectName: '',
       // 项目列表数据
       listObj: [],
       stepArr1: ['研究对象', '项目进度', '随访列表', '审批管理', '统计分析'],
@@ -230,6 +256,8 @@ export default {
         dataSourceId: this.dataSourceValue?.id,
         type: '',
         status: '',
+        pStatus: this.checkRadio !== 0 ? this.checkRadio : '',
+        projectName: this.projectName,
         pageNo: this.pageNo,
         pageSize: this.pageSize
       }
@@ -279,6 +307,32 @@ export default {
         }
       })
     },
+    // 完成
+    finishedAlreadys (item) {
+      this.$confirm('项目结束操作不可逆,请谨慎使用, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const data = {
+          id: item.id
+        }
+        finishedAlreadys(data).then(res => {
+          if (res) {
+            this.$message({
+              message: '该项目已完成',
+              type: 'success'
+            })
+            this.getProjectLists()
+          }
+        }).catch(() => {})
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        })
+      })
+    },
     // 删除项目
     deleteList (item) {
       this.$confirm('此操作将永久删除该项目, 是否继续?', '提示', {
@@ -320,6 +374,14 @@ export default {
           type: 'warning'
         })
       }
+    },
+    checkRadios (val) {
+      this.projectName = ''
+      this.getProjectLists()
+    },
+    handleIconClick () {
+      this.checkRadio = 0
+      this.getProjectLists()
     }
   }
 }
@@ -328,6 +390,14 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
 .project-lists {
+  .rg-bar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .sn-input{
+      margin:0 20px;
+    }
+  }
   .container-wraps {
     margin-top: 20px;
     .grid-content {
@@ -460,5 +530,14 @@ export default {
   .el-step.is-horizontal .el-step__line {
     top: 8px;
   }
+  .check-radio{
+    .el-radio {
+      margin-right: 10px;
+    }
+    .el-radio__input {
+      display: none;
+    }
+  }
+
 }
 </style>
