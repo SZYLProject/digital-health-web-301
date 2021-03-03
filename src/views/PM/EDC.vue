@@ -38,6 +38,7 @@ export default {
   created () {},
   mounted () {
     // alert(222)
+
     // console.log(this.$route.params.id)
   },
   destroyed () {},
