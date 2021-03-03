@@ -9,7 +9,8 @@
             >患者数：{{ patientsNum }}</span
           >
           <span class="sub-n">病历数： {{ caseNum }}</span>
-          <span class="sub-n">时间跨度：{{ startTimes }} — {{ endTimes }}</span>
+          <!-- <span class="sub-n">时间跨度：{{ startTimes }} — {{ endTimes }}</span> -->
+          <span class="sub-n">时间跨度：2013-01-01 — {{ endTimes }}</span>
         </h1>
       </div>
     </div>
