@@ -116,11 +116,15 @@ export default {
     // 时间轴
     timeAxisPartOne () {
       getTimeAxisPartOneInfo(this.personId).then(res => {
+        // console.log(res)
         const list = []
         res.obj.forEach(item => {
           const colorArr = this.types.filter((v) => item.type === v.name)
           if (item.start === item.end) {
             item.end = parseInt(item.end) + 24 * 60 * 60 - 1
+          }
+          if (item.end === 'null') {
+            item.end = parseInt(item.start) + 24 * 60 * 60 - 1
           }
           list.push({
             name: item.type,
