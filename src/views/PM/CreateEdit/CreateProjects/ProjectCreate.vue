@@ -84,6 +84,19 @@
                 <span class="ms-t"
                       style="margin-right: 38px">创建/结束时间：</span>
                 <span style="">
+                   <el-date-picker
+                      v-model="form.startTime"
+                      type="date"
+                      size="small"
+                      placeholder="创建日期">
+                    </el-date-picker>
+                    <span style="padding:0 10px;"></span>
+                    <el-date-picker
+                      v-model="form.endTime"
+                      type="date"
+                      size="small"
+                      placeholder="结束日期">
+                    </el-date-picker>
                   <!-- <el-date-picker
                     v-model="form.time"
                     style="width: 100%"
@@ -103,7 +116,7 @@
                       :placeholder="['创建日期', '结束日期']"
                     />
                   </a-config-provider> -->
-                  <ConfigProvider :locale="zhCN">
+                  <!-- <ConfigProvider :locale="zhCN">
                     <DatePicker
                       separator="至"
                       @change="onChange"
@@ -111,7 +124,7 @@
                       :value="time"
                       :placeholder="['创建日期', '结束日期']"
                     />
-                  </ConfigProvider>
+                  </ConfigProvider> -->
 
                 </span>
               </div>
@@ -281,11 +294,11 @@
 <script>
 
 import { mapGetters, mapMutations } from 'vuex'
-import { DatePicker, ConfigProvider } from 'ant-design-vue'
-import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
-import 'ant-design-vue/dist/antd.css'
-import moment from 'moment'
-import 'moment/locale/zh-cn'
+// import { DatePicker, ConfigProvider } from 'ant-design-vue'
+// import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
+// import 'ant-design-vue/dist/antd.css'
+// import moment from 'moment'
+// import 'moment/locale/zh-cn'
 import {
   createProjects,
   fileUploading,
@@ -295,17 +308,21 @@ import {
   getItemMember,
   getBackItemMember
 } from '@/api/projectsMangement'
-import Vue from 'vue'
+// import Vue from 'vue'
 
-Vue.use(DatePicker)
-Vue.use(ConfigProvider)
-moment.locale('zh-cn')
+// import { DatePicker, ConfigProvider } from 'ant-design-vue'
+// Vue.component(DatePicker.name, DatePicker)
+// Vue.component(ConfigProvider.name, ConfigProvider)
+
+// Vue.use(DatePicker)
+// Vue.use(ConfigProvider)
+// moment.locale('zh-cn')
 
 export default {
   name: '',
   data () {
     return {
-      zhCN,
+      // zhCN,
       txt: '',
       itemName: '新建项目',
       time: [], // 创建与结束时间
@@ -346,7 +363,7 @@ export default {
       deep: true
     }
   },
-  components: { MyDatePicker, MyConfigProvider },
+  components: {},
   created () {
     this.getItemMember() // 获取项目成员
     this.$Storage.sessionRemove('projectId')
@@ -363,12 +380,13 @@ export default {
       // 回显修改
       const { id } = this.$route.params.obj
       this.listObj = this.$route.params.obj
-      this.time = [moment(this.listObj.startTime, 'YYYY-MM-DD'), moment(this.listObj.endTime, 'YYYY-MM-DD')]
+      // this.time = [moment(this.listObj.startTime, 'YYYY-MM-DD'), moment(this.listObj.endTime, 'YYYY-MM-DD')]
       this.comeUploadFiles() // 回显文件
       this.getBackItemMember(id) // 回显
     }
   },
-  destroyed () { },
+  destroyed () {
+  },
   methods: {
     ...mapMutations(['projectsMangement/storeitemdata', 'projectsMangement/projecttype']),
     // 返回项目列表
@@ -615,6 +633,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
+// @import '~@/styles/antd.css';
 .project-create {
   padding-bottom: 50px;
   .right-button {
@@ -721,6 +740,145 @@ export default {
       //   height: 32px;
       // }
     }
+  }
+  .box{
+
+  @-webkit-keyframes antSlideUpIn {
+    0% {
+      transform: scaleY(0.8);
+      transform-origin: 0% 0%;
+      opacity: 0;
+    }
+    100% {
+      transform: scaleY(1);
+      transform-origin: 0% 0%;
+      opacity: 1;
+    }
+  }
+  @keyframes antSlideUpIn {
+    0% {
+      transform: scaleY(0.8);
+      transform-origin: 0% 0%;
+      opacity: 0;
+    }
+    100% {
+      transform: scaleY(1);
+      transform-origin: 0% 0%;
+      opacity: 1;
+    }
+  }
+  @-webkit-keyframes antSlideUpOut {
+    0% {
+      transform: scaleY(1);
+      transform-origin: 0% 0%;
+      opacity: 1;
+    }
+    100% {
+      transform: scaleY(0.8);
+      transform-origin: 0% 0%;
+      opacity: 0;
+    }
+  }
+  @keyframes antSlideUpOut {
+    0% {
+      transform: scaleY(1);
+      transform-origin: 0% 0%;
+      opacity: 1;
+    }
+    100% {
+      transform: scaleY(0.8);
+      transform-origin: 0% 0%;
+      opacity: 0;
+    }
+  }
+  @-webkit-keyframes antSlideDownIn {
+    0% {
+      transform: scaleY(0.8);
+      transform-origin: 100% 100%;
+      opacity: 0;
+    }
+    100% {
+      transform: scaleY(1);
+      transform-origin: 100% 100%;
+      opacity: 1;
+    }
+  }
+  @keyframes antSlideDownIn {
+    0% {
+      transform: scaleY(0.8);
+      transform-origin: 100% 100%;
+      opacity: 0;
+    }
+    100% {
+      transform: scaleY(1);
+      transform-origin: 100% 100%;
+      opacity: 1;
+    }
+  }
+  @-webkit-keyframes antSlideDownOut {
+    0% {
+      transform: scaleY(1);
+      transform-origin: 100% 100%;
+      opacity: 1;
+    }
+    100% {
+      transform: scaleY(0.8);
+      transform-origin: 100% 100%;
+      opacity: 0;
+    }
+  }
+  @keyframes antSlideDownOut {
+    0% {
+      transform: scaleY(1);
+      transform-origin: 100% 100%;
+      opacity: 1;
+    }
+    100% {
+      transform: scaleY(0.8);
+      transform-origin: 100% 100%;
+      opacity: 0;
+    }
+  }
+
+  //@at-root
+  .ant-calendar-picker-container {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 14px;
+    font-variant: tabular-nums;
+    line-height: 1.5;
+    list-style: none;
+    font-feature-settings: 'tnum';
+    position: absolute;
+    z-index: 1050;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  }
+  .ant-calendar-picker-container.slide-up-enter.slide-up-enter-active.ant-calendar-picker-container-placement-topLeft,
+  .ant-calendar-picker-container.slide-up-enter.slide-up-enter-active.ant-calendar-picker-container-placement-topRight,
+  .ant-calendar-picker-container.slide-up-appear.slide-up-appear-active.ant-calendar-picker-container-placement-topLeft,
+  .ant-calendar-picker-container.slide-up-appear.slide-up-appear-active.ant-calendar-picker-container-placement-topRight {
+    -webkit-animation-name: antSlideDownIn;
+            animation-name: antSlideDownIn;
+  }
+  .ant-calendar-picker-container.slide-up-enter.slide-up-enter-active.ant-calendar-picker-container-placement-bottomLeft,
+  .ant-calendar-picker-container.slide-up-enter.slide-up-enter-active.ant-calendar-picker-container-placement-bottomRight,
+  .ant-calendar-picker-container.slide-up-appear.slide-up-appear-active.ant-calendar-picker-container-placement-bottomLeft,
+  .ant-calendar-picker-container.slide-up-appear.slide-up-appear-active.ant-calendar-picker-container-placement-bottomRight {
+    -webkit-animation-name: antSlideUpIn;
+            animation-name: antSlideUpIn;
+  }
+  .ant-calendar-picker-container.slide-up-leave.slide-up-leave-active.ant-calendar-picker-container-placement-topLeft,
+  .ant-calendar-picker-container.slide-up-leave.slide-up-leave-active.ant-calendar-picker-container-placement-topRight {
+    -webkit-animation-name: antSlideDownOut;
+            animation-name: antSlideDownOut;
+  }
+  .ant-calendar-picker-container.slide-up-leave.slide-up-leave-active.ant-calendar-picker-container-placement-bottomLeft,
+  .ant-calendar-picker-container.slide-up-leave.slide-up-leave-active.ant-calendar-picker-container-placement-bottomRight {
+    -webkit-animation-name: antSlideUpOut;
+            animation-name: antSlideUpOut;
+  }
   }
 }
 </style>
