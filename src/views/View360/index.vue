@@ -127,7 +127,6 @@ export default {
         dataItemCode: ''
       }
       getViewInfo(data).then(res => {
-        // console.log(res)
         if (res.obj.menu && res.obj.menu.length > 0) {
           this.baseData = null
           this.menu = res.obj.menu
@@ -136,7 +135,7 @@ export default {
           this.menu = []
           const list = []
           if (res.obj.data && res.obj.data.length > 0) {
-            const data = JSON.parse(res.obj.data[0])
+            const data = JSON.parse(JSON.parse(res.obj.data[0]))
             const fields = res.obj.fields
             for (const key in data) {
               if (fields[key]) {

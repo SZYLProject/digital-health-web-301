@@ -28,6 +28,9 @@ export default {
       pageSize: 10 // 每页显示的数据条数
     }
   },
+  mounted () {
+    console.log(this.baseData)
+  },
   methods: {
   }
 }
