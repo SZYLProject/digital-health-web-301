@@ -105,16 +105,20 @@
                 </p>
               </div>
               <p class="dashed-line"></p>
+
               <!-- 列表数据 -->
               <div v-for="(item,index) in searchPopDatas"
                    :key="index"
                    :id="item.id"
                    class="acontent">
+                   <!-- 一级 -->
                 <h4 style="margin-top:10px;">{{ item.dataItemName }}</h4>
+
                 <div class=""
                      v-for="(itemS,idx1) in item && item.dataItemEntityList
                         ? item.dataItemEntityList : []"
                      :key="idx1">
+                  <!-- 二级 -->
                   <p style="font-size:14px;color:#787878;margin:5px 0px;">
                     {{ itemS.dataItemName }}
                   </p>
@@ -125,6 +129,7 @@
                               :key="idx2"
                               placement="top-start">
                     <div slot="content">
+                      <!-- 三级 -->
                       <p>名称：{{ itemT.dataItemName }}</p>
                       <p style="max-width:150px;">
                         描述：{{
@@ -300,7 +305,7 @@ export default {
         except: this.popArguments
       }
       advancedSearchPopDatas(data).then(res => {
-        // console.log(res)
+        console.log(res)
         const obj = res.obj
         if (obj?.data?.length > 0) {
           this.fieldAll = obj.total

@@ -703,6 +703,7 @@ export default {
 
     // 获取搜索主题
     dialogDatas (val) {
+      // console.log(val)
       if (val) {
         this.$set(val, 'value', val.dataItemName)
         if (this.isChild) {

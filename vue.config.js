@@ -9,7 +9,7 @@ module.exports = {
   publicPath: process.env.NODE_ENV === 'production'
     ? '/'
     : '/',
-  productionSourceMap: true,
+  productionSourceMap: false,
   // outputDir: `dist/${version}`,
   // outputDir: 'dist/1.0.2',
   // filenameHashing: false, // 打包的时候不使用hash值.因为我们有时间戳来确定项目的唯一性了.
@@ -33,6 +33,14 @@ module.exports = {
         args[0].title = titleHtml
         return args
       })
+    // ============压缩图片 start============
+    config.module
+      .rule('images')
+      .use('image-webpack-loader')
+      .loader('image-webpack-loader')
+      .options({ bypassOnDebug: true })
+      .end()
+    // ============压缩图片 end============
   },
   configureWebpack: config => {
     config.entry.app = ['babel-polyfill', './src/main.js']
@@ -41,10 +49,17 @@ module.exports = {
     //   chunkFilename: `js[nam].${timeStamp}.js`
     // }
   },
+  // configureWebpack: {
+  //   entry: ['babel-polyfill', './src/main.js'],
+  //   // output: { // 输出重构 打包编译后的js文件名称,添加时间戳.
+  //   //   filename: `js[nam].${timeStamp}.js`,
+  //   //   chunkFilename: `js[nam].${timeStamp}.js`
+  //   // }
+  // },
   css: {
-    // extract: {
-    //   filename: `css/[name].${timeStamp}.css`,
-    //   chunkFilename: `css/[name].${timeStamp}.css`
-    // }
+    extract: {
+      // filename: `css/[name].${timeStamp}.css`,
+      // chunkFilename: `css/[name].${timeStamp}.css`
+    }
   }
 }
