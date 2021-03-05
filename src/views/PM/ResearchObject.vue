@@ -102,10 +102,13 @@ export default {
     )
   },
   mounted () {
-    this.projectType = this.$Storage.sessionGet('projectType')
-    window.addEventListener('setItem', () => {
-      this.projectType = this.$Storage.sessionGet('projectType')
-    })
+    // console.log(this.projectType)
+    // this.projectType = this.$Storage.sessionGet('projectType')
+    // if (this.projectType) {
+    //   window.addEventListener('setItem', () => {
+    //     this.projectType = this.$Storage.sessionGet('projectType')
+    //   })
+    // }
   },
   destroyed () {},
   methods: {

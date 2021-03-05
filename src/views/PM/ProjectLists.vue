@@ -296,9 +296,13 @@ export default {
     },
     // 进入项目修改
     goSearchObj (item) {
+      console.log(item)
       // this['projectsMangement/projecttype'](item.projectType)
       // this.$Storage.sessionSet('projectType', item.projectType)
-      this.resetSetItem('projectType', item.projectType) // vue 自定义监听本地存储
+      if (item.projectType) {
+        this.resetSetItem('projectType', item.projectType) // vue 自定义监听本地存储
+      }
+
       this.$router.push({
         name: 'ResearchObject',
         params: {
