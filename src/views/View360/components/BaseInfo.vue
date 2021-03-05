@@ -29,7 +29,7 @@ export default {
     }
   },
   mounted () {
-    console.log(this.baseData)
+    // console.log(this.baseData)
   },
   methods: {
   }

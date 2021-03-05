@@ -137,14 +137,24 @@ export default {
           if (res.obj.data && res.obj.data.length > 0) {
             const data = JSON.parse(JSON.parse(res.obj.data[0]))
             const fields = res.obj.fields
-            for (const key in data) {
-              if (fields[key]) {
-                list.push({
-                  name: fields[key],
-                  value: data[key] || '无'
-                })
-              }
+            // console.log(data)
+            // console.log(fields)
+            for (const [key, value] of Object.entries(fields)) {
+              // console.log(key, value)
+              list.push({
+                name: value,
+                value: data[key]
+              })
             }
+            // for (const key in data) {
+            //   console.log(key)
+            //   if (fields[key]) {
+            //     list.push({
+            //       name: fields[key],
+            //       value: data[key] || '无'
+            //     })
+            //   }
+            // }
           }
           this.baseData = list
           this.whichCom = 'BaseInfo'
