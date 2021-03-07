@@ -62,6 +62,7 @@
 import logo from '@/assets/logo.png'
 import { mapGetters } from 'vuex'
 import { getViewMenu } from '@/api/view360'
+import Storage from '@/utils/storage'
 
 export default {
   name: 'DetailsSidebar',
@@ -89,8 +90,10 @@ export default {
       window.history.replaceState({}, '', `#/view360/${this.$route.params.personId}/${id}?parentName=${name}`)
     },
     getDictionariesFirst () {
+      const { sessionGet } = Storage
+      console.log(sessionGet('pID'))
       const data = {
-        id: this.dataSourceValue?.id ?? 0
+        id: this.dataSourceValue?.id ?? (sessionGet('pID')?.id)
       }
       getViewMenu(data)
         .then(res => {

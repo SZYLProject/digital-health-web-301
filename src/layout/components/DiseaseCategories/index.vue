@@ -176,6 +176,7 @@ export default {
 
       commitPatiId(data).then(res => {
         if (res.success === 0) {
+          // console.log(res)
           this['user/STORE_PATIENTID'](data)
           this.dialogFormVisible = false
           // this.selDesease = this.dataSourceValue?.sourceName

@@ -1,5 +1,7 @@
 import { login, logout, getMenu, getUserInfo, getPreference } from '@/api/user'
 import { getToken, setToken, removeToken, getUserId, setUserId, removeUserId } from '@/utils/auth'
+import Storage from '@/utils/storage'
+
 import { listToTree } from '@/utils/index'
 
 const state = {
@@ -31,6 +33,8 @@ const mutations = {
   // 存储病种 ID
   STORE_PATIENTID: (state, data) => {
     const { id, sourceName } = data
+    const { sessionSet } = Storage
+    sessionSet('pID', data)
     state.dataSourceValue = {
       id: id ?? 0,
       sourceName: sourceName
