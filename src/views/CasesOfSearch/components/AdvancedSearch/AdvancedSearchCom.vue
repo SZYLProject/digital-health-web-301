@@ -772,7 +772,7 @@ export default {
           clearInterval(this.interval)
           var results = queryString ? restaurants.filter((item) => {
             const newItem = item.value.search(queryString) !== -1 ||
-          PinyinMatch.default.match(item.value, queryString)
+          PinyinMatch.match(item.value, queryString)
             if (newItem) return item
           }) : restaurants
           cb(results)

@@ -198,8 +198,8 @@ export default {
       this.total = newV.total
       this.listsVisit = newV.personList.map(item => {
         this.$set(item, 'check', false)
-        // const res = new Map()
-        // item.visit_record = item.visit_record.filter((a) => !res.has(a.visit_source_value) && res.set(a.visit_source_value, 1))
+        const res = new Map()
+        item.visit_record = item.visit_record.filter((a) => !res.has(a.visit_source_value) && res.set(a.visit_source_value, 1))
         return item
       })
       this.advancedLoading = false

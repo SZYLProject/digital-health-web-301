@@ -91,6 +91,7 @@ export default {
             .split(this.keyWordsSearch)
             .join(`<span style="color:red;">${this.keyWordsSearch}</span>`)
           const res = new Map()
+
           item.visit_record = item.visit_record.filter((a) => !res.has(a.visit_source_value) && res.set(a.visit_source_value, 1))
           return item
         })
