@@ -291,7 +291,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userInfo'])
+    ...mapGetters(['userInfo', 'dataSourceValue'])
   },
   watch: {
     // 还原数据
@@ -305,6 +305,7 @@ export default {
   created () {},
   mounted () {
     this.getFormDatas()
+    this.formInline.dataSourceId = this.dataSourceValue.id
   },
   destroyed () {},
   methods: {

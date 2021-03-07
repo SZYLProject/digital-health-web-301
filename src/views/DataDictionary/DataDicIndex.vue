@@ -13,7 +13,8 @@
 
 <script>
 
-import { createNamespacedHelpers } from 'vuex'
+import { createNamespacedHelpers, mapGetters } from 'vuex'
+
 import { DictionaryDefinition } from './components'
 import { kindOfDesease, datasDictionariesTitle } from '@/api/dataDicIndex'
 const { mapActions } = createNamespacedHelpers('dataDicIndex')
@@ -30,6 +31,9 @@ export default {
     dataSourceId (val) {
       this.getDatasDictionariesTitle()
     }
+  },
+  computed: {
+    ...mapGetters(['userInfo', 'dataSourceValue'])
   },
   components: {
     DictionaryDefinition
@@ -56,8 +60,9 @@ export default {
 
     // 一二级字典标题
     getDatasDictionariesTitle () {
+      console.log(this.dataSourceValue)
       const data = {
-        dataSourceId: this.dataSourceId || 0
+        dataSourceId: this.dataSourceId || this.dataSourceValue?.id
       }
       datasDictionariesTitle(data)
         .then(res => {
