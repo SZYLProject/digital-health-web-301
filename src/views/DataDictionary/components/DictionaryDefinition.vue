@@ -305,7 +305,7 @@ export default {
   created () {},
   mounted () {
     this.getFormDatas()
-    this.formInline.dataSourceId = this.dataSourceValue.id
+    this.formInline.dataSourceId = this.$Storage.sessionGet('pID')?.id
   },
   destroyed () {},
   methods: {
@@ -315,7 +315,7 @@ export default {
       this.tableData = []
       const data = {
         parentCode: this.parentCode,
-        dataSourceId: this.formInline.dataSourceId || this.dataSourceValue?.id,
+        dataSourceId: this.formInline.dataSourceId || this.$Storage.sessionGet('pID')?.id,
         dataItemName: this.formInline.dataItemName,
         dataOptionType:
           this.formInline.dataOptionType !== '0'
