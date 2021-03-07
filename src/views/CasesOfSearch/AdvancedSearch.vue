@@ -190,12 +190,13 @@ export default {
   components: { AddCollectObject, AnalyzeResult, AdvancedSearchCom },
   created () { },
   mounted () {
+    // console.log(this.advanceSearchListDatas)
     if (this.advanceSearchListDatas) {
       const newV = this.advanceSearchListDatas
       this.patients = newV.personNumber ? newV.personNumber : 0
       this.caseHistory = newV.visitNumber ? newV.visitNumber : 0
       this.total = newV.total
-      this.listsVisit = newV.visit.map(item => {
+      this.listsVisit = newV.personList.map(item => {
         this.$set(item, 'check', false)
         // const res = new Map()
         // item.visit_record = item.visit_record.filter((a) => !res.has(a.visit_source_value) && res.set(a.visit_source_value, 1))
