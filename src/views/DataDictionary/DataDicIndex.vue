@@ -60,7 +60,7 @@ export default {
 
     // 一二级字典标题
     getDatasDictionariesTitle () {
-      console.log(this.dataSourceValue)
+      // console.log(this.dataSourceValue)
       const data = {
         dataSourceId: this.dataSourceId || this.dataSourceValue?.id
       }

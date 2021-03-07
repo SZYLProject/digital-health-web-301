@@ -33,10 +33,10 @@ const mutations = {
   // 存储病种 ID
   STORE_PATIENTID: (state, data) => {
     const { id, sourceName } = data
-    const { sessionSet } = Storage
+    const { sessionSet, sessionGet } = Storage
     sessionSet('pID', data)
     state.dataSourceValue = {
-      id: id ?? 0,
+      id: id ?? (sessionGet('pID')?.id),
       sourceName: sourceName
     }
   },
