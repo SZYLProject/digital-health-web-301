@@ -315,7 +315,7 @@ export default {
       this.tableData = []
       const data = {
         parentCode: this.parentCode,
-        dataSourceId: this.formInline.dataSourceId || 0,
+        dataSourceId: this.formInline.dataSourceId || this.dataSourceValue?.id,
         dataItemName: this.formInline.dataItemName,
         dataOptionType:
           this.formInline.dataOptionType !== '0'
