@@ -1,4 +1,6 @@
 import { listConvertTree } from '@/utils/conditionTreeFn'
+import Storage from '@/utils/storage'
+
 import { treeSearch, seniorSearch, treeSearchAll } from '@/api/projectsMangement'
 const FLATTEN_DATA = 'syncFlattenData' // 条件树数据
 const GROUNP_DATA = 'syncGroupData' // 条件树请求需要字段
@@ -52,15 +54,16 @@ const actions = {
     } else {
       commit('syncTreeLoading', true)
       const treeData = listConvertTree(data.data, '', 'childList')
+      const { sessionGet } = Storage
       const newData = {
         condition: treeData[0],
+        dataSourceId: sessionGet('pID')?.id ?? '',
         groupId: state.groupData.groupId,
         id: state.groupData.id,
         projectId: state.groupData.projectId,
         totalCount: 0,
         type: state.groupData.type
       }
-      // console.log(treeData)
       const fetchName = data.type === 'all' ? treeSearchAll : treeSearch
       return new Promise((resolve, reject) => {
         fetchName(newData).then(res => {
@@ -88,8 +91,10 @@ const actions = {
   // 提交事件搜索
   fetchSeniorSearch ({ commit, state }, data) {
     commit('syncSeniorLoading', true)
+    const { sessionGet } = Storage
     const newData = {
       conditionList: data,
+      dataSourceId: sessionGet('pID')?.id ?? '',
       groupId: state.groupData.groupId,
       id: state.groupData.id,
       projectId: state.groupData.projectId,

@@ -587,8 +587,13 @@ export default {
       const flag = !(status.toString().search('false') !== -1)
       if (flag) {
         this.adSearchLoading = true
+
+        const pID = this.$Storage.sessionGet('pID')
+        // console.log(pID)
+
         const data = {
           advanceSearchGroupDTOList: summitData,
+          dataSourceId: pID?.id ?? '',
           model: this.model,
           pageNo: this.PN,
           pageSize: this.PS

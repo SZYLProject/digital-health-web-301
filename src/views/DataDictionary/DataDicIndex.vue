@@ -60,9 +60,9 @@ export default {
 
     // 一二级字典标题
     getDatasDictionariesTitle () {
-      console.log(this.dataSourceValue)
-      console.log(this.dataSourceId)
-      console.log(this.$Storage.sessionGet('pID'))
+      // console.log(this.dataSourceValue)
+      // console.log(this.dataSourceId)
+      // console.log(this.$Storage.sessionGet('pID'))
       const data = {
         dataSourceId: this.dataSourceId || (this.$Storage.sessionGet('pID')?.id)
       }

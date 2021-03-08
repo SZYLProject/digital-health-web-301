@@ -308,19 +308,25 @@ export default {
     ...mapMutations(['syncGroupData', 'syncFlattenData', 'syncCloseDialog']),
 
     openDialog (val, type, data) {
-      console.log(val, type, data)
+      // console.log(val, type, data)
       this.treeData.type = type
       this.treeData.id = data ? data.id : null
       this.treeData.searchType = (val === 'tree') ? 2 : (val === 'event') ? 1 : null
       this.syncGroupData(this.treeData)
 
       if (val === 'tree') { // 树
+        //
         if (data && data.treeSearch) {
           const jsondata = JSON.parse(data.treeSearch)
           const newData = TreeConvertList(jsondata.condition, '', 'childList')
+          // console.log(jsondata)
+          // console.log(newData)
           newData.forEach(item => {
-            item.num = jsondata.countList[item.id]
+            // console.log(item)
+            // item.num = jsondata.countList[item.id]
+            item.num = jsondata.condition[item.id]
           })
+
           this.syncFlattenData(newData)
         }
 
@@ -378,6 +384,7 @@ export default {
           const right = res.obj.exInfoyList.filter(item => item.type === 2)
           this.leftDatas = left.length > 0 ? left[0] : null
           this.rightDatas = right.length > 0 ? right[0] : null
+          // console.log(this.leftDatas)
           // 纳入标准
           if (this.leftDatas?.treeStatus === 1) {
             this.leftRadio = '1'
