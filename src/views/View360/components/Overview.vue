@@ -151,6 +151,7 @@ export default {
         personId: this.personId
       }
       getTimeAxisPartTwoInfo(data).then(res => {
+        console.log(res)
         this.timeAxisTwo.yAxis = Object.values(res.obj.yAxis)
         res.obj.xAxis.map(item => {
           item[1] = res.obj.yAxis[item[1]]

@@ -7,6 +7,7 @@ import request from '@/utils/request'
 
 // 病例搜索首页获取病例搜索结果的接口
 export function patientSearch (data) {
+  // const {} = data
   return request({
     url: '/crp-search/indexSearch/v1/findBaseCountForSearch',
     method: 'get',

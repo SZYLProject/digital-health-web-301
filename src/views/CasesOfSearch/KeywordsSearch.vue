@@ -53,18 +53,19 @@
             <el-collapse-item name="1">
               <template slot="title">搜索说明</template>
               <div class="condition-info">
+                检索说明：关键词检索默认显示所有标化和病历原始文本
                 <!-- 搜索模式 -->
-                <div class="search-pattern">
+                <!-- <div class="search-pattern">
                   <span class="title">搜索模式：</span>
                   <el-radio-group v-model="searchM"
                                   @change="serachModel">
                     <el-radio :label="0">归一搜索</el-radio>
                     <el-radio :label="1">原始搜索</el-radio>
                   </el-radio-group>
-                </div>
+                </div> -->
 
                  <!-- 归一词 -->
-                <div v-if="unification" class="search-fication">
+                <!-- <div v-if="unification" class="search-fication">
                   <p style="padding-right:13px;">
                     <span class="title">归一词：</span>
                   </p>
@@ -76,27 +77,27 @@
                           v-show="item !== keyWordsSearch"
                           :label="item" > {{item}}</el-checkbox>
                       </el-checkbox-group>
-                  </p>
-                </div>
+                  </p> -->
+                <!-- </div> -->
 
                 <!-- 搜索范围： -->
-                <div class="search-scope"
+                <!-- <div class="search-scope"
                      v-if="isShowS">
                   <span class="title">搜索范围：</span>
-                  <span>在“{{ searchFData[1] }}”中查找</span>
+                  <span>在“{{ searchFData[1] }}”中查找</span> -->
                   <!-- <el-radio-group v-model="searchF">
                     <el-radio label="all">全部</el-radio>
                     <el-radio :label="searchFData[0]">{{searchFData[1]}}</el-radio>
                   </el-radio-group> -->
-                </div>
+                <!-- </div> -->
 
                 <!-- 说明 -->
-                <div class="info-icon pointer">
+                <!-- <div class="info-icon pointer">
                   <span :style="{'color': theme}"
                         @click="dialogVisible = true">
                     <i class="el-icon-info"></i>说明
                   </span>
-                </div>
+                </div> -->
               </div>
             </el-collapse-item>
           </el-collapse>
