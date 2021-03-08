@@ -51,8 +51,8 @@
               <transition-group type="transition">
                 <el-button plain
                            size="mini"
-                           v-for="(item, index) in distionaChild"
-                           :key="index"
+                           v-for="item in distionaChildDatas"
+                           :key="item.id"
                            :disabled="item.disable"
                            :id="item.id">{{ item.dataItemName }}</el-button>
               </transition-group>
@@ -139,6 +139,7 @@ export default {
         if (res?.obj) {
           this.distionaChildDatas = res.obj
           this.distionaChild = res.obj
+          console.log(this.distionaChild)
           this.secondName = name
           this.num = this.distionaChildDatas?.length ?? 0
         }
@@ -149,13 +150,21 @@ export default {
     },
     // 根据输入值过滤分类列表
     conditionFilter () {
-      const newV = this.distionaChildDatas
+      // const newV = this.distionaChildDatas
+      // const newVal = newV.map(item => {
+      //   const newItem = item.dataItemName.search(this.threeDic) !== -1 ||
+      //                   PinyinMatch.match(item.dataItemName, this.threeDic)
+      //   if (newItem) return item
+      // }).filter(item => item)
+      // this.distionaChild = newVal
+      // this.num = newVal?.length ?? 0
+      const newV = this.distionaChild
       const newVal = newV.map(item => {
         const newItem = item.dataItemName.search(this.threeDic) !== -1 ||
                         PinyinMatch.match(item.dataItemName, this.threeDic)
         if (newItem) return item
       }).filter(item => item)
-      this.distionaChild = newVal
+      this.distionaChildDatas = newVal
       this.num = newVal?.length ?? 0
     },
 
@@ -246,7 +255,7 @@ export default {
       // const p = clone.parentName.split('~')
       // clone.parentName1 = p[0]
       // clone.parentName2 = p[1]
-      // console.log(clone)
+      console.log(clone)
       return clone
     }
   }
