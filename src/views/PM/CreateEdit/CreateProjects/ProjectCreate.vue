@@ -342,7 +342,7 @@ import {
 // moment.locale('zh-cn')
 
 export default {
-  name: '',
+  name: 'ProjectCreate',
   data () {
     return {
       // zhCN,

@@ -24,7 +24,10 @@
       </el-steps>
     </div>
     <!-- 组件切换 -->
-    <component :is="whichCom" @next="nextStep"></component>
+    <keep-alive include="ProjectCreate">
+      <component :is="whichCom" @next="nextStep"></component>
+    </keep-alive>
+
   </div>
 </template>
 
