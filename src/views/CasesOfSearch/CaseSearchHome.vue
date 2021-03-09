@@ -104,7 +104,11 @@ export default {
     creatTreeName () {},
     // 获取病例搜索结果
     getPatientSearch () {
-      const data = {}
+      const pID = this.$Storage.sessionGet('pID')
+      const data = {
+        dataSourceId: pID?.id ?? ''
+      }
+
       patientSearch(data)
         .then((res) => {
           const obj = res.obj

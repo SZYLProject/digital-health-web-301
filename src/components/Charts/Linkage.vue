@@ -61,6 +61,7 @@ export default {
   },
   mounted () {
     this.initChart()
+    console.log(this.dataTwoX)
   },
   beforeDestroy () {
     if (!this.chart) {
@@ -98,6 +99,7 @@ export default {
       this.chart.setOption({
         tooltip: {
           formatter: function (params) {
+            // console.log(params)
             const val = params.value[3] ? params.value[3] : params.value[2]
             return params.marker + params.name + '<br />' + val
           },

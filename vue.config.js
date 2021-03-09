@@ -34,12 +34,12 @@ module.exports = {
         return args
       })
     // ============压缩图片 start============
-    config.module
-      .rule('images')
-      .use('image-webpack-loader')
-      .loader('image-webpack-loader')
-      .options({ bypassOnDebug: true })
-      .end()
+    // config.module
+    //   .rule('images')
+    //   .use('image-webpack-loader')
+    //   .loader('image-webpack-loader')
+    //   .options({ bypassOnDebug: true })
+    //   .end()
     // ============压缩图片 end============
   },
   configureWebpack: config => {

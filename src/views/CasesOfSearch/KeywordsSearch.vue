@@ -352,7 +352,7 @@ export default {
       this.keyWordListsData(data).then(res => {
         this.searchInfoModel = false // 显示/隐藏数据 Loading
         this.searchListsModel = false // 数据加载
-        console.log(res)
+        // console.log(res)
         if (res) {
           this.searchM = res.source
           this.source(this.searchM)
