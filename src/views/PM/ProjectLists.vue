@@ -242,7 +242,9 @@ export default {
   components: {},
   created () { },
   mounted () {
-    this.getProjectLists()
+    this.$nextTick(() => {
+      this.getProjectLists()
+    })
   },
   destroyed () { },
   methods: {
