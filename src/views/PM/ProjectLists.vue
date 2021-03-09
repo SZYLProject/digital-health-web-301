@@ -253,9 +253,10 @@ export default {
     getProjectLists () {
       this.loading = true
       this.listObj = []
+      const pID = this.$Storage.sessionGet('pID')
       const data = {
         userId: this.userInfo?.pkId,
-        dataSourceId: this.dataSourceValue?.id,
+        dataSourceId: pID?.id ?? '',
         type: '',
         status: '',
         pStatus: this.checkRadio !== 0 ? this.checkRadio : '',
