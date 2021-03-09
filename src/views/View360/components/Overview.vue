@@ -165,7 +165,7 @@ export default {
           })
         })
 
-        // x`this.timeAxisTwo.xAxis = res.obj.xAxis
+        this.timeAxisTwo.xAxis = res.obj.xAxis
       }).catch(() => { })
     },
     // 获得概览信息
