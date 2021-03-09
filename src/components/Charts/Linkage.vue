@@ -61,7 +61,6 @@ export default {
   },
   mounted () {
     this.initChart()
-    console.log(this.dataTwoX)
   },
   beforeDestroy () {
     if (!this.chart) {
