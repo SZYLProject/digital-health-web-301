@@ -154,17 +154,14 @@ export default {
         this.timeAxisTwo.yAxis = Object.values(res.obj.yAxis)
         res.obj.xAxis.map(item => {
           item[1] = res.obj.yAxis[item[1]]
-          item.map((value, index) => {
-            if (item.length === 2) {
-              item[2] = ''
-            }
-            if (item.length > 2) {
-              item[2] = item.slice(2).join(',')
-              item.length = 3
-            }
-          })
+          if (item.length === 2) {
+            item[2] = ''
+          }
+          if (item.length > 2) {
+            item[2] = item.slice(2).join(',')
+            item.length = 3
+          }
         })
-
         this.timeAxisTwo.xAxis = res.obj.xAxis
       }).catch(() => { })
     },
