@@ -83,14 +83,17 @@
                   <div slot="content">
                     <el-button type="text"
                                style="padding:0;"
+                               :disabled="Number(item.inputCount) === 0 ? false: true"
                                @click.native="finishedAlreadys(item)"
                                size="mini">完成</el-button>
                     <el-button type="text"
                                style="padding:0;"
+                               :disabled="Number(item.inputCount) === 0 ? false: true"
                                @click.native="goSearchObj(item)"
                                size="mini">修改</el-button>
                     <el-button type="text"
                                style="padding:0;"
+                               :disabled="Number(item.inputCount) === 0 ? false: true"
                                @click.native="deleteList(item)"
                                size="mini">删除</el-button>
                   </div>

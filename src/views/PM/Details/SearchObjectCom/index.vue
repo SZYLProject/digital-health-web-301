@@ -23,6 +23,7 @@
 
         <!-- 筛选 -->
         <el-popover
+          v-if="false"
           placement="bottom"
           title="筛选"
           style="margin-right: 20px"
@@ -100,6 +101,7 @@
 
         <!-- 选择搜索 -->
         <el-dropdown
+          v-if="false"
           trigger="click"
           ref="changeSearch"
           class="change-search"
@@ -199,6 +201,7 @@
 
         <!-- 添加研究对象 -->
         <el-dropdown
+          v-if="false"
           size="small"
           split-button
           class="search-ob"
@@ -221,6 +224,7 @@
       <div style="float: right;">
         <!-- 导入研究数据 -->
         <el-button
+          v-if="false"
           type="primary"
           size="small"
           style="margin-right: 10px"
