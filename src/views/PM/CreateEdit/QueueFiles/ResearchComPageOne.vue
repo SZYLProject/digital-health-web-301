@@ -97,7 +97,7 @@
                 </el-col>
               </el-row>
               <!-- 事件 -->
-              <el-row class="left-col">
+              <el-row class="left-col" v-if="false">
                 <el-col :span="10"><span>事件检索</span></el-col>
                 <el-col :span="8"><span>{{(leftDatas && leftDatas.eventSearchResult) || 0}} 人</span></el-col>
                 <el-col :span="6">
@@ -161,7 +161,7 @@
                 </el-col>
               </el-row>
               <!-- 事件 -->
-              <el-row class="left-col">
+              <el-row class="left-col" v-if="false">
                 <el-col :span="10"><span>事件检索</span></el-col>
                 <el-col :span="8"><span>{{(rightDatas && rightDatas.eventSearchResult) || 0}} 人</span></el-col>
                 <el-col :span="6">
@@ -662,7 +662,8 @@ export default {
   .table-right {
     vertical-align: middle;
     position: relative;
-    height: 146px;
+    // height: 146px;
+    height: 98px;
     .text {
       position: absolute;
       top: 50%;

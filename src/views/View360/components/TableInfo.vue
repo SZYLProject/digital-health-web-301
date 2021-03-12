@@ -73,8 +73,10 @@ export default {
     // 标签下的表格内容
     getViewData (val) {
       const newArr = this.menu.filter(item => item.id === Number(val))
+      const pID = this.$Storage.sessionGet('pID')
       const data = {
         personId: this.$route.params.personId,
+        dataSourceId: pID?.id ?? '',
         parentId: val,
         pageNo: this.pageNo,
         pageSize: this.pageSize,

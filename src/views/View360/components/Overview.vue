@@ -147,7 +147,7 @@ export default {
     // 点阵图
     timeAxisPartTwo () {
       const data = {
-        id: this.dataSourceValue?.id ?? 0,
+        // id: this.dataSourceValue?.id ?? 0,
         personId: this.personId
       }
       getTimeAxisPartTwoInfo(data).then(res => {
@@ -168,7 +168,7 @@ export default {
     // 获得概览信息
     getOverViewInfo () {
       const data = {
-        id: this.dataSourceValue?.id ?? 0,
+        // id: this.dataSourceValue?.id ?? 0,
         personId: this.personId
       }
       getPersonOverViewInfo(data).then(res => {

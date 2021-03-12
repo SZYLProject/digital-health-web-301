@@ -284,7 +284,7 @@ export default {
   destroyed () {
     this.keywordsinput('')
     this.keyword('')
-    this.source('')
+    // this.source('')
     this.synonymgroup([])
   },
   methods: {
@@ -309,7 +309,7 @@ export default {
       if (this.searchs.length > 0) {
         this.searchInfoModel = true // 显示/隐藏数据 Loading
         this.isShowMoule = false // 隐藏模块
-        this.source('') // 搜索模式还原
+        this.source('0') // 搜索模式还原
         this.synonymgroup([]) // 归一词制空
 
         await this.$nextTick()
@@ -355,7 +355,8 @@ export default {
         // console.log(res)
         if (res) {
           this.searchM = res.source
-          this.source(this.searchM)
+          // this.source(this.searchM)
+          this.source(0)
 
           if (res.range?.length > 0) {
             this.isShowS = true

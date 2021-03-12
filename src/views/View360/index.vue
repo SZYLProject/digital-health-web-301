@@ -118,9 +118,12 @@ export default {
       }
     },
     // 获取数据 根据数据类型 展示不同模块 并传值
+
     getViewData (val) {
+      const pID = this.$Storage.sessionGet('pID')
       const data = {
         personId: this.personId,
+        dataSourceId: pID?.id ?? '',
         parentId: val,
         pageNo: 1,
         pageSize: 10,

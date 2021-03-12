@@ -91,7 +91,7 @@ export default {
     },
     getDictionariesFirst () {
       const { sessionGet } = Storage
-      console.log(sessionGet('pID'))
+      // console.log(sessionGet('pID'))
       const data = {
         // id: this.dataSourceValue?.id ?? (sessionGet('pID')?.id)
         id: sessionGet('pID')?.id ?? ''

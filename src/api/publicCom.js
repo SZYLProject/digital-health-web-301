@@ -1,14 +1,17 @@
 import request from '@/utils/request'
 // import Qs from 'qs'
-
+import Storage from '@/utils/storage'
+const { sessionGet } = Storage
 // 获取收藏列表数据
 export function getListsAll () {
+  const dataSourceId = sessionGet('pID')?.id ?? ''
   return request({
     url: '/crp-collection/collectionCategory/v1/listAll',
     method: 'GET',
     params: {
       categoryName: '',
-      categoryType: 1 //
+      categoryType: 1, //
+      dataSourceId
     }
   })
 }

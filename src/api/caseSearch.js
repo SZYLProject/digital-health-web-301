@@ -1,4 +1,6 @@
 import request from '@/utils/request'
+import Storage from '@/utils/storage'
+const { sessionGet } = Storage
 // import Qs from 'qs'
 /**
  *
@@ -21,6 +23,8 @@ export function patientSearch (data) {
  */
 // 搜索历史列表数据接口
 export function searchHistory (data) {
+  const dataSourceId = sessionGet('pID')?.id ?? ''
+  data.dataSourceId = dataSourceId
   return request({
     url: '/crp-collection/searchHistory/v1/listAll',
     method: 'get',
@@ -30,6 +34,8 @@ export function searchHistory (data) {
 
 // 搜索历史修改选准提交接口
 export function searchHisSure (data) {
+  const dataSourceId = sessionGet('pID')?.id ?? ''
+  data.dataSourceId = dataSourceId
   return request({
     url: '/crp-collection/searchHistory/v1/updateSearchCollectionById',
     method: 'post',
@@ -39,6 +45,8 @@ export function searchHisSure (data) {
 
 // 搜索历史添加选准提交接口
 export function searchAddHisSure (data) {
+  const dataSourceId = sessionGet('pID')?.id ?? ''
+  data.dataSourceId = dataSourceId
   return request({
     url: '/crp-collection/searchCollection/v1/add',
     method: 'PUT',
@@ -58,8 +66,9 @@ export function searchHisdele (data) {
 
 // 搜索历史全部取消接口
 export function searchHistAlldel (data) {
+  const dataSourceId = sessionGet('pID')?.id ?? ''
   return request({
-    url: '/crp-collection/searchHistory/v1/deleteAllByUserId',
+    url: `/crp-collection/searchHistory/v1/deleteAllByUserId/${dataSourceId}`,
     method: 'delete',
     data: data
   })
@@ -72,6 +81,8 @@ export function searchHistAlldel (data) {
 
 // 搜索收藏列表数据接口
 export function searchCollection (data) {
+  const dataSourceId = sessionGet('pID')?.id ?? ''
+  data.dataSourceId = dataSourceId
   return request({
     url: '/crp-collection/searchCollection/v1/listAllPage',
     method: 'get',
@@ -81,6 +92,9 @@ export function searchCollection (data) {
 
 // 搜索收藏选择条件接口
 export function searchColleCondition (data) {
+  const dataSourceId = sessionGet('pID')?.id ?? ''
+  data.dataSourceId = dataSourceId
+
   return request({
     url: '/crp-collection/collectionCategory/v1/listAll',
     method: 'get',
@@ -90,6 +104,8 @@ export function searchColleCondition (data) {
 
 // 搜索收藏选准提交接口
 export function searchColleSure (data) {
+  const dataSourceId = sessionGet('pID')?.id ?? ''
+  data.dataSourceId = dataSourceId
   return request({
     url: '/crp-collection/searchCollection/v1/updateBean',
     method: 'post',
@@ -99,8 +115,9 @@ export function searchColleSure (data) {
 
 // 搜索收藏全部取消接口
 export function searchColleAlldel (data) {
+  const dataSourceId = sessionGet('pID')?.id ?? ''
   return request({
-    url: '/crp-collection/searchCollection/v1/deleteAllByUserId',
+    url: `/crp-collection/searchCollection/v1/deleteAllByUserId/${dataSourceId}`,
     method: 'delete',
     data: data
   })
@@ -147,8 +164,9 @@ export function advancedSearchPopDatas (data) {
 // 搜索主题弹窗搜索历史接口
 export function advancedSearchHistoryDatas (data) {
   const { userId } = data
+  const dataSourceId = sessionGet('pID')?.id ?? ''
   return request({
-    url: `/acl/api/dataItem/getSearchHistory/${userId}`,
+    url: `/acl/api/dataItem/getSearchHistory/${userId}/${dataSourceId}`,
     method: 'get',
     params: data
   })
@@ -185,8 +203,9 @@ export function storeDataDictHistory (data) {
 // 搜索主题弹窗清空历史搜索
 export function clearHistoryDatas (data) {
   const { userId } = data
+  const dataSourceId = sessionGet('pID')?.id ?? ''
   return request({
-    url: `/acl/api/dataItem/clearHistory/${userId}`,
+    url: `/acl/api/dataItem/clearHistory/${userId}/${dataSourceId}`,
     method: 'get',
     params: data
   })
