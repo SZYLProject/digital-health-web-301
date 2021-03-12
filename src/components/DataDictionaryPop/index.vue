@@ -285,7 +285,9 @@ export default {
     listsButton (item) {
       this.isShowLoading = true
       this.$emit('dialogDatas', item)
+      const pID = this.$Storage.sessionGet('pID')
       const data = {
+        dataSourceId: pID?.id ?? '',
         userId: this.userInfo?.pkId,
         entity: item
       }

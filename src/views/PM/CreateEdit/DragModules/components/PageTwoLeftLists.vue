@@ -161,7 +161,8 @@ export default {
       const newV = this.distionaChild
       const newVal = newV.map(item => {
         const newItem = item.dataItemName.search(this.threeDic) !== -1 ||
-                        PinyinMatch.match(item.dataItemName, this.threeDic)
+        PinyinMatch.match(item.dataItemName, this.threeDic)
+
         if (newItem) return item
       }).filter(item => item)
       this.distionaChildDatas = newVal

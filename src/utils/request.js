@@ -2,6 +2,7 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+// import Storage from '@/utils/storage'
 
 // create an axios instance
 const service = axios.create({
@@ -14,6 +15,14 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // do something before request is sent
+    // console.log(config)
+    // const { sessionGet } = Storage
+    // if (config.params && config.params.dataSourceId === undefined) {
+    //   config.params.dataSourceId = sessionGet('pID')?.id ?? null
+    // }
+    // if (config.data && config.data.dataSourceId === undefined) {
+    //   config.data.dataSourceId = sessionGet('pID')?.id ?? null
+    // }
 
     if (getToken()) {
       // let each request carry token

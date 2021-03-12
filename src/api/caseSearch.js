@@ -174,9 +174,9 @@ export function getDataOption (code) {
 
 // 保存数据字典搜索历史
 export function storeDataDictHistory (data) {
-  const { userId, entity } = data
+  const { userId, entity, dataSourceId } = data
   return request({
-    url: `/acl/api/dataItem/saveSearchHistory/${userId}`,
+    url: `/acl/api/dataItem/saveSearchHistory/${userId}/${dataSourceId}`,
     method: 'post',
     data: entity
   })

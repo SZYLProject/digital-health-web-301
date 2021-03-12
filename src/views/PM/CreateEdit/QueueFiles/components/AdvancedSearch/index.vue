@@ -706,7 +706,7 @@ export default {
       var restaurants = this.restaurants
       var results = queryString ? restaurants.filter((item) => {
         const newItem = item.value.search(queryString) !== -1 ||
-          PinyinMatch.match(item.value, queryString)
+        PinyinMatch.match(item.value, queryString)
         if (newItem) return item
       }) : restaurants
       cb(results)

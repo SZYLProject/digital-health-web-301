@@ -149,6 +149,7 @@ export default {
   },
   created () {
     // window.addEventListener('storage', this.afterQRScan)
+    this.$Storage.sessionRemove('pID')
   },
   mounted () {
     if (this.loginForm.username === '') {

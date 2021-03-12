@@ -78,7 +78,9 @@ export default {
     ...mapMutations(['']),
     serachFn () {
       if (this.searchs.length > 0) {
+        const pID = this.$Storage.sessionGet('pID')
         const newData = {
+          dataSourceId: pID?.id ?? '',
           exactSearch: this.searchs,
           groupId: this.groupData.groupId,
           id: this.groupData.id,
