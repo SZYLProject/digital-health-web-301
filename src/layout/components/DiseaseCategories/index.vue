@@ -179,6 +179,7 @@ export default {
           // console.log(res)
           this['user/STORE_PATIENTID'](data)
           this.dialogFormVisible = false
+          // location.reload()
           // this.selDesease = this.dataSourceValue?.sourceName
         }
       }).catch((er) => { })

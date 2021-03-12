@@ -247,6 +247,7 @@ export default {
             this['user/STORE_PATIENTID'](data)
             this.$refs.popover.doClose()
             this.commitPatient = null
+            location.reload()
             // this.selDesease = this.dataSourceValue?.sourceName
           }
         })
