@@ -151,6 +151,21 @@ export const constantRoutes = [
     ]
   },
 
+  // 导出审批
+  {
+    path: '/ExportExamine',
+    component: BasicLayout,
+    redirect: '/index',
+    name: 'ExportExamine',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/ExportExamine'),
+        name: 'index'
+      }
+    ]
+  },
+
   // 系统配置
   {
     path: '/ConfigManagement',

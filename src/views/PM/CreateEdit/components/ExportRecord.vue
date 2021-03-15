@@ -200,7 +200,7 @@ export default {
         pageSize: this.query.pageSize
       }
       await exportRecordsDatas(data).then(res => {
-        console.log(res)
+        // console.log(res)
         if (res?.obj) {
           this.lists = res.obj.data || []
           this.query.total = res.obj.total
@@ -210,7 +210,7 @@ export default {
             item.percentage = 50
           })
 
-          console.log(this.lists)
+          // console.log(this.lists)
           setTimeout(() => {
             this.recordLists = this.lists.map(item => {
               const initSeconds = item.seconds

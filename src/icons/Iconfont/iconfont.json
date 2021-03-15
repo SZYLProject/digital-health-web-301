@@ -6,6 +6,41 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "16966068",
+      "name": "导出记录",
+      "font_class": "ExportExamine",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "2301451",
+      "name": "受伤的_hurted",
+      "font_class": "shoushangde_hurted",
+      "unicode": "e789",
+      "unicode_decimal": 59273
+    },
+    {
+      "icon_id": "5197176",
+      "name": "妇产科",
+      "font_class": "gynaecology-obstetri",
+      "unicode": "e68d",
+      "unicode_decimal": 59021
+    },
+    {
+      "icon_id": "10683418",
+      "name": "备口罩",
+      "font_class": "beikouzhao",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
+      "icon_id": "17597792",
+      "name": "药丸-面",
+      "font_class": "yaowan-mian",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
       "icon_id": "6655527",
       "name": "分析",
       "font_class": "baobiaobiaoweiguanli",
