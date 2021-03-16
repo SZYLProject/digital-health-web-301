@@ -48,17 +48,8 @@
       <!-- 操作 -->
       <el-table-column label="操作" width="200" align="center">
         <template slot-scope="scope">
-          <!-- <el-switch
-                v-model="scope.row.passOrNo"
-                active-text="通过"
-                @change="switchChange(scope.row)"
-                style="margin-top:-4px;font-size:12px;"
-                inactive-text="不通过"
-                >
-            </el-switch> -->
-          <!--  -->
           <span class="check-radio">
-            <el-radio-group v-model="scope.row.passOrNo" @change="checkRadios">
+            <el-radio-group v-model="scope.row.passOrNo" @change="checkRadios(scope.row)">
               <el-radio :label="1">通过</el-radio>
               <el-radio :label="0">不通过</el-radio>
             </el-radio-group>
@@ -157,13 +148,10 @@ export default {
   methods: {
     ...mapMutations(['']),
     // 切换
-    switchChange (val) {
-      console.log(val)
-      console.log(this.tableData)
-    },
     checkRadios (val) {
       console.log(val)
-      console.log(this.tableData)
+      // val.passOrNo = 1
+      // console.log(this.tableData)
     },
     goItem (val) {
       console.log(val)
