@@ -85,7 +85,7 @@ export default {
   },
   watch: {
     tabRadio (val) {
-      console.log(val)
+      // console.log(val)
       window.history.replaceState({}, '', `#/ProjectListsDetails/${val}/${this.$route.params.projectType}`)
       this.whichCom = val
     }

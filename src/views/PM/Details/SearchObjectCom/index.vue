@@ -416,8 +416,8 @@
       </div>
       <!--  -->
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" size="small" @click="exportDatasFn"
-          >确 定</el-button
+        <el-button type="primary" size="small" @click="approveFn"
+          >申请审批</el-button
         >
         <el-button size="small" @click="exportDatas = false">取 消</el-button>
       </span>
@@ -429,7 +429,7 @@
 import { mapGetters, mapMutations } from 'vuex'
 import SearchObjectForm1 from './SearchObjectForm1'
 import SearchObjectForm2 from './SearchObjectForm2'
-import { getListDetaileForms, exportRecordsInput } from '@/api/projectsMangement'
+import { getListDetaileForms, exportRecordsInput, commitApprover } from '@/api/projectsMangement' //
 export default {
   name: 'SearchObjectCom',
   data () {
@@ -698,6 +698,46 @@ export default {
           })
           this.exportDatas = false
         }
+      })
+    },
+
+    // 申请审批
+    approveFn () {
+      this.commitApprover()
+      // 当你申请导出后，需要相关部门进行审核，请等待
+      // this.$confirm('申请导出后,需要相关部门进行审核, 是否继续?', '提示', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   type: 'warning'
+      // }).then(() => {
+      //   this.commitApprover()
+      // }).catch(() => {
+      //   this.$message({
+      //     type: 'info',
+      //     message: '已取消审批申请'
+      //   })
+      // })
+    },
+    commitApprover () {
+      const projectMessage = this.$Storage.sessionGet('projectMessage')
+      const data = {
+        conditions: '',
+        exportCount: 0,
+        projectId: projectMessage?.id,
+        projectName: projectMessage?.projectName,
+        status: 0,
+        userId: this.userInfo?.pkId,
+        userName: this.userInfo?.userName
+      }
+      commitApprover(data).then(res => {
+        this.exportDatas = false
+        this.$message({
+          type: 'success',
+          message: '申请导出已提交且需相关部门进行审核，请等待!',
+          duration: 4000
+        })
+      }).catch((err) => {
+        console.log(err)
       })
     },
     // 分页

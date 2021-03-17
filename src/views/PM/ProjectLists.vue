@@ -291,11 +291,12 @@ export default {
     // 进入项目详情
     goItemLists (item) {
       this.$Storage.sessionSet('projectId', item.id)
+      this.$Storage.sessionSet('projectMessage', item)
       this.$router.push({
         name: 'ProjectListsDetails',
         params: {
           comName: 'SearchObjectCom',
-          projectType: item.projectType,
+          projectType: item.projectType ? item.projectType : 1,
           id: item
         }
       })

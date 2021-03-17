@@ -286,6 +286,16 @@ export function exportRecordsInput (data) {
     params: data
   })
 }
+
+// 提交申请审批接口
+export function commitApprover (data) { //
+  return request({
+    url: '/crp-project/approval/v1/addApproval',
+    method: 'put',
+    data: data
+  })
+}
+
 // 导出记录里面的单个删除
 export function deleteSingleLists (data) {
   const { recordId } = data
@@ -332,5 +342,23 @@ export function getBackItemMember (data) {
     url: `/crp-project/project/v1/getMember/${id}`,
     method: 'GET',
     params: data
+  })
+}
+
+// 导出审批列表接口
+export function getExportApprove (data) {
+  return request({
+    url: '/crp-project/approval/v1/getApprovalList',
+    method: 'GET',
+    params: data
+  })
+}
+
+// 审批状态
+export function approveStatus (data) {
+  return request({
+    url: '/crp-project/approval/v1/updateStatus',
+    method: 'post',
+    data
   })
 }
