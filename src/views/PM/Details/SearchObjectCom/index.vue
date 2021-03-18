@@ -248,6 +248,7 @@
         <el-button
           type="primary"
           size="small"
+          v-if="buttonStatus"
           @click.native="exportRecord"
           >
           <i class="iconfont icon-daochu1" style="font-size:10px;"></i>
@@ -344,8 +345,8 @@
 
     <!-- 入组阶段数据导出弹窗 -->
     <el-dialog
-      :visible.sync="exportDatas"
       width="40%"
+      :visible.sync="exportDatas"
       :before-close="handleClose"
     >
       <div slot="title">
@@ -366,8 +367,9 @@
           <el-button
             class="export-patien_record"
             style="font-size: 16px"
-            @click.native="goExportRecord"
+            v-if="buttonStatus"
             type="text"
+            @click.native="goExportRecord"
             >查看导出记录</el-button
           >
           <!-- <div class="export-patien-item">
@@ -429,11 +431,12 @@
 import { mapGetters, mapMutations } from 'vuex'
 import SearchObjectForm1 from './SearchObjectForm1'
 import SearchObjectForm2 from './SearchObjectForm2'
-import { getListDetaileForms, exportRecordsInput, commitApprover } from '@/api/projectsMangement' //
+import { getListDetaileForms, exportRecordsInput, commitApprover, exportRecordButton } from '@/api/projectsMangement' //
 export default {
   name: 'SearchObjectCom',
   data () {
     return {
+      buttonStatus: false,
       // 表格一的数据
       headerData: [],
       tableData: [],
@@ -661,6 +664,8 @@ export default {
   components: { SearchObjectForm1, SearchObjectForm2 },
   created () {
     this.getListDetaileForms() // 获取表格一的数据
+    this.exportRecordButton()
+    // console.log(this.userInfo)
   },
   mounted () {
     if (this.$route.params?.flag) {
@@ -698,6 +703,21 @@ export default {
           })
           this.exportDatas = false
         }
+      })
+    },
+
+    // 导出记录按钮状态判断
+    exportRecordButton () {
+      const data = {
+        projectId: this.$Storage.sessionGet('projectId'),
+        userId: this.userInfo?.pkId
+      }
+      exportRecordButton(data).then(res => {
+        if (res) {
+          this.buttonStatus = res.obj !== 0
+        }
+      }).catch(err => {
+        console.log(err)
       })
     },
 

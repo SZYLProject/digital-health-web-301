@@ -9,9 +9,16 @@
                  icon="el-icon-arrow-left"></el-button>
           <span style='margin-left:10px;'>导出记录</span>
       </p>
-      <el-button size="small"
+      <p>
+        <span class="info-messge-time" v-if="timeInfo > 0">
+          项目数据导出中，你可能需要等待
+            {{ timeInfo }}
+          分钟
+        </span>
+        <el-button size="small"
                  @click.native="deleteAll"
                  >清空所有</el-button>
+      </p>
     </div>
     <!-- 记录列表 -->
     <div class="export-record-lists white-bg">
@@ -88,79 +95,7 @@ export default {
     return {
       recordLists: [],
       lists: [],
-      res: [{
-        name: '熊大',
-        time: '2020-11-27 16:55:11',
-        percentage: 0,
-        seconds: 160,
-        exportRange: '分组1-1家医院（南方医科大学南方医院）',
-        exportTarget: '基本信息',
-        type: true
-      }, {
-        name: '熊二',
-        time: '2020-11-19 16:55:11',
-        percentage: 0,
-        seconds: 500,
-        exportRange: '分组1-1家医院（南方医科大学南方医院）',
-        exportTarget: '基本信息',
-        type: false
-      }, {
-        name: '光头强',
-        time: '2020-11-20 16:55:11',
-        percentage: 0,
-        seconds: 400,
-        exportRange: '分组1-1家医院（南方医科大学南方医院）',
-        exportTarget: '基本信息',
-        type: false
-      }, {
-        name: '翠花',
-        time: '2020-11-21 16:55:11',
-        percentage: 0,
-        seconds: 300,
-        exportRange: '分组1-1家医院（南方医科大学南方医院）',
-        exportTarget: '基本信息',
-        type: true
-      }, {
-        name: '涂涂',
-        time: '2020-11-22 16:55:11',
-        percentage: 0,
-        seconds: 200,
-        exportRange: '分组1-1家医院（南方医科大学南方医院）',
-        exportTarget: '基本信息',
-        type: false
-      }, {
-        name: '萝卜头',
-        time: '2020-11-23 16:55:11',
-        percentage: 0,
-        seconds: 100,
-        exportRange: '分组1-1家医院（南方医科大学南方医院）',
-        exportTarget: '基本信息',
-        type: true
-      }, {
-        name: '吉吉国王',
-        time: '2020-11-24 16:55:11',
-        percentage: 0,
-        seconds: 160,
-        exportRange: '分组1-1家医院（南方医科大学南方医院）',
-        exportTarget: '基本信息',
-        type: false
-      }, {
-        name: '毛毛',
-        time: '2020-11-25 16:55:11',
-        percentage: 0,
-        seconds: 260,
-        exportRange: '分组1-1家医院（南方医科大学南方医院）',
-        exportTarget: '基本信息',
-        type: true
-      }, {
-        name: '蹦蹦',
-        time: '2020-11-26 16:55:11',
-        percentage: 0,
-        seconds: 90,
-        exportRange: '分组1-1家医院（南方医科大学南方医院）',
-        exportTarget: '基本信息',
-        type: false
-      }],
+      timeInfo: 0,
       // 分页数据
       query: {
         categoryIds: '',
@@ -199,11 +134,12 @@ export default {
         pageNo: this.query.pageNo,
         pageSize: this.query.pageSize
       }
-      await exportRecordsDatas(data).then(res => {
+      await exportRecordsDatas(data).then((res) => {
         // console.log(res)
         if (res?.obj) {
           this.lists = res.obj.data || []
           this.query.total = res.obj.total
+          this.timeInfo = (res.obj.total * 10 / 60).toFixed(0)
           getRandom(90, 220)
           this.lists.map(item => { //
             item.seconds = 200
@@ -315,6 +251,11 @@ export default {
     align-items: center;
     justify-content: space-between;
     padding: 0px 20px;
+    .info-messge-time{
+      color: #8c8c8c;
+      font-size: 12px;
+      padding: 20px;
+    }
   }
   .export-record-lists{
     margin-top: 10px;

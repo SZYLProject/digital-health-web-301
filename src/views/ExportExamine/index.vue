@@ -13,7 +13,7 @@
       ref="multipleTable"
       :data="tableData"
       stripe
-      size="mini"
+      max-height="630"
       header-cell-class-name="tableTH"
     >
       <!-- 序号 -->
@@ -182,7 +182,7 @@ export default {
     },
     // 切换
     async checkRadios (val) {
-      // console.log(val)
+      console.log(val)
       // val.passOrNo = 1
       const data = {
         id: val.id,
@@ -196,12 +196,14 @@ export default {
         })
       })
       await this.getExportApproveLists()
-      await this.exportDatasFn(val.projectId)
+      await this.exportDatasFn(val)
     },
     // 入组阶段数据导出
-    exportDatasFn (projectId) {
+    exportDatasFn (val) {
       const data = {
-        projectId
+        userId: val?.userId,
+        projectId: val?.projectId,
+        exportApprovalId: val?.id
       }
       exportRecordsInput(data).then(res => {
         if (res) {

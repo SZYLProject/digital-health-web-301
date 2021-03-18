@@ -362,3 +362,12 @@ export function approveStatus (data) {
     data
   })
 }
+
+// 导出记录按钮状态判断
+export function exportRecordButton (data) {
+  return request({
+    url: '/crp-project/approval/v1/projectCurrentStatus',
+    method: 'GET',
+    params: data
+  })
+}

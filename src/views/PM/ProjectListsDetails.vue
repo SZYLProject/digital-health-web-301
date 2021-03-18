@@ -61,21 +61,23 @@ export default {
           title: '研究对象',
           component: 'SearchObjectCom',
           show: true
-        },
+        }
         // {
         //   title: '随访管理',
-        //   component: 'FollowUpVisitCom'
+        //   component: 'FollowUpVisitCom',
+        //   show: false
         // },
-        {
-          title: '项目进度',
-          component: 'ProjectScheduleCom',
-          show: this.$route.params.projectType !== 1
-        },
-        {
-          title: '统计分析',
-          component: 'StatisticAnalysisCom',
-          show: true
-        }
+        // {
+        //   title: '项目进度',
+        //   component: 'ProjectScheduleCom',
+        //   // show: this.$route.params.projectType !== 1
+        //   show: false
+        // },
+        // {
+        //   title: '统计分析',
+        //   component: 'StatisticAnalysisCom',
+        //   show: false
+        // }
       ]
     }
   },
