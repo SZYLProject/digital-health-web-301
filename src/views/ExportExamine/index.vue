@@ -84,10 +84,9 @@
               @change="checkRadios(scope.row)"
             >
               <el-radio :label="1"
-                        :disabled="scope.row.passOrNo === 1 ? false :
-                                   scope.row.passOrNo === 4 ? true :false">通过</el-radio>
-              <el-radio :label="4" :disabled="scope.row.passOrNo === 4 ? false :
-                                   scope.row.passOrNo === 1 ? true :false">不通过</el-radio>
+                        :disabled="scope.row.passOrNo === 4 ? true : false">通过</el-radio>
+              <el-radio :label="4"
+                        :disabled="scope.row.passOrNo === 1 ? true : false">不通过</el-radio>
             </el-radio-group>
           </span>
           <!--  -->
