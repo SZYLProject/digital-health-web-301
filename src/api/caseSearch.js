@@ -94,7 +94,6 @@ export function searchCollection (data) {
 export function searchColleCondition (data) {
   const dataSourceId = sessionGet('pID')?.id ?? ''
   data.dataSourceId = dataSourceId
-
   return request({
     url: '/crp-collection/collectionCategory/v1/listAll',
     method: 'get',
