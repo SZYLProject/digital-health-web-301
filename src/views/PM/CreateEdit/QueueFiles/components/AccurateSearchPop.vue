@@ -13,8 +13,10 @@
       </p>
       <div class="tree-container">
         精确搜索
+
         <!-- 搜索框 -->
-        <div style="padding:0px 25%;margin-bottom:20px;">
+        <div class="search-con"
+             style="padding:0px 25%;margin-bottom:20px;">
           <el-row>
             <el-col :span="22">
               <el-input placeholder="输入您要搜索的内容"
@@ -142,6 +144,14 @@ export default {
     padding: 10px;
     .el-dialog__headerbtn {
       top: 15px;
+    }
+  }
+  .search-con{
+    .el-input__inner{
+      border-radius: 4px 0px 0px 4px;
+    }
+    .el-button{
+      border-radius: 0px 4px 4px 0px;
     }
   }
 }
