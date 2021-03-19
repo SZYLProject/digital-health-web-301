@@ -670,6 +670,7 @@ export default {
 
     // 主题选项
     handleSelect (item) {
+      console.log(item)
       if (this.isChild) {
         this.searchCondition[this.nowIndex].advanceSearchVariableDTOList[this.childIndex].id = item.id
         this.searchCondition[this.nowIndex].advanceSearchVariableDTOList[this.childIndex].name = item.dataItemName

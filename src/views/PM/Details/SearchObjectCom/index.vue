@@ -355,9 +355,10 @@
       <div class="export-datas-info">
         <p>
           <i class="el-icon-warning" style="color: #ffa200"></i>
-          系统自动将指标数据和附件数据分为两个文件单独导出。
+          系统支持单次最大导出10G的文件
+          <!-- 系统自动将指标数据和附件数据分为两个文件单独导出。 -->
         </p>
-        <p>系统支持单次最大导出10G的文件</p>
+        <!-- <p>系统支持单次最大导出10G的文件</p> -->
       </div>
       <!--  -->
       <div class="export-lists">
@@ -408,11 +409,11 @@
                 </el-checkbox> -->
               </el-checkbox-group>
             </p>
-            <p>
+            <!-- <p>
               <el-radio v-model="exportSetting" label="2"
                 >导出CSV（多个表单导出.csv文件，组自增题单独一个文件）</el-radio
               >
-            </p>
+            </p> -->
           </div>
         </div>
       </div>
