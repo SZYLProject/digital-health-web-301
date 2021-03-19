@@ -142,6 +142,7 @@ export default {
   created () {},
   mounted () {
     this.getExportApproveLists()
+    // console.log(this.userInfo)
   },
   destroyed () {},
   methods: {
@@ -182,11 +183,12 @@ export default {
     },
     // 切换
     async checkRadios (val) {
-      console.log(val)
+      // console.log(val)
       // val.passOrNo = 1
       const data = {
         id: val.id,
-        status: val.passOrNo
+        status: val.passOrNo,
+        approvalId: this.userInfo?.pkId
       }
       await approveStatus(data).then(res => {
         this.$message({
