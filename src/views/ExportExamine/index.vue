@@ -183,7 +183,7 @@ export default {
     },
     // 切换
     async checkRadios (val) {
-      // console.log(val)
+      console.log(val)
       // val.passOrNo = 1
       const data = {
         id: val.id,
@@ -198,7 +198,10 @@ export default {
         })
       })
       await this.getExportApproveLists()
-      await this.exportDatasFn(val)
+      if (val.passOrNo === 1) {
+        await this.exportDatasFn(val)
+      }
+      //
     },
     // 入组阶段数据导出
     exportDatasFn (val) {
