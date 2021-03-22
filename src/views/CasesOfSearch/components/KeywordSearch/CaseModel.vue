@@ -103,8 +103,8 @@ export default {
   methods: {
     ...mapMutations(['caseSearch/keywordlists']),
     // 跳转患者全景
-    jumpView (item) {
-      const newPage = this.$router.resolve({ path: `/view360/${item.person_id}/0/?parentName=患者概览` })
+    jumpView (item) { // 病例模式
+      const newPage = this.$router.resolve({ path: `/view360/${item.unique_id_lv1}/0/?parentName=患者概览` })
       window.open(newPage.href, '_blank')
     },
 

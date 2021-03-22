@@ -256,7 +256,13 @@ export default {
     },
 
     jumpView (item) {
-      const newPage = this.$router.resolve({ path: `/view360/${item.person_id}/0/?parentName=患者概览` })
+      let id = null
+      if (item.unique_id) { //
+        id = item.unique_id
+      } else {
+        id = item.unique_id_lv1
+      }
+      const newPage = this.$router.resolve({ path: `/view360/${id}/0/?parentName=患者概览` })
       window.open(newPage.href, '_blank')
     },
 

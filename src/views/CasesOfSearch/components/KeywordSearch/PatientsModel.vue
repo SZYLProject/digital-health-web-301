@@ -82,7 +82,7 @@ export default {
   watch: {
     keyWordListsDatas (val) {
       if (val) {
-        console.log(val)
+        // console.log(val)
         this.listsData = val
         this.listsVisit = val.personList.map(item => {
           this.$set(item, 'check', false)
@@ -107,8 +107,8 @@ export default {
   },
   methods: {
     ...mapMutations(['caseSearch/keywordlists']),
-    jumpView (item) {
-      const newPage = this.$router.resolve({ path: `/view360/${item.person_id}/0/?parentName=患者概览` })
+    jumpView (item) { // 病人模式
+      const newPage = this.$router.resolve({ path: `/view360/${item.unique_id}/0/?parentName=患者概览` })
       window.open(newPage.href, '_blank')
     },
     correctBg (val, index) {
