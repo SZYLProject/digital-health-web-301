@@ -148,7 +148,7 @@ export default {
   methods: {
     ...mapMutations(['']),
     // 获取审批列表
-    getExportApproveLists () {
+    getExportApproveLists (val) {
       const data = {
         userId: this.userInfo?.pkId,
         pageNo: this.query.pageNo,
@@ -172,6 +172,9 @@ export default {
             }
             // this.tableData = res.obj?.data || []
             this.query.total = res.obj.total
+            if (val.passOrNo === 1) {
+              this.exportDatasFn(val)
+            }
           } else {
             this.tableData = []
             this.query.total = 0
@@ -197,10 +200,10 @@ export default {
           duration: 4000
         })
       })
-      await this.getExportApproveLists()
-      if (val.passOrNo === 1) {
-        await this.exportDatasFn(val)
-      }
+      await this.getExportApproveLists(val)
+      // await if (val.passOrNo === 1) {
+      //    this.exportDatasFn(val)
+      // }
       //
     },
     // 入组阶段数据导出
