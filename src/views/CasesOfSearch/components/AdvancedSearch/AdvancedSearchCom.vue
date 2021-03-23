@@ -777,8 +777,17 @@ export default {
         if (restaurants?.length > 0) {
           clearInterval(this.interval)
           var results = queryString ? restaurants.filter((item) => {
-            const newItem = item.value.search(queryString) !== -1 ||
-            PinyinMatch.match(item.value, queryString)
+            var newItem = null
+            if (PinyinMatch?.default) {
+              newItem = item.value.search(queryString) !== -1 ||
+                    PinyinMatch.default.match(item.value, queryString)
+            } else {
+              newItem = item.value.search(queryString) !== -1 ||
+                    PinyinMatch.match(item.value, queryString)
+            }
+            // const newItem = item.value.search(queryString) !== -1 ||
+            // PinyinMatch.match(item.value, queryString)
+
             if (newItem) return item
           }) : restaurants
           cb(results)

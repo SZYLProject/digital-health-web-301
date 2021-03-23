@@ -135,8 +135,16 @@ export default {
     conditionFilter () {
       const newV = this.checkListDatas
       const newVal = newV.map(item => {
-        const newItem = item.categoryName.search(this.input2) !== -1 ||
-                        PinyinMatch.match(item.categoryName, this.input2)
+        var newItem = null
+        if (PinyinMatch?.default) {
+          newItem = item.categoryName.search(this.input2) !== -1 ||
+                    PinyinMatch.default.match(item.categoryName, this.input2)
+        } else {
+          newItem = item.categoryName.search(this.input2) !== -1 ||
+                    PinyinMatch.match(item.categoryName, this.input2)
+        }
+        // const newItem = item.categoryName.search(this.input2) !== -1 ||
+        //                 PinyinMatch.match(item.categoryName, this.input2)
         if (newItem) return item
       }).filter(item => item)
       this.checkChild = newVal

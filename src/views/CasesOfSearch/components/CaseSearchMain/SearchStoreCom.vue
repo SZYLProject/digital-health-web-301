@@ -291,8 +291,16 @@ export default {
     conditionFilter () {
       const newV = this.checkOptions
       const newVal = newV.map(item => {
-        const newItem = item.categoryName.search(this.search) !== -1 ||
-        PinyinMatch.match(item.categoryName, this.search)
+        var newItem = null
+        if (PinyinMatch?.default) {
+          newItem = item.categoryName.search(this.search) !== -1 ||
+                    PinyinMatch.default.match(item.categoryName, this.search)
+        } else {
+          newItem = item.categoryName.search(this.search) !== -1 ||
+                    PinyinMatch.match(item.categoryName, this.search)
+        }
+        // const newItem = item.categoryName.search(this.search) !== -1 ||
+        // PinyinMatch.match(item.categoryName, this.search)
 
         if (newItem) return item
       }).filter(item => item)

@@ -160,8 +160,16 @@ export default {
       // this.num = newVal?.length ?? 0
       const newV = this.distionaChild
       const newVal = newV.map(item => {
-        const newItem = item.dataItemName.search(this.threeDic) !== -1 ||
-        PinyinMatch.match(item.dataItemName, this.threeDic)
+        var newItem = null
+        if (PinyinMatch?.default) {
+          newItem = item.dataItemName.search(this.threeDic) !== -1 ||
+                    PinyinMatch.default.match(item.dataItemName, this.threeDic)
+        } else {
+          newItem = item.dataItemName.search(this.threeDic) !== -1 ||
+                    PinyinMatch.match(item.dataItemName, this.threeDic)
+        }
+        // const newItem = item.dataItemName.search(this.threeDic) !== -1 ||
+        // PinyinMatch.match(item.dataItemName, this.threeDic)
 
         if (newItem) return item
       }).filter(item => item)
