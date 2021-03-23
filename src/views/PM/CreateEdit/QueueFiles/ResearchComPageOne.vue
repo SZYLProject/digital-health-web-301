@@ -106,7 +106,7 @@
                 </el-col>
               </el-row>
               <!-- 精确搜索 -->
-              <el-row class="left-col">
+              <el-row class="left-col" v-if="false">
                 <el-col :span="10"><span>精确检索</span></el-col>
                 <el-col :span="8"><span>{{ (leftDatas && leftDatas.exactSearchResult) || 0 }} 人</span></el-col>
                 <el-col :span="6">
@@ -170,7 +170,7 @@
                 </el-col>
               </el-row>
               <!-- 精确搜索 -->
-              <el-row class="left-col">
+              <el-row class="left-col" v-if="false">
                 <el-col :span="10"><span>精确检索</span></el-col>
                 <el-col :span="8"><span>{{(rightDatas && rightDatas.exactSearchResult) || 0}} 人</span></el-col>
                 <el-col :span="6">
@@ -655,15 +655,16 @@ export default {
     vertical-align: middle;
   }
   .left-col {
-    line-height: 48px;
+    // line-height: 48px;
+    line-height: 60px;
     text-align: center;
-    border-bottom: 1px solid #e9e9e9;
+    // border-bottom: 1px solid #e9e9e9;
   }
   .table-right {
     vertical-align: middle;
     position: relative;
     // height: 146px;
-    height: 98px;
+    height: 63px;
     .text {
       position: absolute;
       top: 50%;

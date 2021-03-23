@@ -46,7 +46,6 @@
       <div class="no-data-module"
            style="height:500px;"
            v-if="listObj.length <= 0">
-
         <p class="iconfont icon-no_datas p1"></p>
         <p class="p2">暂时没有项目，请新建...</p>
       </div>
@@ -75,12 +74,18 @@
                   {{ item.projectName || "无" }}
                 </el-button>
               </h1>
-              <span class="right pointer">
+              <span class="right">
+                <!-- <span class="wating-time" v-if="Number(item.inputCount) === 0 ? false: true">
+                  数据抽取中，您可能需要等待
+                  {{ (item.inExNumber/10).toFixed(0) || 0 }}
+                  分钟
+                </span> -->
                 <el-tooltip
                   effect="light"
+                  class="pointer"
                   placement="top-start"
                 >
-                  <div slot="content">
+                  <div slot="content" >
                     <el-button type="text"
                                style="padding:0;"
                                :disabled="Number(item.inputCount) === 0 ? false: true"
@@ -269,6 +274,7 @@ export default {
       }
       projectLists(data)
         .then((res) => {
+          console.log(res)
           if (res?.obj) {
             this.listObj = res.obj?.data ?? []
             this.total = res.obj.total
@@ -289,6 +295,7 @@ export default {
       this.getProjectLists()
     },
     // 进入项目详情
+
     goItemLists (item) {
       this.$Storage.sessionSet('projectId', item.id)
       this.$Storage.sessionSet('projectMessage', item)
@@ -413,6 +420,10 @@ export default {
     margin-top: 20px;
     .grid-content {
       background: #fff;
+      .wating-time{
+        color:#C0C4CC;
+        padding-right:10px;
+      }
       .item-lists {
         height: 340px;
         .item-top {
