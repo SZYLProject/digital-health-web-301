@@ -1,6 +1,6 @@
 // 关键词搜索模块常量
 import { searchConditionData, searchKeywordDatas } from '@/api/caseSearch'
-import Storage from '@/utils/storage'
+// import Storage from '@/utils/storage'
 
 const KEYWORDSINPUT = 'keywordsinput' // 关键字输入操作存储
 const KEYWORD = 'keyword' // 关键字
@@ -15,7 +15,7 @@ const TIMEORDERARG = 'timeorderarg' // 排序方式
 const PAGENOARG = 'pagenoarg' // 分页数
 const PAGESIZEARG = 'pagesizearg' // 当页显示条数
 const KEYWORDLISTS = 'keywordlists'
-const { sessionGet } = Storage
+// const { sessionGet } = Storage
 const state = {
   // 关键词搜索模块数据
   keyWordsSearch: '', // 手动输入关键词
@@ -24,7 +24,7 @@ const state = {
 
   // 搜索条件对象
   keyWordSearchCon: { //  关键字搜索时传给后端的字段
-    dataSourceId: sessionGet('pID')?.id ?? '',
+    // dataSourceId: sessionGet('pID')?.id ?? '',
     pageNo: 1, // 分页数
     pageSize: 10, // 当页显示条数
     keyword: '', // 搜索关键字

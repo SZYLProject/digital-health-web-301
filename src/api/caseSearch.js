@@ -129,6 +129,8 @@ export function searchColleAlldel (data) {
 
 // 获取搜索数据
 export function searchKeywordDatas (data) {
+  const dataSourceId = sessionGet('pID')?.id ?? ''
+  data.dataSourceId = dataSourceId
   return request({
     url: '/crp-search/simpleSearch/v1/keywordSearch',
     method: 'post',
