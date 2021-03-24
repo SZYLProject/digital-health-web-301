@@ -130,7 +130,7 @@ const actions = {
     commit('KEYWORDLISTSDATASFN', null)
     return new Promise((resolve, reject) => {
       searchKeywordDatas(data).then(res => {
-        console.log('1', res)
+        // console.log('1', res)
         const obj = res.obj
         if (obj) {
           commit('KEYWORDLISTSDATASFN', obj)
