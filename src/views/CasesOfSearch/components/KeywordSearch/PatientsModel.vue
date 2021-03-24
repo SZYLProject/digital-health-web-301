@@ -81,6 +81,7 @@ export default {
   },
   watch: {
     keyWordListsDatas (val) {
+      console.log('2', val)
       if (val) {
         // console.log(val)
         this.listsData = val

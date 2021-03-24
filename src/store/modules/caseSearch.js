@@ -109,7 +109,7 @@ const mutations = {
 
 const actions = {
   // 关键词搜索搜索条件数据
-  keyWordCondation ({ commit }, data) {
+  keyWordCondation({ commit }, data) {
     commit('KEYWORDSEARCHCONFN', null)
     return new Promise((resolve, reject) => {
       searchConditionData(data).then(res => {
@@ -125,11 +125,12 @@ const actions = {
   },
 
   // 关键词搜索列表数据
-  keyWordListsData ({ commit }) {
+  keyWordListsData({ commit }) {
     const data = state.keyWordSearchCon
     commit('KEYWORDLISTSDATASFN', null)
     return new Promise((resolve, reject) => {
       searchKeywordDatas(data).then(res => {
+        console.log('1', res)
         const obj = res.obj
         if (obj) {
           commit('KEYWORDLISTSDATASFN', obj)
