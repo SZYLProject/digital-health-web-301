@@ -7,27 +7,29 @@
         </div>
         <div class="message-container">
           <div class="pic">
-            <img src="../../assets/login/pic.png"
-                 alt="" />
+            <img src="../../assets/login/pic.png" alt="" />
           </div>
           <div class="login">
-            <el-form ref="loginForm"
-                     :model="loginForm"
-                     :rules="loginRules"
-                     class="login-form"
-                     autocomplete="on"
-                     label-position="left">
+            <el-form
+              ref="loginForm"
+              :model="loginForm"
+              :rules="loginRules"
+              class="login-form"
+              autocomplete="on"
+              label-position="left"
+            >
               <h2 class="info">欢迎您，请登录！</h2>
-              <el-form-item label="用户名"
-                            prop="username">
-
-                <el-input ref="username"
-                          v-model="loginForm.username"
-                          placeholder="请输入用户名"
-                          name="username"
-                          type="text"
-                          tabindex="1"
-                          autocomplete="on">
+              <el-form-item label="用户名" prop="username">
+                <el-input
+                  ref="username"
+                  v-model="loginForm.username"
+                  @keyup.enter.native="handleLogin"
+                  placeholder="请输入用户名"
+                  name="username"
+                  type="text"
+                  tabindex="1"
+                  autocomplete="on"
+                >
                   <!-- <i slot="prefix"
                      class="iconfont icon-yonghuming"></i> -->
                 </el-input>
@@ -35,28 +37,35 @@
                   <svg-icon icon-class="yonghuming" />
                 </span>
               </el-form-item>
-              <el-form-item label="密码"
-                            prop="password"
-                            style="margin-top:10px;">
-
-                <el-input ref="password"
-                          v-model="loginForm.password"
-                          :type="passwordType"
-                          placeholder="请输入密码"
-                          name="password"
-                          tabindex="2"
-                          autocomplete="on"
-                          @keyup.native="checkCapslock"
-                          @blur="capsTooltip = false">
+              <el-form-item
+                label="密码"
+                prop="password"
+                style="margin-top:10px;"
+              >
+                <el-input
+                  ref="password"
+                  v-model="loginForm.password"
+                  :type="passwordType"
+                  placeholder="请输入密码"
+                  name="password"
+                  tabindex="2"
+                  autocomplete="on"
+                  @keyup.enter.native="handleLogin"
+                  @keyup.native="checkCapslock"
+                  @blur="capsTooltip = false"
+                >
                   <!-- <i slot="prefix"
                      class="iconfont icon-mima"></i> -->
                 </el-input>
                 <span class="svg-container">
                   <svg-icon icon-class="mima" />
                 </span>
-                <span class="show-pwd"
-                      @click="showPwd">
-                  <svg-icon :icon-class="passwordType === 'password' ? 'yincang' : 'xianshi1'" />
+                <span class="show-pwd" @click="showPwd">
+                  <svg-icon
+                    :icon-class="
+                      passwordType === 'password' ? 'yincang' : 'xianshi1'
+                    "
+                  />
                 </span>
               </el-form-item>
               <!--  -->
@@ -71,12 +80,14 @@
                   <!-- </div> -->
                 </div>
               </el-form-item>
-              <el-button :loading="loading"
-                         type="primary"
-                         style="width: 100%;height:45px; border: none;margin-top:30px;"
-                         @click.native.prevent="handleLogin">登 录</el-button>
+              <el-button
+                :loading="loading"
+                type="primary"
+                style="width: 100%;height:45px; border: none;margin-top:30px;"
+                @click.native.prevent="handleLogin"
+                >登 录</el-button
+              >
             </el-form>
-
           </div>
         </div>
       </div>
@@ -88,7 +99,6 @@
 </template>
 
 <script>
-
 import Footer from './components/Footer'
 import { mapGetters, mapMutations } from 'vuex'
 
@@ -150,6 +160,7 @@ export default {
   created () {
     // window.addEventListener('storage', this.afterQRScan)
     this.$Storage.sessionRemove('pID')
+    this.enterToLogin()
   },
   mounted () {
     if (this.loginForm.username === '') {
@@ -163,9 +174,17 @@ export default {
   },
   methods: {
     ...mapMutations(['app/CHANGE_SHOWSEETING']),
-
+    enterToLogin () {
+      const _self = this
+      document.onkeydown = function (e) {
+        const key = window.event.keyCode
+        if (key === 13) {
+          _self.handleLogin()
+        }
+      }
+    },
     handleLogin () {
-      this.$refs.loginForm.validate((valid) => {
+      this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
           this.$store
@@ -196,7 +215,7 @@ export default {
     },
     checkCapslock (e) {
       const { key } = e
-      this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
+      this.capsTooltip = key && key.length === 1 && key >= 'A' && key <= 'Z'
     },
     showPwd () {
       if (this.passwordType === 'password') {
@@ -246,7 +265,7 @@ $cursor: #212121;
 /* reset element-ui css */
 .login-container {
   // background: radial-gradient(rgba(36,123,204, 0.7), rgba(36,123,204, 1));
-  background: url("../../assets/login/bg.png") no-repeat fixed 0% 0%/100% 100%;
+  background: url('../../assets/login/bg.png') no-repeat fixed 0% 0%/100% 100%;
   .el-input {
     input {
       padding-left: 37px;
