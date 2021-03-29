@@ -207,6 +207,7 @@ export default {
     }
   },
   created () {
+    this.enterToCommitPatiId()
     this.getAllDesease()
   },
   mounted () {
@@ -216,6 +217,15 @@ export default {
     ...mapMutations(['user/STORE_PATIENTID']),
     toggleSideBar () {
       this.$store.dispatch('app/toggleSideBar')
+    },
+    enterToCommitPatiId () {
+      const _self = this
+      document.onkeydown = function (e) {
+        const key = window.event.keyCode
+        if (key === 13) {
+          _self.commitPatiId()
+        }
+      }
     },
     patientCheck (item) {
       // console.log(item)
