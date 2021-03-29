@@ -5,55 +5,63 @@
       <div class="title">
         <h1>队列入排</h1>
         <span class="right right-button">
-          <el-button size="mini"
-                     @click.native="goPrev">上一步</el-button>
-          <el-button size="mini"
-                     type="primary"
-                     @click.native="nextStep">下一步</el-button>
+          <el-button size="mini" @click.native="goPrev">上一步</el-button>
+          <el-button size="mini" type="primary" @click.native="nextStep"
+            >下一步</el-button
+          >
         </span>
       </div>
       <div class="queue-content">
-        <el-scrollbar style="height: 100%"
-                      ref="scroll">
+        <el-scrollbar style="height: 100%" ref="scroll">
           <ul class="ul-l">
             <!-- @mouseenter="mouseEnter"
                 @mouseleave="mouseLeave" -->
-            <li v-for="(item, index) in queueDatas"
-                class="pointer"
-                :class="{ actives: num === index ? true:false }"
-                :key="index"
-                @click="checkQueue(item)">
+            <li
+              v-for="(item, index) in queueDatas"
+              class="pointer"
+              :class="{ actives: num === index ? true : false }"
+              :key="index"
+              @click="checkQueue(item)"
+            >
               <div class="ul-li-d1">
-                <el-tag closable
-                        class="el-tags"
-                        :disable-transitions="true"
-                        v-if="idx !== index"
-                        @close="handleClose(item,index)">
-                  <span class="sn"
-                        @click="correctTag(item,index)">
-                    {{ item.groupName }}</span>
+                <el-tag
+                  closable
+                  class="el-tags"
+                  :disable-transitions="true"
+                  v-if="idx !== index"
+                  @close="handleClose(item, index)"
+                >
+                  <span class="sn" @click="correctTag(item, index)">
+                    {{ item.groupName }}</span
+                  >
                 </el-tag>
-                <el-input class="input-new-tag"
-                          v-else
-                          placeholder="请输入修改名称"
-                          v-model="item.groupName"
-                          ref="saveTagInput"
-                          size="small"
-                          v-fo
-                          @focus="handleFocus(item.groupName)"
-                          @keyup.enter.native="handleInputConfirm(index)"
-                          @blur="handleInputConfirm(item,index)">
+                <el-input
+                  class="input-new-tag"
+                  v-else
+                  placeholder="请输入修改名称"
+                  v-model="item.groupName"
+                  ref="saveTagInput"
+                  size="small"
+                  v-fo
+                  @focus="handleFocus(item.groupName)"
+                  @keyup.enter.native="handleInputConfirm(index)"
+                  @blur="handleInputConfirm(item, index)"
+                >
                 </el-input>
               </div>
-              <div class="ul-li-d2"
-                   @click="changeFn(index)">
-                <span>{{ item.personCount === 0 ? '未纳入患者': item.personCount }}</span>
+              <div class="ul-li-d2" @click="changeFn(index)">
+                <span>{{
+                  item.personCount === 0 ? '未纳入患者' : item.personCount
+                }}</span>
               </div>
             </li>
             <li>
-              <el-button @click.native="addQueue"
-                         :loading="addLoading"
-                         class="el-icon-plus add-button">新增分组</el-button>
+              <el-button
+                @click.native="addQueue"
+                :loading="addLoading"
+                class="el-icon-plus add-button"
+                >新增分组</el-button
+              >
             </li>
           </ul>
         </el-scrollbar>
@@ -72,8 +80,7 @@
             </span>
           </div>
           <el-row>
-            <el-col :span="18"
-                    class="table-left">
+            <el-col :span="18" class="table-left">
               <!-- 条件树 -->
               <el-row class="left-col">
                 <el-col :span="10">
@@ -86,40 +93,68 @@
                 <el-col :span="8">
                   <span>
                     {{
-                      leftDatas && (leftDatas.treeStatus === 1) ? (leftDatas && leftDatas.treeSearchResult):
-                      leftDatas && (leftDatas.highStatus === 1) ? (leftDatas && leftDatas.highSearchResult): 0
-                    }} 人
+                      leftDatas && leftDatas.treeStatus === 1
+                        ? leftDatas && leftDatas.treeSearchResult
+                        : leftDatas && leftDatas.highStatus === 1
+                        ? leftDatas && leftDatas.highSearchResult
+                        : 0
+                    }}
+                    人
                   </span>
                 </el-col>
                 <el-col :span="6">
-                  <el-button type="text"
-                             @click.native="openDialog('tree', 1, leftDatas)">编辑</el-button>
+                  <el-button
+                    type="text"
+                    @click.native="openDialog('tree', 1, leftDatas)"
+                    >编辑</el-button
+                  >
                 </el-col>
               </el-row>
               <!-- 事件 -->
               <el-row class="left-col" v-if="false">
                 <el-col :span="10"><span>事件检索</span></el-col>
-                <el-col :span="8"><span>{{(leftDatas && leftDatas.eventSearchResult) || 0}} 人</span></el-col>
+                <el-col :span="8"
+                  ><span
+                    >{{
+                      (leftDatas && leftDatas.eventSearchResult) || 0
+                    }}
+                    人</span
+                  ></el-col
+                >
                 <el-col :span="6">
-                  <el-button type="text"
-                             @click.native="openDialog('event', 1, leftDatas)">编辑</el-button>
+                  <el-button
+                    type="text"
+                    @click.native="openDialog('event', 1, leftDatas)"
+                    >编辑</el-button
+                  >
                 </el-col>
               </el-row>
               <!-- 精确搜索 -->
               <el-row class="left-col" v-if="false">
                 <el-col :span="10"><span>精确检索</span></el-col>
-                <el-col :span="8"><span>{{ (leftDatas && leftDatas.exactSearchResult) || 0 }} 人</span></el-col>
+                <el-col :span="8"
+                  ><span
+                    >{{
+                      (leftDatas && leftDatas.exactSearchResult) || 0
+                    }}
+                    人</span
+                  ></el-col
+                >
                 <el-col :span="6">
-                  <el-button type="text"
-                             @click.native="openDialog('accurate', 1, leftDatas)">编辑</el-button>
+                  <el-button
+                    type="text"
+                    @click.native="openDialog('accurate', 1, leftDatas)"
+                    >编辑</el-button
+                  >
                 </el-col>
               </el-row>
             </el-col>
-            <el-col :span="6"
-                    class="table-right">
+            <el-col :span="6" class="table-right">
               <div class="text">
                 <p>纳入患者总数</p>
-                <p class="num">{{ ( leftDatas && leftDatas.serachCount ) || 0 }}</p>
+                <p class="num">
+                  {{ (leftDatas && leftDatas.serachCount) || 0 }}
+                </p>
               </div>
             </el-col>
           </el-row>
@@ -136,8 +171,7 @@
             </span>
           </div>
           <el-row>
-            <el-col :span="18"
-                    class="table-left">
+            <el-col :span="18" class="table-left">
               <!-- 条件树 -->
               <el-row class="left-col">
                 <el-col :span="10">
@@ -150,40 +184,68 @@
                 <el-col :span="8">
                   <span>
                     {{
-                      rightDatas && (rightDatas.treeStatus === 1) ? (rightDatas && rightDatas.treeSearchResult):
-                      rightDatas && (rightDatas.highStatus === 1) ? (rightDatas && rightDatas.highSearchResult): 0
-                    }} 人
+                      rightDatas && rightDatas.treeStatus === 1
+                        ? rightDatas && rightDatas.treeSearchResult
+                        : rightDatas && rightDatas.highStatus === 1
+                        ? rightDatas && rightDatas.highSearchResult
+                        : 0
+                    }}
+                    人
                   </span>
                 </el-col>
                 <el-col :span="6">
-                  <el-button type="text"
-                             @click.native="openDialog('tree', 2, rightDatas)">编辑</el-button>
+                  <el-button
+                    type="text"
+                    @click.native="openDialog('tree', 2, rightDatas)"
+                    >编辑</el-button
+                  >
                 </el-col>
               </el-row>
               <!-- 事件 -->
               <el-row class="left-col" v-if="false">
                 <el-col :span="10"><span>事件检索</span></el-col>
-                <el-col :span="8"><span>{{(rightDatas && rightDatas.eventSearchResult) || 0}} 人</span></el-col>
+                <el-col :span="8"
+                  ><span
+                    >{{
+                      (rightDatas && rightDatas.eventSearchResult) || 0
+                    }}
+                    人</span
+                  ></el-col
+                >
                 <el-col :span="6">
-                  <el-button type="text"
-                             @click.native="openDialog('event', 2, rightDatas)">编辑</el-button>
+                  <el-button
+                    type="text"
+                    @click.native="openDialog('event', 2, rightDatas)"
+                    >编辑</el-button
+                  >
                 </el-col>
               </el-row>
               <!-- 精确搜索 -->
               <el-row class="left-col" v-if="false">
                 <el-col :span="10"><span>精确检索</span></el-col>
-                <el-col :span="8"><span>{{(rightDatas && rightDatas.exactSearchResult) || 0}} 人</span></el-col>
+                <el-col :span="8"
+                  ><span
+                    >{{
+                      (rightDatas && rightDatas.exactSearchResult) || 0
+                    }}
+                    人</span
+                  ></el-col
+                >
                 <el-col :span="6">
-                  <el-button type="text"
-                             @click.native="openDialog('accurate', 2, rightDatas)">编辑</el-button>
+                  <el-button
+                    type="text"
+                    @click.native="openDialog('accurate', 2, rightDatas)"
+                    >编辑</el-button
+                  >
                 </el-col>
               </el-row>
             </el-col>
-            <el-col :span="6"
-                    class="table-right">
+            <el-col :span="6" class="table-right">
               <div class="text">
                 <p>纳入患者总数</p>
-                <p class="num">{{(rightDatas && rightDatas.serachCount) || 0}}</p>
+                <p class="num">
+                  {{ (rightDatas && rightDatas.serachCount) || 0 }}
+                </p>
               </div>
             </el-col>
           </el-row>
@@ -192,41 +254,64 @@
     </el-row>
     <!-- 确认纳入按钮 -->
     <div class="queue-submit">
-      <el-button type="primary"
-                 style="width: 100%"
-                 :disabled="(queueDatas && queueDatas.length > 0) ? false : true"
-                 :loading="loading"
-                 @click.native="getSureInputDatas">
+      <el-button
+        type="primary"
+        style="width: 100%"
+        :disabled="queueDatas && queueDatas.length > 0 ? false : true"
+        :loading="loading"
+        @click.native="getSureInputDatas"
+      >
         确认纳入
-        <span class="n">{{ totel }}</span>人
+        <span class="n">{{ totel }}</span
+        >人
       </el-button>
     </div>
     <!-- 弹窗组件 -- 条件树 -->
-    <ConditionTreePop v-if="treeDialogVisible"
-                      :treeDialogVisible="treeDialogVisible"
-                      @treeDialogEmit="treeDialogEmit" />
+    <ConditionTreePop
+      v-if="treeDialogVisible"
+      :treeDialogVisible="treeDialogVisible"
+      @treeDialogEmit="treeDialogEmit"
+    />
     <!-- 高级搜索 -->
-    <AdvencedSearchPop v-if="advencedDialogVisible"
-                       :advencedDialogVisible="advencedDialogVisible"
-                       :data="advancedDatas"
-                       @advencedDialogEmit="advencedDialogEmit"/>
+    <AdvencedSearchPop
+      v-if="advencedDialogVisible"
+      :advencedDialogVisible="advencedDialogVisible"
+      :data="advancedDatas"
+      @advencedDialogEmit="advencedDialogEmit"
+    />
     <!-- 事件搜索 -->
-    <EventSearchPop v-if="eventDialogVisible"
-                    :eventDialogVisible="eventDialogVisible"
-                    @eventDialogEmit="eventDialogEmit"
-                    :data="eventDatas" />
+    <EventSearchPop
+      v-if="eventDialogVisible"
+      :eventDialogVisible="eventDialogVisible"
+      @eventDialogEmit="eventDialogEmit"
+      :data="eventDatas"
+    />
     <!-- 精确搜索 -->
-    <AccurateSearchPop v-if="accurDialogVisible"
-                       :accurDialogVisible="accurDialogVisible"
-                       @accurDialogEmit="accurDialogEmit"
-                       :data="accurateDatas" />
+    <AccurateSearchPop
+      v-if="accurDialogVisible"
+      :accurDialogVisible="accurDialogVisible"
+      @accurDialogEmit="accurDialogEmit"
+      :data="accurateDatas"
+    />
   </div>
 </template>
 
 <script>
 import { mapGetters, createNamespacedHelpers } from 'vuex'
-import { getQueueDatas, addNewQueue, deleteQueue, correctQueue, getListByGroupId, sureInputDatas } from '@/api/projectsMangement'
-import { ConditionTreePop, AdvencedSearchPop, EventSearchPop, AccurateSearchPop } from './components'
+import {
+  getQueueDatas,
+  addNewQueue,
+  deleteQueue,
+  correctQueue,
+  getListByGroupId,
+  sureInputDatas
+} from '@/api/projectsMangement'
+import {
+  ConditionTreePop,
+  AdvencedSearchPop,
+  EventSearchPop,
+  AccurateSearchPop
+} from './components'
 import { TreeConvertList } from '@/utils/conditionTreeFn'
 const { mapMutations } = createNamespacedHelpers('queueSearch')
 export default {
@@ -295,10 +380,10 @@ export default {
     EventSearchPop,
     AccurateSearchPop
   },
-  created () {
+  created () {},
 
-  },
   mounted () {
+    this.newAddQueue()
     this.getQueueDatas(true)
   },
   destroyed () {
@@ -311,10 +396,11 @@ export default {
       // console.log(val, type, data)
       this.treeData.type = type
       this.treeData.id = data ? data.id : null
-      this.treeData.searchType = (val === 'tree') ? 2 : (val === 'event') ? 1 : null
+      this.treeData.searchType = val === 'tree' ? 2 : val === 'event' ? 1 : null
       this.syncGroupData(this.treeData)
 
-      if (val === 'tree') { // 树
+      if (val === 'tree') {
+        // 树
         //
         if (data && data.treeSearch) {
           const jsondata = JSON.parse(data.treeSearch)
@@ -330,7 +416,10 @@ export default {
           this.syncFlattenData(newData)
         }
 
-        if ((this.leftRadio === '1' && type === 1) || (this.rightRadio === '1' && type === 2)) {
+        if (
+          (this.leftRadio === '1' && type === 1) ||
+          (this.rightRadio === '1' && type === 2)
+        ) {
           this.treeDialogVisible = true
         } else {
           if (data && data.highSearch) {
@@ -341,10 +430,12 @@ export default {
           }
           this.advencedDialogVisible = true
         }
-      } else if (val === 'accurate') { // 精确
+      } else if (val === 'accurate') {
+        // 精确
         this.accurateDatas = (data && data.exactSearch) || ''
         this.accurDialogVisible = true
-      } else if (val === 'event') { // 事件
+      } else if (val === 'event') {
+        // 事件
         if (data && data.eventSearch) {
           const jsondata = JSON.parse(data.eventSearch)
           this.eventDatas = jsondata.conditionList
@@ -377,37 +468,37 @@ export default {
     },
     // 纳排信息
     getListByGroup (id) {
-      getListByGroupId(id).then((res) => {
-        this.totel = res.obj.count || 0
-        if (res.obj?.exInfoyList?.length > 0) {
-          const left = res.obj.exInfoyList.filter(item => item.type === 1)
-          const right = res.obj.exInfoyList.filter(item => item.type === 2)
-          this.leftDatas = left.length > 0 ? left[0] : null
-          this.rightDatas = right.length > 0 ? right[0] : null
-          // console.log(this.leftDatas)
-          // 纳入标准
-          if (this.leftDatas?.treeStatus === 1) {
-            this.leftRadio = '1'
-          } else if (this.leftDatas?.highStatus === 1) {
-            this.leftRadio = '2'
+      getListByGroupId(id)
+        .then(res => {
+          this.totel = res.obj.count || 0
+          if (res.obj?.exInfoyList?.length > 0) {
+            const left = res.obj.exInfoyList.filter(item => item.type === 1)
+            const right = res.obj.exInfoyList.filter(item => item.type === 2)
+            this.leftDatas = left.length > 0 ? left[0] : null
+            this.rightDatas = right.length > 0 ? right[0] : null
+            // console.log(this.leftDatas)
+            // 纳入标准
+            if (this.leftDatas?.treeStatus === 1) {
+              this.leftRadio = '1'
+            } else if (this.leftDatas?.highStatus === 1) {
+              this.leftRadio = '2'
+            } else {
+              this.leftRadio = '1'
+            }
+            // 排除标准
+            if (this.rightDatas?.treeStatus === 1) {
+              this.rightRadio = '1'
+            } else if (this.rightDatas?.highStatus === 1) {
+              this.rightRadio = '2'
+            } else {
+              this.rightRadio = '1'
+            }
           } else {
-            this.leftRadio = '1'
+            this.leftDatas = null
+            this.rightDatas = null
           }
-          // 排除标准
-          if (this.rightDatas?.treeStatus === 1) {
-            this.rightRadio = '1'
-          } else if (this.rightDatas?.highStatus === 1) {
-            this.rightRadio = '2'
-          } else {
-            this.rightRadio = '1'
-          }
-        } else {
-          this.leftDatas = null
-          this.rightDatas = null
-        }
-      }).catch(() => {
-
-      })
+        })
+        .catch(() => {})
     },
     // 队列点击查询数据
     checkQueue (data) {
@@ -424,44 +515,47 @@ export default {
         projectId: this.$Storage.sessionGet('projectId'),
         groupId: this.groupIds
       }
-      sureInputDatas(data).then(res => {
-        if (res?.obj) {
-          this.totel = res.obj
-          this.getQueueDatas()
-          this.$message({
-            type: 'success',
-            message: '纳入成功!'
-          })
-        }
-        this.loading = false
-      }).catch(() => {
-        this.loading = false
-      })
+      sureInputDatas(data)
+        .then(res => {
+          if (res?.obj) {
+            this.totel = res.obj
+            this.getQueueDatas()
+            this.$message({
+              type: 'success',
+              message: '纳入成功!'
+            })
+          }
+          this.loading = false
+        })
+        .catch(() => {
+          this.loading = false
+        })
     },
     // 获取队列数据
     getQueueDatas (n) {
       const data = {
         projectId: this.$Storage.sessionGet('projectId')
       }
-      getQueueDatas(data).then((res) => {
-        if (res) {
-          this.queueDatas = res?.obj ?? []
-          if (this.queueDatas.length > 0 && n) {
-            this.treeData.groupId = this.queueDatas[0].id
-            this.treeData.groupName = this.queueDatas[0].groupName
-            this.groupIds = this.queueDatas[0].id
-            this.treeData.projectId = this.queueDatas[0].projectId
-            this.getListByGroup(this.queueDatas[0].id)
-          } else if (this.queueDatas.length > 0 && !n) {
-            this.getListByGroup(this.groupIds)
+      getQueueDatas(data)
+        .then(res => {
+          if (res) {
+            this.queueDatas = res?.obj ?? []
+            if (this.queueDatas.length > 0 && n) {
+              this.treeData.groupId = this.queueDatas[0].id
+              this.treeData.groupName = this.queueDatas[0].groupName
+              this.groupIds = this.queueDatas[0].id
+              this.treeData.projectId = this.queueDatas[0].projectId
+              this.getListByGroup(this.queueDatas[0].id)
+            } else if (this.queueDatas.length > 0 && !n) {
+              this.getListByGroup(this.groupIds)
+            }
           }
-        }
-      }).catch(() => {
-
-      })
+        })
+        .catch(() => {})
     },
     // 删除队列
     handleClose (item, index) {
+      console.log('删除了')
       this.$confirm('确定删除?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -481,18 +575,40 @@ export default {
     deleteQueue (item, index) {
       const { id } = item
       const data = { id }
-      deleteQueue(data).then(res => {
-        if (res) {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
-          this.queueDatas.splice(index, 1)
-          this.num = 0
-          this.getQueueDatas() // 重新拉取数据
-          // this.getListByGroup(id)
+      deleteQueue(data)
+        .then(res => {
+          if (res) {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            this.queueDatas.splice(index, 1)
+            this.num = 0
+            this.getQueueDatas() // 重新拉取数据
+            // this.getListByGroup(id)
+          }
+        })
+        .catch(() => {})
+    },
+    newAddQueue () {
+      const isnew = sessionStorage.getItem('newAddQueue')
+      console.log(isnew, 'isnew')
+      if (isnew === '1') {
+        const data = {
+          createBy: this.userInfo?.pkId,
+          createTime: '',
+          groupName: '分组名称1',
+          id: null,
+          personCount: 0,
+          projectId: this.$Storage.sessionGet('projectId')
         }
-      }).catch(() => { })
+        addNewQueue(data).then(res => {
+          if (res?.obj) {
+            this.queueDatas.push(res.obj)
+            sessionStorage.setItem('newAddQueue', 0) // 新增的时候默认增加新增分组1
+          }
+        })
+      }
     },
     // 新增队列
     addQueue () {
@@ -505,30 +621,34 @@ export default {
         personCount: 0,
         projectId: this.$Storage.sessionGet('projectId')
       }
-      addNewQueue(data).then((res) => {
-        if (res?.obj) {
-          this.queueDatas.push(res.obj)
-          this.$message({
-            type: 'success',
-            message: '新增成功!'
-          })
-        }
-        this.addLoading = false
-      }).catch(() => {
-        this.addLoading = false
-      })
+      addNewQueue(data)
+        .then(res => {
+          if (res?.obj) {
+            this.queueDatas.push(res.obj)
+            this.$message({
+              type: 'success',
+              message: '新增成功!'
+            })
+          }
+          this.addLoading = false
+        })
+        .catch(() => {
+          this.addLoading = false
+        })
     },
     // 修改队列
     correctQueue (item) {
       const data = item
-      correctQueue(data).then(res => {
-        if (res) {
-          this.$message({
-            type: 'success',
-            message: '修改成功!'
-          })
-        }
-      }).catch(() => { })
+      correctQueue(data)
+        .then(res => {
+          if (res) {
+            this.$message({
+              type: 'success',
+              message: '修改成功!'
+            })
+          }
+        })
+        .catch(() => {})
     },
 
     correctTag (item, index) {
@@ -557,13 +677,12 @@ export default {
       // console.log(index)
       this.num = index
     }
-
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "~@/styles/mixin.scss";
+@import '~@/styles/mixin.scss';
 .queue-container {
   .right-button {
     top: 9px;

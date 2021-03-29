@@ -4,7 +4,8 @@
       <el-radio-group v-model="moduleRadio" size="small">
         <el-radio label="1">搜索历史</el-radio>
         <el-radio label="2">搜索收藏</el-radio>
-        <el-radio label="3">搜索模板</el-radio>
+        <!-- 暂未开发 -->
+        <!-- <el-radio label="3">搜索模板</el-radio> -->
       </el-radio-group>
     </div>
     <!-- 组件切换 -->

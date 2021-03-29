@@ -1,18 +1,26 @@
 <!-- 项目列表 -->
 <template>
-  <div class="project-lists"
-       v-loading="loading"
-       element-loading-text="数据加载中"
-       element-loading-spinner="el-icon-loading">
+  <div
+    class="project-lists"
+    v-loading="loading"
+    element-loading-text="数据加载中"
+    element-loading-spinner="el-icon-loading"
+  >
     <!-- 面包削 -->
     <div class="breadcrumb-bar">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>项目管理</el-breadcrumb-item>
-        <el-breadcrumb-item class="active-breadcrumb">项目列表</el-breadcrumb-item>
+        <el-breadcrumb-item class="active-breadcrumb"
+          >项目列表</el-breadcrumb-item
+        >
       </el-breadcrumb>
       <p class="right rg-bar">
         <span class="check-radio">
-          <el-radio-group v-model="checkRadio" size="small" @change="checkRadios">
+          <el-radio-group
+            v-model="checkRadio"
+            size="small"
+            @change="checkRadios"
+          >
             <el-radio :label="0">全部状态</el-radio>
             <el-radio :label="1">进行中</el-radio>
             <el-radio :label="2">已结束</el-radio>
@@ -25,53 +33,54 @@
             size="small"
             @keyup.enter.native="handleIconClick"
             clearable
-            >
+          >
             <i
               class="el-icon-search el-input__icon pointer"
               slot="suffix"
-              @click="handleIconClick">
+              @click="handleIconClick"
+            >
             </i>
           </el-input>
         </span>
-        <el-button type="primary"
-                   size="mini"
-                   @click.native="createButton"
-                   class="el-icon-plus">
-          新建</el-button>
+        <el-button
+          type="primary"
+          size="mini"
+          @click.native="createButton"
+          class="el-icon-plus"
+        >
+          新建</el-button
+        >
       </p>
     </div>
     <!-- 项目列表 -->
     <div class="container-wraps">
       <!-- No Data -->
-      <div class="no-data-module"
-           style="height:500px;"
-           v-if="listObj.length <= 0">
+      <div
+        class="no-data-module"
+        style="height:500px;"
+        v-if="listObj.length <= 0"
+      >
         <p class="iconfont icon-no_datas p1"></p>
         <p class="p2">暂时没有项目，请新建...</p>
       </div>
       <!-- 数据列表 -->
-      <el-row :gutter="15"
-              v-else>
-        <el-col :span="12"
-                v-for="(item, index) in listObj"
-                :key="index">
+      <el-row :gutter="15" v-else>
+        <el-col :span="12" v-for="(item, index) in listObj" :key="index">
           <div class="grid-content module-container-two">
-            <div class="title"
-                 style="height: 48px"
-            >
+            <div class="title" style="height: 48px">
               <h1>
                 <!-- <span @click="goItemLists(item)"
                       class="pointer">
                   {{ item.projectName || "无" }}
                 </span> -->
                 <el-button
-                    type="text"
-                    size="mini"
-                    :disabled="Number(item.inputCount) === 0 ? false: true"
-                    style="font-size: 16px;padding: 2px 0px;"
-                    @click="goItemLists(item)"
+                  type="text"
+                  size="mini"
+                  :disabled="Number(item.inputCount) === 0 ? false : true"
+                  style="font-size: 16px;padding: 2px 0px;"
+                  @click="goItemLists(item)"
                 >
-                  {{ item.projectName || "无" }}
+                  {{ item.projectName || '无' }}
                 </el-button>
               </h1>
               <span class="right">
@@ -85,22 +94,31 @@
                   class="pointer"
                   placement="top-start"
                 >
-                  <div slot="content" >
-                    <el-button type="text"
-                               style="padding:0;"
-                               :disabled="Number(item.inputCount) === 0 ? false: true"
-                               @click.native="finishedAlreadys(item)"
-                               size="mini">完成</el-button>
-                    <el-button type="text"
-                               style="padding:0;"
-                               :disabled="Number(item.inputCount) === 0 ? false: true"
-                               @click.native="goSearchObj(item)"
-                               size="mini">修改</el-button>
-                    <el-button type="text"
-                               style="padding:0;"
-                               :disabled="Number(item.inputCount) === 0 ? false: true"
-                               @click.native="deleteList(item)"
-                               size="mini">删除</el-button>
+                  <div slot="content">
+                    <el-button
+                      type="text"
+                      style="padding:0;"
+                      :disabled="Number(item.inputCount) === 0 ? false : true"
+                      @click.native="finishedAlreadys(item)"
+                      size="mini"
+                      >完成</el-button
+                    >
+                    <el-button
+                      type="text"
+                      style="padding:0;"
+                      :disabled="Number(item.inputCount) === 0 ? false : true"
+                      @click.native="goSearchObj(item)"
+                      size="mini"
+                      >修改</el-button
+                    >
+                    <el-button
+                      type="text"
+                      style="padding:0;"
+                      :disabled="Number(item.inputCount) === 0 ? false : true"
+                      @click.native="deleteList(item)"
+                      size="mini"
+                      >删除</el-button
+                    >
                   </div>
                   <i class="el-icon-more"></i>
                 </el-tooltip>
@@ -110,40 +128,37 @@
               <div class="item-top">
                 <p class="left-t">
                   <span>项目牵头人：</span>
-                  <span class="mo">{{ item.leader || "无" }}</span>
+                  <span class="mo">{{ item.leader || '无' }}</span>
                   <span>研究目的/方案：</span>
                   <span class="mo aim">
-                    <el-tooltip
-                      effect="dark"
-                      placement="top"
-                    >
+                    <el-tooltip effect="dark" placement="top">
                       <div slot="content" style="max-width:100px;">
-                        {{ item.purpose || "无" }}
+                        {{ item.purpose || '无' }}
                       </div>
-                      <i>{{ item.purpose || "无" }}</i>
+                      <i>{{ item.purpose || '无' }}</i>
                     </el-tooltip>
                   </span>
                   <span>拟收集患者数：</span>
-                  <span class="mo">{{ item.planNum || "0" }}</span>
+                  <span class="mo">{{ item.planNum || '0' }}</span>
                 </p>
                 <p class="right-t">
                   <span>单中心</span>
                   <span>
                     {{
                       item.projectType === 1
-                        ? "回顾性研究"
+                        ? '回顾性研究'
                         : item.projectType === 2
-                        ? "前瞻性研究"
-                        : "未知"
+                        ? '前瞻性研究'
+                        : '未知'
                     }}
                   </span>
                   <span>
                     {{
                       item.pStatus === 1
-                        ? "进行中"
+                        ? '进行中'
                         : item.pStatus === 2
-                        ? "已结束"
-                        : "未知"
+                        ? '已结束'
+                        : '未知'
                     }}
                   </span>
                 </p>
@@ -154,12 +169,14 @@
                     <div class="">
                       <p class="title-item">项目进度</p>
                       <div class="circle">
-                        <el-progress type="circle"
-                                     stroke-linecap="butt"
-                                     :percentage="25"
-                                     :stroke-width="20"
-                                     :width="110"
-                                     color="rgba(255,149,64,.5)"></el-progress>
+                        <el-progress
+                          type="circle"
+                          stroke-linecap="butt"
+                          :percentage="25"
+                          :stroke-width="20"
+                          :width="110"
+                          color="rgba(255,149,64,.5)"
+                        ></el-progress>
                       </div>
                     </div>
                   </el-col>
@@ -167,12 +184,14 @@
                     <div class="middle-right">
                       <p class="title-item">研究对象总数</p>
                       <div class="circle">
-                        <el-progress type="circle"
-                                     stroke-linecap="butt"
-                                     :percentage="25"
-                                     :stroke-width="20"
-                                     :width="110"
-                                     color="rgba(0,112,244,.5)"></el-progress>
+                        <el-progress
+                          type="circle"
+                          stroke-linecap="butt"
+                          :percentage="25"
+                          :stroke-width="20"
+                          :width="110"
+                          color="rgba(0,112,244,.5)"
+                        ></el-progress>
                       </div>
                       <div class="middle-right-p">
                         <p class="p1">
@@ -188,20 +207,20 @@
               </div>
               <div class="item-bottom">
                 <el-steps :active="item.step - 1">
-                  <el-step v-for="(itemC1, idx) in item.projectType === 2
+                  <el-step
+                    v-for="(itemC1, idx) in item.projectType === 2
                       ? stepArr1
                       : stepArr2"
-                           :key="idx">
-                    <div slot="title"
-                         class="title-obj">{{ itemC1 }}</div>
+                    :key="idx"
+                  >
+                    <div slot="title" class="title-obj">{{ itemC1 }}</div>
                   </el-step>
                 </el-steps>
               </div>
             </div>
           </div>
         </el-col>
-        <el-col :span="12"
-                v-if="listObj.length % 2 === 1">
+        <el-col :span="12" v-if="listObj.length % 2 === 1">
           <div class="grid-content grid-content-last no-data-module">
             <p class="iconfont icon-no_datas p1"></p>
             <p class="p2">暂时没有项目，请新建...</p>
@@ -210,21 +229,27 @@
       </el-row>
     </div>
     <!-- 分页 -->
-    <el-pagination @size-change="handleSizeChange"
-                   @current-change="handleCurrentChange"
-                   :current-page="pageNo"
-                   :page-sizes="[10, 20, 30, 40, 50]"
-                   :page-size="pageSize"
-                   :pager-count="5"
-                   layout="total, sizes, prev, pager, next, jumper"
-                   :total="total"
-                   background></el-pagination>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageNo"
+      :page-sizes="[10, 20, 30, 40, 50]"
+      :page-size="pageSize"
+      :pager-count="5"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      background
+    ></el-pagination>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import { projectLists, deleteLists, finishedAlreadys } from '@/api/projectsMangement' //
+import {
+  projectLists,
+  deleteLists,
+  finishedAlreadys
+} from '@/api/projectsMangement' //
 export default {
   name: 'ProjectLists',
   data () {
@@ -248,13 +273,13 @@ export default {
   },
   watch: {},
   components: {},
-  created () { },
+  created () {},
   mounted () {
     this.$nextTick(() => {
       this.getProjectLists()
     })
   },
-  destroyed () { },
+  destroyed () {},
   methods: {
     ...mapMutations(['projectsMangement/projecttype']),
     // 获取项目列表
@@ -273,7 +298,7 @@ export default {
         pageSize: this.pageSize
       }
       projectLists(data)
-        .then((res) => {
+        .then(res => {
           console.log(res)
           if (res?.obj) {
             this.listObj = res.obj?.data ?? []
@@ -331,25 +356,29 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        const data = {
-          id: item.id
-        }
-        finishedAlreadys(data).then(res => {
-          if (res) {
-            this.$message({
-              message: '该项目已完成',
-              type: 'success'
-            })
-            this.getProjectLists()
-          }
-        }).catch(() => {})
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消'
-        })
       })
+        .then(() => {
+          const data = {
+            id: item.id
+          }
+          finishedAlreadys(data)
+            .then(res => {
+              if (res) {
+                this.$message({
+                  message: '该项目已完成',
+                  type: 'success'
+                })
+                this.getProjectLists()
+              }
+            })
+            .catch(() => {})
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          })
+        })
     },
     // 删除项目
     deleteList (item) {
@@ -357,33 +386,39 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        this.deleteFn(item) // 调用删除函数
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
       })
+        .then(() => {
+          this.deleteFn(item) // 调用删除函数
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     },
     // 删除接口
     deleteFn (item) {
       const data = {
         id: item.id
       }
-      deleteLists(data).then(res => {
-        if (res) {
-          this.$message({
-            message: '删除成功',
-            type: 'success'
-          })
-          this.getProjectLists()
-        }
-      }).catch(() => {})
+      deleteLists(data)
+        .then(res => {
+          if (res) {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            })
+            this.getProjectLists()
+          }
+        })
+        .catch(() => {})
     },
     // 创建新项目
     createButton () {
+      // debugger
       this.$Storage.sessionSet('projectType', 2)
+      sessionStorage.setItem('newAddQueue', 1)// 新增的时候默认增加新增分组1
       if (this.dataSourceValue.id) {
         this.$router.push('/ResearchObject/ProjectCreate')
       } else {
@@ -406,23 +441,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/styles/mixin.scss";
+@import '~@/styles/mixin.scss';
 .project-lists {
-  .rg-bar{
+  .rg-bar {
     display: flex;
     justify-content: center;
     align-items: center;
-    .sn-input{
-      margin:0 20px;
+    .sn-input {
+      margin: 0 20px;
     }
   }
   .container-wraps {
     margin-top: 20px;
     .grid-content {
       background: #fff;
-      .wating-time{
-        color:#C0C4CC;
-        padding-right:10px;
+      .wating-time {
+        color: #c0c4cc;
+        padding-right: 10px;
       }
       .item-lists {
         height: 340px;
@@ -435,11 +470,11 @@ export default {
             // float: left;
             line-height: 20px;
             display: flex;
-            .mo{
+            .mo {
               color: #666666;
               margin-right: 10px;
             }
-            i{
+            i {
               max-width: 50px;
               overflow: hidden; /* 溢出时不显示溢出的内容 */
               text-overflow: ellipsis; /* 发生溢出时使用省略号代替 */
@@ -486,7 +521,7 @@ export default {
                 padding: 2px 0px;
               }
               .p1 > span::before {
-                content: "";
+                content: '';
                 display: block;
                 width: 6px;
                 height: 6px;
@@ -499,7 +534,7 @@ export default {
               }
 
               .p2 > span::before {
-                content: "";
+                content: '';
                 display: block;
                 width: 6px;
                 height: 6px;
@@ -552,7 +587,7 @@ export default {
   .el-step.is-horizontal .el-step__line {
     top: 8px;
   }
-  .check-radio{
+  .check-radio {
     .el-radio {
       margin-right: 10px;
     }
@@ -560,6 +595,5 @@ export default {
       display: none;
     }
   }
-
 }
 </style>
