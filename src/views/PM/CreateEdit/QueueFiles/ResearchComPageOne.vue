@@ -597,7 +597,7 @@ export default {
         const data = {
           createBy: this.userInfo?.pkId,
           createTime: '',
-          groupName: '分组名称1',
+          groupName: '新增分组1',
           id: null,
           personCount: 0,
           projectId: this.$Storage.sessionGet('projectId')
