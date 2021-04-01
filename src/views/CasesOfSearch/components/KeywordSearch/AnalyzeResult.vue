@@ -1,10 +1,11 @@
 <!-- 结果分析组件 -->
 <template>
   <div class="analyze-result-com">
-    <el-button size="medium"
+    <!-- 暂时注掉结果分析 -->
+    <!-- <el-button size="medium"
                @click="centerDialogVisible=true">
       结果分析
-    </el-button>
+    </el-button> -->
     <el-dialog :visible.sync="centerDialogVisible"
                fullscreen>
       <div slot="title"

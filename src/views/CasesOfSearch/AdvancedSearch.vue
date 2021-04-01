@@ -1,4 +1,4 @@
-<!-- 高级搜索主页面组件 -->
+<!-- 高级搜索主页面: 病例搜索--》高级搜索页面 -->
 <template>
   <div class="advanced-search-main">
     <div class="module-container">
@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <!-- 高级-搜索结果 -->
+    <!--病例搜索--高级搜索--搜索结果-->
     <div class="advanced-search-result"
          v-loading="advancedLoading"
          element-loading-text="数据加载中..."
@@ -54,7 +54,7 @@
 
         </div>
 
-        <!-- 筛选条件和列表 -->
+        <!--筛选条件和列表 -->
         <div class="con-2"
              style="margin-bottom:20px;">
           <p class="search-msg">

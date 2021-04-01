@@ -1,3 +1,4 @@
+<!-- 病例搜索首页 -->
 <template>
   <div class="cases-serach-homepage">
     <!-- 病例搜索模块 -->
@@ -57,6 +58,7 @@
             </span>
           </div>
           <div class="grid-high">
+            <!-- 高级搜索组件 -->
             <advanced-search-com />
           </div>
         </div>
@@ -110,7 +112,7 @@ export default {
       }
 
       patientSearch(data)
-        .then((res) => {
+        .then(res => {
           const obj = res.obj
           if (obj) {
             this.patientsNum = obj.personTotal
@@ -132,7 +134,7 @@ export default {
     // 关键词搜索函数
     serachFn () {
       const str = this.searchs
-      this.keywordsinput(str)
+      this.keywordsinput(str) // 存储到store/caseSearch/KEYWORDSINPUT
       this.$router.push('KeywordsSearch')
     }
   }
@@ -140,7 +142,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/styles/mixin.scss";
+@import '~@/styles/mixin.scss';
 .cases-serach-homepage {
   .module-container {
     @include space(bottom);
@@ -159,7 +161,7 @@ export default {
       padding: 10px 20px;
       position: relative;
       &::before {
-        content: "";
+        content: '';
         display: block;
         width: 6px;
         height: 6px;
@@ -178,7 +180,7 @@ export default {
       top: 16px;
     }
   }
-  .module-A{
+  .module-A {
     background-color: #ffffff;
     margin-bottom: 20px;
   }
@@ -189,7 +191,7 @@ export default {
       .grid-search {
         padding: 10px 15% 20px;
       }
-      .grid-high{
+      .grid-high {
         padding: 10px 30px;
       }
     }

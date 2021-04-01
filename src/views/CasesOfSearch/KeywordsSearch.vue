@@ -1,4 +1,4 @@
-<!-- 关键词搜索模块 -->
+<!-- 病例搜索>关键词搜索模块 -->
 <template>
   <div class="keywords-search-module">
     <div class="module-container"
