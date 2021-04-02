@@ -207,7 +207,7 @@ export default {
     }
   },
   created () {
-    this.enterToCommitPatiId()
+    // this.enterToCommitPatiId()
     this.getAllDesease()
   },
   mounted () {
@@ -218,6 +218,7 @@ export default {
     toggleSideBar () {
       this.$store.dispatch('app/toggleSideBar')
     },
+    // enter键直接走悬浮层的确定
     enterToCommitPatiId () {
       const _self = this
       document.onkeydown = function (e) {

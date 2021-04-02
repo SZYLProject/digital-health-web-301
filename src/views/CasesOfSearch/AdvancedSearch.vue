@@ -39,14 +39,14 @@
             <div class="inlineBlock">
               <analyze-result />
             </div>
-            <!-- 收藏 -->
-            <div class="space inlineBlock">
+            <!-- 收藏 当前去掉收藏，打开注释即可-->
+            <!-- <div class="space inlineBlock">
               <AddCollectObject title="收藏"
                                 keys="collection"
                                 :disabled="disOrNo" />
-            </div>
-            <!-- 添加至项目 -->
-            <div class="inlineBlock">
+            </div> -->
+            <!-- 添加至项目 当前去掉收藏，打开去掉display即可-->
+            <div class="inlineBlock" style="display:none">
               <AddCollectObject title="添加至项目"
                                 disabled />
             </div>

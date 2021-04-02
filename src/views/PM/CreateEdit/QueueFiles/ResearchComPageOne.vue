@@ -256,7 +256,7 @@
     <div class="queue-submit">
       <el-button
         type="primary"
-        style="width: 100%"
+        style="width: 100% ;height:50px"
         :disabled="queueDatas && queueDatas.length > 0 ? false : true"
         :loading="loading"
         @click.native="getSureInputDatas"
