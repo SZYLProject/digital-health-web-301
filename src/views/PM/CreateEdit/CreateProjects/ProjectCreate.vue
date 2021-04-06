@@ -149,6 +149,7 @@
                 <span class="ms-t" style="margin-right: 38px">项目成员：</span>
                 <span style="">
                   <el-select
+                    filterable
                     v-model="itemMember"
                     size="small"
                     :disabled="
@@ -430,7 +431,7 @@ export default {
         if (this.$route.params.obj) {
           // 修改
           this.$set(this.listObj, 'userEntities', [])
-          this.itemMember.map((item) => {
+          this.itemMember.map(item => {
             this.listObj.userEntities.push({
               userId: item
             })
@@ -438,7 +439,7 @@ export default {
           this.correctProject()
         } else {
           // 新建
-          this.itemMember.map((item) => {
+          this.itemMember.map(item => {
             this.form.userEntities.push({
               userId: item
             })
@@ -460,7 +461,7 @@ export default {
       }
       const data = Object.assign(datas, this.form)
       createProjects(data)
-        .then((res) => {
+        .then(res => {
           if (res?.obj) {
             this.$Storage.sessionRemove('projectItemDatas') //
             this['projectsMangement/storeitemdata'](res.obj.id)
@@ -484,7 +485,7 @@ export default {
       }
       const data = Object.assign(datas, this.form)
       correctProject(data)
-        .then((res) => {
+        .then(res => {
           if (res?.obj) {
             this.$Storage.sessionRemove('projectItemDatas') //
             this['projectsMangement/storeitemdata'](res.obj.id)
@@ -505,7 +506,7 @@ export default {
       const formData = new FormData()
       formData.append('files', files.file)
       fileUploading(formData)
-        .then((res) => {
+        .then(res => {
           if (res?.obj) {
             this.form.fileList.push(res.obj[0])
             const s = this.form.fileList[this.form.fileList.length - 1]
@@ -525,10 +526,10 @@ export default {
     // 待定函数
     submitUpload () {
       const formData = new FormData() //  用FormData存放上传文件
-      this.fileList.forEach((file) => {
+      this.fileList.forEach(file => {
         formData.append('files', file.raw, file.raw.name) // 此处一定是append file.raw 上传文件只需维护fileList file.raw.name要加上
       })
-      fileUploading(formData).then((res) => {
+      fileUploading(formData).then(res => {
         if (res?.obj) {
           this.form.fileList.push(res.obj[0])
           this.$message({
@@ -575,13 +576,13 @@ export default {
     onRemove (file) {
       // console.log(file)
       const deleteFile = this.form.fileList.filter(
-        (item) => file.name === item.oldFileName
+        item => file.name === item.oldFileName
       )[0].fileName // 返回被删除的对象
       const data = {
         fileName: deleteFile,
         id: file.id || ''
       }
-      deleteUploadFiles(data).then((res) => {
+      deleteUploadFiles(data).then(res => {
         if (res) {
           this.$message({
             message: res.msg,
@@ -607,7 +608,7 @@ export default {
       const data = {
         projectId: this.listObj?.id
       }
-      comeUploadFiles(data).then((res) => {
+      comeUploadFiles(data).then(res => {
         if (res) {
           res.obj.map((item, index) => {
             this.form.fileList.push(item)
@@ -629,9 +630,9 @@ export default {
     async getItemMember () {
       // const { id } = this.$route.params.obj
       const data = {}
-      await getItemMember(data).then((res) => {
-        if (res?.obj) {
-          this.options = res.obj || []
+      await getItemMember(data).then(res => {
+        if (res) {
+          this.options = res || []
         } else {
           this.options = []
         }
@@ -641,7 +642,7 @@ export default {
     // 回显项目成员
     getBackItemMember (id) {
       const data = { id }
-      getBackItemMember(data).then((res) => {
+      getBackItemMember(data).then(res => {
         // console.log(res?.obj)
         if (res?.obj) {
           this.itemMember = res?.obj || []
@@ -665,7 +666,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/styles/mixin.scss";
+@import '~@/styles/mixin.scss';
 // @import '~@/styles/antd.css';
 .project-create {
   padding-bottom: 50px;
@@ -882,13 +883,13 @@ export default {
       font-variant: tabular-nums;
       line-height: 1.5;
       list-style: none;
-      font-feature-settings: "tnum";
+      font-feature-settings: 'tnum';
       position: absolute;
       z-index: 1050;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-        "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica,
-        Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-        "Segoe UI Symbol";
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+        'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica,
+        Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol';
     }
     .ant-calendar-picker-container.slide-up-enter.slide-up-enter-active.ant-calendar-picker-container-placement-topLeft,
     .ant-calendar-picker-container.slide-up-enter.slide-up-enter-active.ant-calendar-picker-container-placement-topRight,
