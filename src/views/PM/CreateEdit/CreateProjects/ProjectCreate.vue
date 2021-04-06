@@ -629,10 +629,12 @@ export default {
     // 获取项目成员
     async getItemMember () {
       // const { id } = this.$route.params.obj
-      const data = {}
+      const data = {
+        userName: ''
+      }
       await getItemMember(data).then(res => {
-        if (res) {
-          this.options = res || []
+        if (res.obj) {
+          this.options = JSON.parse(res.obj) || []
         } else {
           this.options = []
         }

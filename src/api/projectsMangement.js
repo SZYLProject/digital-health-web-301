@@ -326,7 +326,7 @@ export function downLoadFiles (data) {
   })
 }
 
-// // 项目成员--原来数据
+// 项目成员--原来数据
 // export function getItemMember (data) {
 //   return request({
 //     url: '/acl/api/dataItem/selectAllUser',
@@ -335,24 +335,25 @@ export function downLoadFiles (data) {
 //   })
 // }
 
-// // 项目成员-acl本地测试成功
-// export function getItemMember (data) {
-//   return request({
-//     url: '/acl/api/user/getUsersByCompId',
-//     method: 'GET',
-//     params: {}
-//   })
-// }
-// acl--重庆地址
+// 项目成员-acl本地测试成功
 export function getItemMember (data) {
   return request({
-    url: 'http://192.168.1.198:9991/acl',
+    url: '/crp-project/project/v1/getUsers',
     method: 'GET',
     params: data
   })
 }
-
+// // acl--重庆地址
+// export function getItemMember (data) {
+//   return request({
+//     url: 'http://192.168.1.198:9991/acl',
+//     method: 'GET',
+//     params: data
+//   })
+// }
+// http://10.131.101.5/crp-project/project/v1/getUsers?userName=刘
 // http://172.16.15.66:8089/acl/api/user/getUsersByCompId?comId=5&userName=%E5%88%98
+
 // 回显项目成员
 export function getBackItemMember (data) {
   const { id } = data
@@ -389,4 +390,3 @@ export function exportRecordButton (data) {
     params: data
   })
 }
-
