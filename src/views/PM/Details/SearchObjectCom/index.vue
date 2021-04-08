@@ -3,7 +3,7 @@
   <div class="search-object-com">
     <div class="container-wrap">
       <div style="float: left;">
-        <!-- 分组 -->
+        <!-- 研究对象下面：分组 -->
         <el-dropdown
           size="small"
           split-button
@@ -16,7 +16,7 @@
               v-for="(item, index) in groups"
               :key="index"
               @click.native="changeGroups(item)"
-              >{{ item.name }}</el-dropdown-item
+              >{{ item.groupName }}</el-dropdown-item
             >
           </el-dropdown-menu>
         </el-dropdown>
@@ -229,7 +229,7 @@
           size="small"
           style="margin-right: 10px"
           @click.native="importDatas = true"
-          >
+        >
           <i class="iconfont icon-daoru" style="font-size:10px;"></i>
           导入研究数据</el-button
         >
@@ -240,7 +240,7 @@
           size="small"
           style="margin-right: 10px"
           @click.native="exportDatas = true"
-          >
+        >
           <i class="iconfont icon-daochu1" style="font-size:10px;"></i>
           入组阶段数据导出</el-button
         >
@@ -250,7 +250,7 @@
           size="small"
           v-if="buttonStatus"
           @click.native="exportRecord"
-          >
+        >
           <i class="iconfont icon-daochu1" style="font-size:10px;"></i>
           导出记录</el-button
         >
@@ -259,7 +259,6 @@
               @click="switchTo = !switchTo">
           <i class="iconfont icon-zhanshi"></i>
         </span> -->
-
       </div>
     </div>
     <!-- 表格 -->
@@ -432,7 +431,13 @@
 import { mapGetters, mapMutations } from 'vuex'
 import SearchObjectForm1 from './SearchObjectForm1'
 import SearchObjectForm2 from './SearchObjectForm2'
-import { getListDetaileForms, exportRecordsInput, commitApprover, exportRecordButton } from '@/api/projectsMangement' //
+import {
+  getListDetaileForms,
+  exportRecordsInput,
+  commitApprover,
+  exportRecordButton,
+  getQueueDatas
+} from '@/api/projectsMangement' //
 export default {
   name: 'SearchObjectCom',
   data () {
@@ -561,30 +566,9 @@ export default {
       },
 
       // 分组
-      groups: [
-        {
-          id: 1,
-          name: '分组一',
-          num: 569
-        },
-        {
-          id: 2,
-          name: '分组二',
-          num: 500
-        },
-        {
-          id: 3,
-          name: '分组三',
-          num: 302
-        },
-        {
-          id: 4,
-          name: '分组四',
-          num: 202
-        }
-      ],
-      groupName: '选择分组',
-      groupNum: 0,
+      groups: [],
+      groupName: '请选择',
+      groupNum: null,
       // 筛选
       filterForm: {
         startDate: '',
@@ -666,6 +650,7 @@ export default {
   created () {
     this.getListDetaileForms() // 获取表格一的数据
     this.exportRecordButton()
+    this.getQueueDatas()
     // console.log(this.userInfo)
   },
   mounted () {
@@ -676,6 +661,15 @@ export default {
   destroyed () {},
   methods: {
     ...mapMutations(['']),
+
+    getQueueDatas () {
+      const data = {
+        projectId: this.$Storage.sessionGet('projectId')
+      }
+      getQueueDatas(data).then(res => {
+        this.groups = res.obj
+      })
+    },
     // 获取表格数据
     getListDetaileForms () {
       const data = {
@@ -713,13 +707,15 @@ export default {
         projectId: this.$Storage.sessionGet('projectId'),
         userId: this.userInfo?.pkId
       }
-      exportRecordButton(data).then(res => {
-        if (res) {
-          this.buttonStatus = res.obj !== 0
-        }
-      }).catch(err => {
-        console.log(err)
-      })
+      exportRecordButton(data)
+        .then(res => {
+          if (res) {
+            this.buttonStatus = res.obj !== 0
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
 
     // 申请审批
@@ -750,16 +746,18 @@ export default {
         userId: this.userInfo?.pkId,
         userName: this.userInfo?.userName
       }
-      commitApprover(data).then(res => {
-        this.exportDatas = false
-        this.$message({
-          type: 'success',
-          message: '申请导出已提交且需相关部门进行审核，请等待!',
-          duration: 4000
+      commitApprover(data)
+        .then(res => {
+          this.exportDatas = false
+          this.$message({
+            type: 'success',
+            message: '申请导出已提交且需相关部门进行审核，请等待!',
+            duration: 4000
+          })
         })
-      }).catch((err) => {
-        console.log(err)
-      })
+        .catch(err => {
+          console.log(err)
+        })
     },
     // 分页
     handleSizeChange (val) {
@@ -792,8 +790,8 @@ export default {
     },
     // 分组
     changeGroups (item) {
-      this.groupName = item.name
-      this.groupNum = item.num
+      this.groupName = item.groupName
+      this.groupNum = item.personCount
     },
     currentList (item, index) {
       this.currentIndex = index
@@ -807,10 +805,10 @@ export default {
     },
     handleClose (done) {
       this.$confirm('确认关闭？')
-        .then((_) => {
+        .then(_ => {
           done()
         })
-        .catch((_) => {})
+        .catch(_ => {})
     },
     // 导出记录
     exportRecord () {
@@ -825,13 +823,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/styles/mixin.scss";
+@import '~@/styles/mixin.scss';
 .is-active {
   background-color: #eff7ff;
 }
 
 .search-object-com {
-   background: #ffffff;
+  background: #ffffff;
   .container-wrap {
     padding: 20px 20px 5px 20px;
     overflow: hidden;
@@ -946,17 +944,17 @@ export default {
   }
 }
 
-.switch-to{
-  color:#0070f4;
+.switch-to {
+  color: #0070f4;
   padding: 5px;
   padding-top: 10px;
-  background: rgba(0,112,244,0.1);
+  background: rgba(0, 112, 244, 0.1);
   border-radius: 2px;
   margin-left: 20px;
   cursor: pointer;
   vertical-align: sub;
-  i{
-     font-size:23px;
+  i {
+    font-size: 23px;
   }
 }
 </style>
