@@ -28,12 +28,13 @@
               <span>{{ item.value }}</span>
             </div>
           </div>
-          <el-button
+          <!-- 去掉患者全景图中的更多 -->
+          <!-- <el-button
             type="text"
             class="more"
             @click="more = !more"
             >查看更多</el-button
-          >
+          > -->
         </div>
       </el-collapse-transition>
     </div>

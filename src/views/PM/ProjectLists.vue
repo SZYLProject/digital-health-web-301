@@ -255,7 +255,7 @@ export default {
   data () {
     return {
       loading: false,
-      checkRadio: 0,
+      checkRadio: 1,
       projectName: '',
       // 项目列表数据
       listObj: [],

@@ -1,4 +1,4 @@
-<!-- 研究对象模块 -->
+<!-- 研究对象模块：导出记录 -->
 <template>
   <div class="export-record">
     <div class="export-record-header white-bg">
@@ -63,9 +63,9 @@
                 <el-card>
                   <div>
                     <div style="margin-bottom: 5px">
-                      导出范围：{{ item.exportRange || "无" }}
+                      导出范围：{{ item.exportRange || "所有范围" }}
                     </div>
-                    <div>导出指标：{{ item.exportTarget || "无" }}</div>
+                    <div>导出指标：{{ item.exportTarget || "所有指标" }}</div>
                   </div>
                 </el-card>
               </div>
