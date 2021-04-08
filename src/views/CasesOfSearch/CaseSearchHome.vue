@@ -96,17 +96,22 @@ export default {
     RightListsModule,
     AdvancedSearchCom
   },
-  created () {
+  created () {},
+  mounted () {
     this.getPatientSearch() // 获取病例搜索结果
   },
-  mounted () {},
   destroyed () {},
   methods: {
     ...mapMutations(['keywordsinput']),
     creatTreeName () {},
     // 获取病例搜索结果
     getPatientSearch () {
-      const pID = this.$Storage.sessionGet('pID')
+      let pID = this.$Storage.sessionGet('pID')
+      if (pID === (undefined || '' || null)) {
+        setTimeout(() => {
+          pID = this.$Storage.sessionGet('pID')
+        }, 300)
+      }
       const data = {
         dataSourceId: pID?.id ?? ''
       }
