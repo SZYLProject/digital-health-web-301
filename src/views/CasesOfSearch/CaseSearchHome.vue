@@ -106,11 +106,11 @@ export default {
     creatTreeName () {},
     // 获取病例搜索结果
     getPatientSearch () {
-      let pID = this.$Storage.sessionGet('pID')
-      if (pID === (undefined || '' || null)) {
-        setTimeout(() => {
-          pID = this.$Storage.sessionGet('pID')
-        }, 300)
+      const pID = this.$Storage.sessionGet('pID')
+      if (pID === (undefined && '' && null)) {
+        this.getPatientSearch()
+      } else {
+        return
       }
       const data = {
         dataSourceId: pID?.id ?? ''
