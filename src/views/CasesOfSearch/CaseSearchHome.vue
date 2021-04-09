@@ -106,7 +106,6 @@ export default {
     creatTreeName () {},
     // 获取病例搜索结果
     getPatientSearch () {
-      debugger
       const pID = this.$Storage.sessionGet('pID')
       if (pID === (undefined && '' && null)) {
         this.getPatientSearch()
