@@ -569,6 +569,7 @@ export default {
       groups: [],
       groupName: '请选择',
       groupNum: null,
+      groupIdCurrent: '', // 临时存放groupId,用于请求getListDetaileForms表格数据
       // 筛选
       filterForm: {
         startDate: '',
@@ -648,9 +649,9 @@ export default {
   },
   components: { SearchObjectForm1, SearchObjectForm2 },
   created () {
+    this.getQueueDatas()
     this.getListDetaileForms() // 获取表格一的数据
     this.exportRecordButton()
-    this.getQueueDatas()
     // console.log(this.userInfo)
   },
   mounted () {
@@ -662,12 +663,16 @@ export default {
   methods: {
     ...mapMutations(['']),
 
-    getQueueDatas () {
+    // 获取group数据
+    async getQueueDatas () {
       const data = {
         projectId: this.$Storage.sessionGet('projectId')
       }
-      getQueueDatas(data).then(res => {
+      await getQueueDatas(data).then(res => {
         this.groups = res.obj
+        this.groupName = this.groups[0].groupName
+        this.groupNum = this.groups[0].personCount
+        this.groupIdCurrent = this.groups[0].groupId
       })
     },
     // 获取表格数据
@@ -675,7 +680,8 @@ export default {
       const data = {
         projectId: this.$Storage.sessionGet('projectId'),
         pageNo: this.query.pageNo,
-        pageSize: this.query.pageSize
+        pageSize: this.query.pageSize,
+        groupId: this.groupIdCurrent
       }
       getListDetaileForms(data).then(res => {
         if (res?.obj) {
@@ -790,8 +796,12 @@ export default {
     },
     // 分组
     changeGroups (item) {
+      if (item.personCount !== this.groupNum) {
+        this.getListDetaileForms() // 获取表格一的数据
+      }
       this.groupName = item.groupName
       this.groupNum = item.personCount
+      this.groupIdCurrent = item.groupId
     },
     currentList (item, index) {
       this.currentIndex = index

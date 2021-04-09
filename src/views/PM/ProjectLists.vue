@@ -142,8 +142,9 @@
                   <span class="mo">{{ item.planNum || '0' }}</span>
                 </p>
                 <p class="right-t">
-                  <span>单中心</span>
-                  <span>
+                  <!-- 暂时去掉：单中心、未知、进行中，使用时候打开即可 -->
+                  <!-- <span>单中心</span> -->
+                  <!-- <span>
                     {{
                       item.projectType === 1
                         ? '回顾性研究'
@@ -151,8 +152,8 @@
                         ? '前瞻性研究'
                         : '未知'
                     }}
-                  </span>
-                  <span>
+                  </span> -->
+                  <!-- <span>
                     {{
                       item.pStatus === 1
                         ? '进行中'
@@ -160,7 +161,7 @@
                         ? '已结束'
                         : '未知'
                     }}
-                  </span>
+                  </span> -->
                 </p>
               </div>
               <div class="item-middle">
