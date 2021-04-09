@@ -116,7 +116,7 @@ export default {
         const data = {
           dataSourceId: pID?.id ?? ''
         }
-        console.log(pID.id, 'pID')
+        console.log(pID?.id ?? '', 'pID')
 
         patientSearch(data)
           .then(res => {
