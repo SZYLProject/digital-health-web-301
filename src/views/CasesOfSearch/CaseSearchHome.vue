@@ -111,7 +111,8 @@ export default {
 
       // eslint-disable-next-line eqeqeq
       if (pID === (undefined || 'undefined')) {
-        this.getPatientSearch()
+        // this.getPatientSearch()
+        window.location.reload()
       } else {
         const data = {
           dataSourceId: pID?.id ?? ''
