@@ -107,15 +107,16 @@ export default {
     // 获取病例搜索结果
     getPatientSearch () {
       const pID = this.$Storage.sessionGet('pID')
+      // const pID = 'undefined'
+
       // eslint-disable-next-line eqeqeq
-      if (pID == (undefined && 'undefined' && '' && null)) {
+      if (pID === (undefined || 'undefined')) {
         this.getPatientSearch()
       } else {
         const data = {
           dataSourceId: pID?.id ?? ''
         }
         console.log(pID.id, 'pID')
-        console.log(typeof pID.id)
 
         patientSearch(data)
           .then(res => {
