@@ -109,7 +109,12 @@ export default {
       const pID = this.$Storage.sessionGet('pID')
 
       // eslint-disable-next-line eqeqeq
-      if (pID === undefined || pID === 'undefined') {
+      if (
+        pID === undefined ||
+        pID === 'undefined' ||
+        pID === '' ||
+        pID === null
+      ) {
         // this.getPatientSearch()
         window.location.reload()
       } else {
