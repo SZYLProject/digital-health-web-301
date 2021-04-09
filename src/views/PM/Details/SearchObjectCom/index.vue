@@ -650,11 +650,13 @@ export default {
   components: { SearchObjectForm1, SearchObjectForm2 },
   created () {
     this.getQueueDatas()
-    this.getListDetaileForms() // 获取表格一的数据
+
     this.exportRecordButton()
     // console.log(this.userInfo)
   },
   mounted () {
+    // this.getListDetaileForms() // 获取表格一的数据
+
     if (this.$route.params?.flag) {
       this.switchTo = false
     }
@@ -672,7 +674,8 @@ export default {
         this.groups = res.obj
         this.groupName = this.groups[0].groupName
         this.groupNum = this.groups[0].personCount
-        this.groupIdCurrent = this.groups[0].groupId
+        this.groupIdCurrent = this.groups[0].id
+        this.getListDetaileForms() // 获取表格一的数据
       })
     },
     // 获取表格数据
@@ -796,12 +799,12 @@ export default {
     },
     // 分组
     changeGroups (item) {
-      if (item.personCount !== this.groupNum) {
+      if (item.id !== this.groupIdCurrent) {
         this.getListDetaileForms() // 获取表格一的数据
       }
       this.groupName = item.groupName
       this.groupNum = item.personCount
-      this.groupIdCurrent = item.groupId
+      this.groupIdCurrent = item.id
     },
     currentList (item, index) {
       this.currentIndex = index
