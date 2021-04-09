@@ -106,27 +106,27 @@ export default {
     creatTreeName () {},
     // 获取病例搜索结果
     getPatientSearch () {
+      debugger
       const pID = this.$Storage.sessionGet('pID')
       if (pID === (undefined && '' && null)) {
         this.getPatientSearch()
       } else {
-        return
-      }
-      const data = {
-        dataSourceId: pID?.id ?? ''
-      }
+        const data = {
+          dataSourceId: pID?.id ?? ''
+        }
 
-      patientSearch(data)
-        .then(res => {
-          const obj = res.obj
-          if (obj) {
-            this.patientsNum = obj.personTotal
-            this.caseNum = obj.visitTotal
-            this.startTimes = obj.visitStartDate
-            this.endTimes = obj.visitEndDate
-          }
-        })
-        .catch(() => {})
+        patientSearch(data)
+          .then(res => {
+            const obj = res.obj
+            if (obj) {
+              this.patientsNum = obj.personTotal
+              this.caseNum = obj.visitTotal
+              this.startTimes = obj.visitStartDate
+              this.endTimes = obj.visitEndDate
+            }
+          })
+          .catch(() => {})
+      }
     },
     // 跳转关键词搜索页面
     jumpKwShMo () {
