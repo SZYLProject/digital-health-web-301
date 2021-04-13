@@ -1,4 +1,4 @@
-<!-- 项目列表 -->
+<!-- 项目列表：研究对象：队列入排及纳入标准与排除标准 -->
 <template>
   <div class="queue-container">
     <div class="module-container-two">
@@ -171,12 +171,14 @@
             </span>
           </div>
           <el-row>
-            <el-col :span="18" class="table-left">
+            <el-col :span="18" class="table-left ">
               <!-- 条件树 -->
               <el-row class="left-col">
-                <el-col :span="10">
+                <el-col :span="10" class="disable">
                   <div class="change-radio">
-                    <el-radio v-model="rightRadio" label="1">树形检索</el-radio>
+                    <el-radio v-model="rightRadio" label="1">
+                      树形检索</el-radio
+                    >
                     <span style="vertical-align: 3%;">|</span>
                     <el-radio v-model="rightRadio" label="2">高级检索</el-radio>
                   </div>
@@ -372,6 +374,9 @@ export default {
         this.treeDialogVisible = false
         this.syncCloseDialog(false)
       }
+    },
+    leftRadio (val) {
+      this.rightRadio = val
     }
   },
   components: {
@@ -772,6 +777,12 @@ export default {
   .table-left {
     border-right: 1px solid #e9e9e9;
     vertical-align: middle;
+  }
+  // 设置不可编辑
+  .disable {
+    pointer-events: none;
+    cursor: default;
+    // opacity: 0.6;
   }
   .left-col {
     // line-height: 48px;
