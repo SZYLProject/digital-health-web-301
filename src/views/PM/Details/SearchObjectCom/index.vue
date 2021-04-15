@@ -10,7 +10,7 @@
           class="divide-groups"
           style="margin-right: 20px"
         >
-          <span> {{ groupName }} {{ groupNum }} </span>
+          <span> {{ groupName }}</span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item
               v-for="(item, index) in groups"
