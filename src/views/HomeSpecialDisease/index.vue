@@ -1,3 +1,4 @@
+<!-- 专病库首页 -->
 <template>
   <div class="specialDisease">
     <el-row :gutter="15" class="panel-group">

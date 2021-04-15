@@ -61,7 +61,7 @@ export const constantRoutes = [
     redirect: 'specialDisease/index',
     children: [
       {
-        path: 'specialDisease/index',
+        path: '/specialDisease/index',
         component: () => import('@/views/HomeSpecialDisease'),
         name: 'HomeSpecialDisease'
       }
