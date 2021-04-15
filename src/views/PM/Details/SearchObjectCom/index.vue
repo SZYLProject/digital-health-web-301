@@ -800,8 +800,9 @@ export default {
     // 分组
     changeGroups (item) {
       if (item.id !== this.groupIdCurrent) {
-        this.getListDetaileForms() // 获取表格一的数据
       }
+      this.getListDetaileForms() // 获取表格一的数据
+
       this.groupName = item.groupName
       this.groupNum = item.personCount
       this.groupIdCurrent = item.id
