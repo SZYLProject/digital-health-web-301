@@ -153,7 +153,7 @@
               <div class="text">
                 <p>纳入患者总数</p>
                 <p class="num">
-                  {{ (leftDatas && leftDatas.serachCount) || 0 }}
+                  {{ (leftDatas && leftDatas.searchResult) || 0 }}
                 </p>
               </div>
             </el-col>
@@ -246,7 +246,7 @@
               <div class="text">
                 <p>纳入患者总数</p>
                 <p class="num">
-                  {{ (rightDatas && rightDatas.serachCount) || 0 }}
+                  {{ (rightDatas && rightDatas.searchResult) || 0 }}
                 </p>
               </div>
             </el-col>
@@ -306,7 +306,8 @@ import {
   deleteQueue,
   correctQueue,
   getListByGroupId,
-  sureInputDatas
+  sureInputDatas,
+  synthesize
 } from '@/api/projectsMangement'
 import {
   ConditionTreePop,
@@ -321,7 +322,7 @@ export default {
   data () {
     return {
       idx: 999,
-      num: 0,
+      num: 0, // 队列入排默认显示第一个
       inputValue: null,
       oldMsg: null,
       queueDatas: [],
@@ -359,6 +360,10 @@ export default {
   props: {},
   computed: {
     ...mapGetters(['userInfo', 'seniorLoading', 'closeTreeDialog'])
+    // listenSearchResult(){
+    //  const  {"rightDatas.highSearchResult","rightDatas.treeSearchResult"} = this
+    //   return {'rightDatas.highSearchResult','rightDatas.treeSearchResult'}
+    // }
   },
   watch: {
     seniorLoading (val) {
@@ -378,6 +383,20 @@ export default {
     leftRadio (val) {
       this.rightRadio = val
     }
+    // 'rightDatas.highSearchResult' (val) {
+    //   this.rightDatas.searchResult = this.synthesize()
+    //   this.leftDatas.searchResult = this.synthesize()
+    // },
+    // 'rightDatas.treeSearchResult' (val) {
+    //   this.rightDatas.searchResult = this.synthesize()
+    //   this.leftDatas.searchResult = this.synthesize()
+    // },
+    // 'leftDatas.highSearchResult' (val) {
+    //   this.leftDatas.searchResult = this.synthesize()
+    // },
+    // 'leftDatas.treeSearchResult' (val) {
+    //   this.leftDatas.searchResult = this.synthesize()
+    // }
   },
   components: {
     ConditionTreePop,
@@ -396,6 +415,22 @@ export default {
   },
   methods: {
     ...mapMutations(['syncGroupData', 'syncFlattenData', 'syncCloseDialog']),
+    // 单独获取纳入患者总数
+    synthesize () {
+      const pID = this.$Storage.sessionGet('pID')
+
+      const data = {
+        id: this.leftDatas.id || this.rightDatas.id,
+        projectId: this.$Storage.sessionGet('projectId'),
+        groupId: this.rightDatas.groupId,
+        dataSourceId: pID.id
+      }
+
+      synthesize(data).then(res => {
+        console.log(res)
+        // return res.searchResult
+      })
+    },
 
     openDialog (val, type, data) {
       // console.log(val, type, data)
@@ -453,17 +488,25 @@ export default {
     treeDialogEmit (val) {
       this.getQueueDatas()
       this.treeDialogVisible = false
+      // this.getListByGroup(this.leftDatas.groupId || this.rightDatas.groupId)
+      // this.synthesize()
     },
     // 高级搜索
     advencedDialogEmit () {
       this.advencedDialogVisible = false
+      // this.synthesize()
+      // this.getListByGroup(this.leftDatas.groupId || this.rightDatas.groupId)
     },
     eventDialogEmit (val) {
       this.eventDialogVisible = false
+      // this.synthesize()
+      // this.getListByGroup(this.leftDatas.groupId || this.rightDatas.groupId)
     },
     accurDialogEmit (val) {
       this.getQueueDatas()
       this.accurDialogVisible = false
+      // this.synthesize()
+      // this.getListByGroup(this.leftDatas.groupId || this.rightDatas.groupId)x`
     },
     goPrev () {
       this.$emit('next', 0)
@@ -536,7 +579,7 @@ export default {
           this.loading = false
         })
     },
-    // 获取队列数据
+    // 获取队列入排数据
     getQueueDatas (n) {
       const data = {
         projectId: this.$Storage.sessionGet('projectId')

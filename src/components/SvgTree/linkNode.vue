@@ -293,7 +293,7 @@
 import { mapGetters, createNamespacedHelpers } from 'vuex'
 
 import { getDataOption } from '@/api/caseSearch'
-import { getOption, getFormType } from '@/utils/searchRelation'
+import { getOption, getFormType } from '@/utils/searchRelation' // 树结构下拉框数据：关系下拉框
 import DataDictionaryPop from '@/components/DataDictionaryPop' // 引入弹窗
 import { stringToArr, deepClone } from '@/utils/index'
 const { mapMutations, mapActions } = createNamespacedHelpers('queueSearch')

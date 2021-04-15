@@ -88,7 +88,7 @@ export function oneDictionaryDatas (data) {
   })
 }
 
-// 获取队列的接口
+// 获取队列的接口：队列入排列表数据
 export function getQueueDatas (data) { // //{version}//{}
   const { projectId } = data
   return request({
@@ -237,6 +237,15 @@ export function getListByGroupId (groupId) {
   return request({
     url: `/crp-project/projectInEx/v1/getListByGroupId/${groupId}`,
     method: 'GET'
+  })
+}
+// 纳入或排除综合条件查询数量
+export function synthesize (data) {
+  return request({
+    url: '/crp-project/projectInEx/v1/synthesize',
+    method: 'POST',
+    timeout: 20000 * 1000,
+    data
   })
 }
 // 确认纳入接口
