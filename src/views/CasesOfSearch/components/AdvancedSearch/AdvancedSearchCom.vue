@@ -745,6 +745,8 @@ export default {
           pageNo: this.PN,
           pageSize: this.PS
         }
+        data.advanceSearchGroupDTOList[0].opt = ''
+        // 高级搜索中的搜索按钮提交事件
         advancedSearchCommit(data)
           .then(res => {
             // console.log(res)
