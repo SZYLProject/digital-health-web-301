@@ -244,7 +244,7 @@
             </el-col>
             <el-col :span="6" class="table-right">
               <div class="text">
-                <p>纳入患者总数</p>
+                <p>排除患者总数</p>
                 <p class="num">
                   {{ (rightDatas && rightDatas.searchResult) || 0 }}
                 </p>
