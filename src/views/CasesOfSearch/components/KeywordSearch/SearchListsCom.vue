@@ -123,6 +123,7 @@ export default {
 
     // 调用列表数据
     getSearchListsData () {
+      this.keyWordSearchCon.source = '4'
       const data = this.keyWordSearchCon
       this['caseSearch/keyWordListsData'](data).then(res => {
         this.$emit('changeLoading', false)

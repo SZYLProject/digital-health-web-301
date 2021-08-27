@@ -348,6 +348,7 @@ export default {
 
     // 获取搜索列表数据
     getSearchListsData () {
+      this.keyWordSearchCon.source = '4'
       const data = this.keyWordSearchCon
       this.keyWordListsData(data).then(res => {
         this.searchInfoModel = false // 显示/隐藏数据 Loading

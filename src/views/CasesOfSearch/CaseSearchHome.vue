@@ -116,7 +116,7 @@ export default {
         pID === null
       ) {
         // this.getPatientSearch()
-        window.location.reload()
+        // window.location.reload() //如果没有数据再次刷新页面，解决开小差问题
       } else {
         const data = {
           dataSourceId: pID?.id ?? ''

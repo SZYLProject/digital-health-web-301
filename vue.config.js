@@ -15,10 +15,11 @@ module.exports = {
   // filenameHashing: false, // 打包的时候不使用hash值.因为我们有时间戳来确定项目的唯一性了.
 
   devServer: {
+
     open: true, // 配置自动启动浏览器
     proxy: {
       [process.env.VUE_APP_BASE_API]: {
-        target: process.env.VUE_APP_SERVICE_URL,
+        target: 'http://152.136.182.96:18080/',
         changeOrigin: true, // 开启代理服务器，
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
