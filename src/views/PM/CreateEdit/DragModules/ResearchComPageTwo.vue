@@ -1,26 +1,25 @@
 <!-- 项目列表 -->
 <template>
   <div class="ys-container">
-    <div class="module-container-two"
-         style="margin-bottom: 0px;">
+    <div class="module-container-two" style="margin-bottom: 0px;">
       <div class="title">
         <h1>变量选择</h1>
         <span class="right right-button">
-          <el-button size="mini"
-                     @click.native="goPrev">上一步</el-button>
-                     <el-button size="mini"
-                     type="primary"
-                     @click.native="pullDatas"
-                     >完成</el-button>
+          <el-button size="mini" @click.native="goPrev">上一步</el-button>
           <!-- <el-button size="mini"
                      type="primary"
                      @click.native="pullDatas"
-                     v-if="projectType===1">完成</el-button>
-          <el-button size="mini"
-                     type="primary"
-                     v-else
-                     @click.native="nextStep">下一步</el-button> -->
-
+                     >完成</el-button> -->
+          <el-button
+            size="mini"
+            type="primary"
+            @click.native="pullDatas"
+            v-if="projectType === 1"
+            >完成</el-button
+          >
+          <el-button size="mini" type="primary" v-else @click.native="nextStep"
+            >下一步</el-button
+          >
         </span>
       </div>
     </div>
@@ -34,19 +33,22 @@
         <el-main>
           <div class="right">
             <div class="tab">
-              <el-tabs v-model="activeName"
-                       @tab-click="handleClick">
-                <el-tab-pane v-for="(item, index) in stepDatas"
-                             :key="index"
-                             :label="item.label + (index + 1)"
-                             :name="item.name + (index + 1)">
+              <el-tabs v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane
+                  v-for="(item, index) in stepDatas"
+                  :key="index"
+                  :label="item.label + (index + 1)"
+                  :name="item.name + (index + 1)"
+                >
                 </el-tab-pane>
               </el-tabs>
-              <el-button type="text"
-                         size="medium"
-                         disabled
-                         @click.native="addButton"
-                         class="el-icon-circle-plus-outline add-button">
+              <el-button
+                type="text"
+                size="medium"
+                disabled
+                @click.native="addButton"
+                class="el-icon-circle-plus-outline add-button"
+              >
                 新增阶段
               </el-button>
             </div>
@@ -119,29 +121,28 @@ export default {
       const data = {
         projectId: this.$Storage.sessionGet('projectId')
       }
-      getPullDatas(data).then(res => {
-        if (res) {
-          this.$confirm('数据正在抽取中，请耐心等待...', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.$router.push('/PM/ProjectLists')
-          }).catch(() => {
-
-          })
-        }
-      }).catch(() => {
-
-      })
+      getPullDatas(data)
+        .then(res => {
+          if (res) {
+            this.$confirm('数据正在抽取中，请耐心等待...', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            })
+              .then(() => {
+                this.$router.push('/PM/ProjectLists')
+              })
+              .catch(() => {})
+          }
+        })
+        .catch(() => {})
     }
-
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "~@/styles/mixin.scss";
+@import '~@/styles/mixin.scss';
 .ys-container {
   .right-button {
     top: 9px;

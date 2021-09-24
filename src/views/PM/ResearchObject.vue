@@ -67,7 +67,7 @@ export default {
         {
           title: '访视设计',
           component: 'FollowUpVisit',
-          show: false
+          show: true
         }
       ]
     }

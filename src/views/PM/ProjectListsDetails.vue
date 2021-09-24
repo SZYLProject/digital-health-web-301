@@ -28,6 +28,14 @@
           >
             |</i
           >
+
+          <!-- <p>研究对象</p> -->
+          <a
+            v-if="item.title === '研究对象'"
+            href="http://49.233.56.175:18080/#/login?redirect=%2FCasesOfSearch%2FCaseSearchHome"
+            >专病平台</a
+          >
+
         </el-radio>
       </el-radio-group>
     </div>
@@ -88,7 +96,11 @@ export default {
   watch: {
     tabRadio (val) {
       // console.log(val)
-      window.history.replaceState({}, '', `#/ProjectListsDetails/${val}/${this.$route.params.projectType}`)
+      window.history.replaceState(
+        {},
+        '',
+        `#/ProjectListsDetails/${val}/${this.$route.params.projectType}`
+      )
       this.whichCom = val
     }
   },
@@ -114,7 +126,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/styles/mixin.scss";
+@import '~@/styles/mixin.scss';
 .project-lists-details {
   padding-right: 8px;
   .tab-header {
